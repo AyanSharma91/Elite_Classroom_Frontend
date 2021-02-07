@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+
+        android:layout_height="match_parent">
+
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="60dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp">
+
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/googleBTN"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:visibility="gone" />
+
+
+        <TextView
+
+            android:text="Continue With Google"
+            android:id="@+id/realGoogle"
+            android:gravity="center_vertical"
+            android:textColor="#F80A5B"
+            android:layout_marginStart="30dp"
+            android:textStyle="bold"
+            android:fontFamily="@font/quicksand_medium"
+            android:textSize="18sp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="30dp">
+
+        </TextView>
+
+
+
+
+
+
+    </FrameLayout>
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="24dp"
+
+            android:layout_marginBottom="68dp"
+            android:src="@drawable/google_icon"
+            android:layout_marginLeft="24dp">
+
+
+        </ImageView>
+
+    </RelativeLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
