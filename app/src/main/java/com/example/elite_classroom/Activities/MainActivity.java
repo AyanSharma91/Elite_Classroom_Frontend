@@ -1,4 +1,4 @@
-package com.example.elite_classroom;
+package com.example.elite_classroom.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,12 +8,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.elite_classroom.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-
-import java.security.AlgorithmConstraints;
 
 public class MainActivity extends AppCompatActivity {
 
