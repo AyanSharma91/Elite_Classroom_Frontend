@@ -1,4 +1,4 @@
-package com.example.elite_classroom.Activities;
+package com.example.elite_classroom;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,11 +8,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.elite_classroom.R;
+import com.example.elite_classroom.Fragments.ClassFragment;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+
+import java.security.AlgorithmConstraints;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,7 +29,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
+                new ClassFragment()).commit();
         sign_out_button= findViewById(R.id.sign_out_button);
 
         sign_out_button.setOnClickListener(new View.OnClickListener() {
@@ -57,4 +60,5 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
 }
