@@ -18,7 +18,7 @@
             android:id="@+id/class_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Class name (required)"
+            android:hint="Class name"
             android:textColorHint="#7A8089" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -29,42 +29,42 @@
         android:layout_margin="10dp">
 
         <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/section"
+            android:id="@+id/prof_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Section"
+            android:hint="Prof_ID"
             android:inputType="phone"
             android:textColorHint="#7A8089" />
 
     </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp">
+<!--    <com.google.android.material.textfield.TextInputLayout-->
+<!--        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_margin="10dp">-->
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/room"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Room"
-            android:textColorHint="#7A8089" />
+<!--        <androidx.appcompat.widget.AppCompatEditText-->
+<!--            android:id="@+id/room"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:hint="Room"-->
+<!--            android:textColorHint="#7A8089" />-->
 
-    </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp">
+<!--    </com.google.android.material.textfield.TextInputLayout>-->
+<!--    <com.google.android.material.textfield.TextInputLayout-->
+<!--        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_margin="10dp">-->
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/subject"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Subject"
-            android:textColorHint="#7A8089" />
+<!--        <androidx.appcompat.widget.AppCompatEditText-->
+<!--            android:id="@+id/subject"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:hint="Subject"-->
+<!--            android:textColorHint="#7A8089" />-->
 
-    </com.google.android.material.textfield.TextInputLayout>
+<!--    </com.google.android.material.textfield.TextInputLayout>-->
 
     <Button
         android:id="@+id/btn_create"
