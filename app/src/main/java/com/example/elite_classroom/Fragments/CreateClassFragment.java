@@ -1,17 +1,20 @@
 package com.example.elite_classroom.Fragments;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -19,8 +22,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.elite_classroom.Activities.MainActivity;
 import com.example.elite_classroom.R;
-
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
 
@@ -30,10 +36,12 @@ public class CreateClassFragment extends Fragment {
     EditText et,et1,et2,et3;
     String class_name,prof_id,section,room,subject;
     Button b;
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_createclass, container, false);
+        MainActivity.textView.setText("Create Classroom");
         et = view.findViewById(R.id.class_name);
         et1 = view.findViewById(R.id.prof_id);
 //        et2 = view.findViewById(R.id.room);
