@@ -41,9 +41,10 @@ dependencies {
 
 
 
-    // REtrofit and GSON
+    // REtrofit and GSON and Volley
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation 'com.android.volley:volley:1.1.1'
 
 
     implementation 'com.google.android.gms:play-services-auth:19.0.0'
