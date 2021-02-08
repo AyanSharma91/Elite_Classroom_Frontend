@@ -62,11 +62,11 @@ public class CreateClassFragment extends Fragment {
     }
     public void createClass(String class_name,String prof_id){
         RequestQueue requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getActivity()));
-        String url = "https://elite-classroom-backend.herokuapp.com/create";
+        String url = "https://elite-classroom-server.herokuapp.com/api/classrooms/newClassroom";
         JSONObject o = new JSONObject();
         try{
-        o.put("class_name",class_name);
-        o.put("prof_id",prof_id);
+        o.put("className",class_name);
+        o.put("profID",prof_id);
         }
         catch (Exception e) {
             e.printStackTrace();
