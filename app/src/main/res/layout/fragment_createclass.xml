@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
-
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
@@ -70,9 +69,11 @@
         android:id="@+id/btn_create"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="CREATE"
         android:layout_gravity="center_horizontal"
-        android:gravity="center"/>
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:text="CREATE"
+        app:backgroundTint="@color/white"
+        android:textColor="#353535"/>
 
 </LinearLayout>
