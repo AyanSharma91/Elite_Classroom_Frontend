@@ -43,8 +43,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
 
+
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
                 new ClassFragment()).commit();
+
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
@@ -109,7 +111,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId())
         {
             case R.id.nav_classes:
+            {
+
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
+                        new ClassFragment()).commit();
                 break;
+            }
+
             case R.id.nav_calender:
                 break;
             case R.id.nav_to_do:
