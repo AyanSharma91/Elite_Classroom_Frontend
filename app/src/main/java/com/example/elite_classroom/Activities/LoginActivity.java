@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.elite_classroom.Auth_Response;
 import com.example.elite_classroom.Google_Login;
+import com.example.elite_classroom.Activities.MainActivity;
 import com.example.elite_classroom.R;
 import com.example.elite_classroom.Retrofit.DestinationService;
 import com.example.elite_classroom.Retrofit.ServiceBuilder;
@@ -142,7 +143,7 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString("token", response.body().getToken());
                         editor.apply();
                         editor.commit();
-                        startActivity(new Intent(LoginActivity.this,MainActivity.class));
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
 
 
                     }

@@ -11,7 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.elite_classroom.MainActivity;
+import com.example.elite_classroom.Activities.MainActivity;
 import com.example.elite_classroom.R;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
