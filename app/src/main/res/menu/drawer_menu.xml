@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+
+        <item
+            android:id="@+id/nav_classes"
+            android:icon="@drawable/classes"
+            android:title="Classes" />
+
+        <item
+            android:id="@+id/nav_calender"
+            android:icon="@drawable/calendar"
+            android:title="Calender" />
+
+
+        <item android:title="Enrolled">
+            <menu>
+                <item
+                    android:id="@+id/nav_to_do"
+                    android:icon="@drawable/to_do"
+                    android:title="To Do" />
+            </menu>
+        </item>
+
+
+        <item android:title="More">
+            <menu>
+                <item
+                    android:id="@+id/nav_archived_classes"
+                    android:icon="@drawable/archived_classes"
+                    android:title="Archived classes" />
+
+                <item
+                    android:id="@+id/nav_classroom_folders"
+                    android:icon="@drawable/classroom_folders"
+                    android:title="Classroom folders" />
+
+                <item
+                    android:id="@+id/nav_settings"
+                    android:icon="@drawable/settings"
+                    android:title="Settings" />
+
+                <item
+                    android:id="@+id/nav_help"
+                    android:icon="@drawable/help"
+                    android:title="Help" />
+            </menu>
+        </item>
+
+    </group>
+
+</menu>
