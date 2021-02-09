@@ -130,7 +130,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             case R.id.nav_calender:
                 break;
-            case R.id.nav_to_do:
+            case R.id.nav_pending:
+                break;
+            case R.id.nav_submitted:
+                break;
+            case R.id.nav_missed:
                 break;
             case R.id.nav_archived_classes:
                 break;

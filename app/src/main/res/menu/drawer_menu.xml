@@ -15,12 +15,22 @@
             android:title="Calender" />
 
 
-        <item android:title="Enrolled">
+        <item android:title="To Do">
             <menu>
                 <item
-                    android:id="@+id/nav_to_do"
-                    android:icon="@drawable/to_do"
-                    android:title="To Do" />
+                    android:id="@+id/nav_pending"
+                    android:icon="@drawable/pending"
+                    android:title="Pending Assignments" />
+
+                <item
+                    android:id="@+id/nav_submitted"
+                    android:icon="@drawable/submitted"
+                    android:title="Submitted Assignments" />
+
+                <item
+                    android:id="@+id/nav_missed"
+                    android:icon="@drawable/missed"
+                    android:title="Missed Assignments" />
             </menu>
         </item>
 
