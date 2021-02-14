@@ -5,25 +5,29 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/bottom_sheet_background">
+    android:background="@drawable/bottom_sheet_background"
+    android:padding="10dp">
 
-    <Button
-        android:id="@+id/button1"
+    <TextView
+        android:id="@+id/create"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:text="Create Class"
+        android:textSize="18sp"
         android:textColor="@color/black"
         app:backgroundTint="@color/white"
         android:gravity="left"/>
 
-    <Button
-        android:id="@+id/button2"
+    <TextView
+        android:id="@+id/join"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Join Class"
+        android:textSize="18sp"
         android:textColor="@color/black"
         app:backgroundTint="@color/white"
         android:gravity="left"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="20dp"/>
 </LinearLayout>
