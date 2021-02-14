@@ -1,17 +1,32 @@
 package com.example.elite_classroom.Activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.InputQueue;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.SurfaceHolder;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,16 +57,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Button sign_out_button ;
     GoogleSignInClient mGoogleSignInClient;
     public static TextView textView;
+
+
+
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getWindow().setStatusBarColor(ContextCompat.getColor(MainActivity.this,R.color.white));
         setContentView(R.layout.activity_main);
+
+
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
                 new ClassFragment()).commit();
         textView = findViewById(R.id.name);
 //        sign_out_button= findViewById(R.id.sign_out_button);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        ActionBar action = getSupportActionBar();
+        action.setDisplayShowTitleEnabled(false);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener((NavigationView.OnNavigationItemSelectedListener) this);
         drawer = findViewById(R.id.drawer_layout);
@@ -59,29 +85,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-//        sign_out_button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                        .requestEmail()
-//                        .build();
 //
-//                mGoogleSignInClient = GoogleSignIn.getClient(MainActivity.this, gso);
-//                mGoogleSignInClient.signOut();
-//                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-//                Toast.makeText(MainActivity.this,"Signed_Out",Toast.LENGTH_LONG).show();
-//                startActivity(intent);
-//            }
-//        });
-//
-//
-//        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-//
-//        if(account!=null)
-//        {
-//            Toast.makeText(MainActivity.this,account.getEmail(),Toast.LENGTH_LONG).show();
-//
-//        }
     }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -109,11 +113,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 break;
             case R.id.nav_signout:
+            {
 
+                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestEmail()
+                        .build();
+
+                mGoogleSignInClient = GoogleSignIn.getClient(MainActivity.this, gso);
+                mGoogleSignInClient.signOut();
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                Toast.makeText(MainActivity.this,"Signed_Out",Toast.LENGTH_LONG).show();
+                startActivity(intent);
+
+
+
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+
+        if(account!=null)
+        {
+            Toast.makeText(MainActivity.this,account.getEmail(),Toast.LENGTH_LONG).show();
+        }
                 break;
+            }
+
+
         }
         drawer.closeDrawer(GravityCompat.START);
-        return true;}
+        return true;
+    }
+
+
     @Override
     public void onBackPressed(){
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -121,26 +150,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else{
             super.onBackPressed();
         }
-//        else if(i == 0){
-//            Intent a = new Intent(Intent.ACTION_MAIN);
-//            a.addCategory(Intent.CATEGORY_HOME);
-//            a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            startActivity(a);}
-//        else if(i==1){
-//            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-//                    new SellerFragment()).commit();
-//        }
-//        else if(i==2){
-//            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-//                    new ItemListFragment()).commit();
-//        }
-//        else if(i==3){
-//            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-//                    new OrderFragment()).commit();
-//        }
-//        else if(i==4){
-//            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-//                    new OrderFragment()).commit();
-//        }
+
     }
 }

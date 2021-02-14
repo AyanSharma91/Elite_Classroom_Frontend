@@ -7,19 +7,20 @@ import androidx.core.content.ContextCompat;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.elite_classroom.Auth_Response;
-import com.example.elite_classroom.Google_Login;
-import com.example.elite_classroom.Activities.MainActivity;
+import com.example.elite_classroom.Models.Retrofit_Models.Auth_Response;
+import com.example.elite_classroom.Models.Retrofit_Models.Google_Login;
 import com.example.elite_classroom.R;
 import com.example.elite_classroom.Retrofit.DestinationService;
 import com.example.elite_classroom.Retrofit.ServiceBuilder;
@@ -31,9 +32,8 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
-import java.security.Provider;
+import java.util.Random;
 
-import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -44,10 +44,13 @@ public class LoginActivity extends AppCompatActivity {
     String sharedPrefFile = "Login_Credentials";
     SignInButton googleBTN ;
     TextView realGoogle  ;
-    EditText registration_no;
+    RelativeLayout progress_layout;
+    ProgressBar progress_bar;
     Integer RC_SIGN_IN =0;
     Window window;
     SharedPreferences preferences;
+    final Handler handler = new Handler();
+
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -55,38 +58,31 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
         window= LoginActivity.this.getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
         window.setStatusBarColor(ContextCompat.getColor(LoginActivity.this,R.color.black));
-        registration_no= findViewById(R.id.registration_no);
         preferences =LoginActivity.this.getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE);
+        progress_bar= findViewById(R.id.progress_bar);
+        progress_layout = findViewById(R.id.progress_layout);
+
+        progress_bar.setVisibility(View.GONE);
+        progress_layout.setVisibility(View.GONE);
 
 
-        googleBTN= findViewById(R.id.googleBTN);
+
+
+
+        color_runnable.run();
+googleBTN= findViewById(R.id.googleBTN);
         realGoogle = findViewById(R.id.realGoogle);
         realGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if(registration_no.getText().toString().trim().length()!=0 )
-                {
-                    if(registration_no.getText().toString().trim().length()==11)
-                    {
-                        signIn();
-                    }
-                    else
-                    {
-                        Toast.makeText(LoginActivity.this, "Invalid Registration No",Toast.LENGTH_LONG).show();
-
-                    }
-
-                }
-                else
-                {
-                    Toast.makeText(LoginActivity.this, "Enter your Registration No",Toast.LENGTH_LONG).show();
-                }
+                signIn();
 
             }
         });
@@ -131,8 +127,12 @@ public class LoginActivity extends AppCompatActivity {
                 String email=   account.getEmail();
 
 
-              DestinationService service = ServiceBuilder.INSTANCE.buildService(DestinationService.class);
-                Call<Auth_Response> request = service.login_Google_User(new Google_Login(name,email,account.getId(),registration_no.getText().toString()));
+                progress_bar.setVisibility(View.VISIBLE);
+                progress_layout.setVisibility(View.VISIBLE);
+
+
+                DestinationService service = ServiceBuilder.INSTANCE.buildService(DestinationService.class);
+                Call<Auth_Response> request = service.login_Google_User(new Google_Login(name,email,account.getId()));
 
                 request.enqueue(new Callback<Auth_Response>() {
                     @Override
@@ -140,10 +140,13 @@ public class LoginActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor =  preferences.edit();
                         editor.putString("name", name);
                         editor.putString("email",email);
-                        editor.putString("token", response.body().getToken());
+                        editor.putString("jwt_token", response.body().getToken());
+                        editor.putString("google_token", account.getId());
                         editor.apply();
                         editor.commit();
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        progress_bar.setVisibility(View.GONE);
+                        progress_layout.setVisibility(View.GONE);
 
 
                     }
@@ -171,7 +174,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
 
-        if(preferences.getString("token",null)!=null)
+        if(preferences.getString("google_token",null)!=null)
         {
             startActivity(new Intent(LoginActivity.this,MainActivity.class));
 
@@ -179,4 +182,56 @@ public class LoginActivity extends AppCompatActivity {
 
         super.onStart();
     }
+
+    private Runnable color_runnable = new Runnable() {
+        @Override
+        public void run() {
+
+            final int random = new Random().nextInt(5) + 1; // [0, 60] + 20 => [20, 80]
+
+            switch (random)
+            {
+                case 1 :
+                {
+                    progress_bar.getIndeterminateDrawable()
+                            .setColorFilter(ContextCompat.getColor(LoginActivity.this,R.color.blue ), PorterDuff.Mode.SRC_IN );
+
+                    break;
+                }
+
+                case 2 :
+                {
+                    progress_bar.getIndeterminateDrawable()
+                            .setColorFilter(ContextCompat.getColor(LoginActivity.this,R.color.orange ), PorterDuff.Mode.SRC_IN );
+
+                    break;
+                }
+                case 3 :
+                {
+                    progress_bar.getIndeterminateDrawable()
+                            .setColorFilter(ContextCompat.getColor(LoginActivity.this,R.color.green ), PorterDuff.Mode.SRC_IN );
+
+                    break;
+                }
+                case 4 :
+                {
+                    progress_bar.getIndeterminateDrawable()
+                            .setColorFilter(ContextCompat.getColor(LoginActivity.this,R.color.red), PorterDuff.Mode.SRC_IN );
+
+                    break;
+
+                }
+                case 5 :
+                {
+                    progress_bar.getIndeterminateDrawable()
+                            .setColorFilter(ContextCompat.getColor(LoginActivity.this,R.color.purple ), PorterDuff.Mode.SRC_IN );
+
+                    break;
+                }
+
+            }
+
+               handler.postDelayed(this,1550);
+        }
+    };
 }

@@ -1,7 +1,7 @@
 package com.example.elite_classroom.Retrofit
 
-import com.example.elite_classroom.Auth_Response
-import com.example.elite_classroom.Google_Login
+import com.example.elite_classroom.Models.Retrofit_Models.Auth_Response
+import com.example.elite_classroom.Models.Retrofit_Models.Google_Login
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.POST

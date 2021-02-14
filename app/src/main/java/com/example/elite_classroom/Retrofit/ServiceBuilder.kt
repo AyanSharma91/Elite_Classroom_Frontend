@@ -12,7 +12,7 @@ object ServiceBuilder {
 
 
 //    private const val  URL ="http://192.168.1.25:8000/api/v1/"
-     const val  URL ="https://elite-classroom-backend.herokuapp.com/api/"
+     const val  URL ="https://elite-classroom-server.herokuapp.com/api/"
 
 
     //Creating OTTHP Client
