@@ -6,12 +6,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.elite_classroom.Fragments.ClassFragment;
+import com.example.elite_classroom.Fragments.ClassWorkFragment;
+import com.example.elite_classroom.Fragments.PeopleFragment;
 import com.example.elite_classroom.Fragments.StreamFragment;
 import com.example.elite_classroom.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -44,13 +47,16 @@ public class ClassActivity extends AppCompatActivity implements NavigationView.O
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     switch (item.getItemId()){
                         case R.id.nav_stream:
-
+                            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container1,
+                                    new Fragment()).commit();
                             break;
                         case R.id.nav_classwork:
-
+                            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container1,
+                                    new ClassWorkFragment()).commit();
                             break;
                         case R.id.nav_people:
-
+                            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container1,
+                                    new PeopleFragment()).commit();
                             break;
                     }
                     return true;

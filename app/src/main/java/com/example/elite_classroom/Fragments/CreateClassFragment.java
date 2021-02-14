@@ -23,6 +23,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.elite_classroom.Activities.MainActivity;
+import com.example.elite_classroom.Fragments.ClassFragment;
 import com.example.elite_classroom.R;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -51,10 +52,12 @@ public class CreateClassFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(et.getText().toString().isEmpty()){
-                    Toast.makeText(getActivity(),"Please give Class Name",Toast.LENGTH_SHORT).show();
+                    et.setError("Please Give Class Name");
+                    et.requestFocus();
                 }
                 else if(et1.getText().toString().isEmpty()){
-                    Toast.makeText(getActivity(),"Please give Professor Id",Toast.LENGTH_SHORT).show();
+                    et1.setError("Please Give Professor Id");
+                    et1.requestFocus();
                 }
                 else{
                     class_name = et.getText().toString();
