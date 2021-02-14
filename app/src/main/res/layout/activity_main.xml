@@ -30,8 +30,8 @@
          <TextView
              android:id="@+id/name"
              android:layout_width="match_parent"
-             android:layout_marginEnd="100dp"
-             android:gravity="center"
+             android:layout_marginEnd="50dp"
+             android:gravity="start|center_vertical"
              android:layout_height="match_parent"
              android:text="Elite Classroom"
              android:fontFamily="@font/rubic_light"
@@ -39,7 +39,7 @@
              android:textStyle="bold"
              android:textSize="22sp"
              android:textColor="@color/black"
-             android:layout_marginRight="100dp" />
+             android:layout_marginRight="50dp" />
 
 
           <TextView
@@ -73,8 +73,12 @@
    <com.google.android.material.navigation.NavigationView
        android:id="@+id/nav_view"
        android:layout_width="wrap_content"
+       app:itemIconTint="@color/drawable_item"
+       app:itemTextColor="@color/drawable_item"
        android:layout_height="match_parent"
        android:layout_gravity="start"
+
+       app:itemBackground="@drawable/drawer_selected_item"
        app:headerLayout="@layout/nav_header"
        app:menu="@menu/drawer_menu" />
 </androidx.drawerlayout.widget.DrawerLayout>

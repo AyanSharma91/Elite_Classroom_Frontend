@@ -1,4 +1,4 @@
-package com.example.elite_classroom;
+package com.example.elite_classroom.Dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -14,6 +14,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.example.elite_classroom.Activities.ClassWorkActivity;
+import com.example.elite_classroom.R;
 
 public class PointDialog extends AppCompatDialogFragment {
     RadioButton r,r1;

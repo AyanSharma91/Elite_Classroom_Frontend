@@ -11,6 +11,7 @@ import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -60,10 +61,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
         window= LoginActivity.this.getWindow();
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.addFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-        window.setStatusBarColor(ContextCompat.getColor(LoginActivity.this,R.color.black));
+        window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         preferences =LoginActivity.this.getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE);
         progress_bar= findViewById(R.id.progress_bar);
         progress_layout = findViewById(R.id.progress_layout);
@@ -130,9 +128,13 @@ googleBTN= findViewById(R.id.googleBTN);
                 progress_bar.setVisibility(View.VISIBLE);
                 progress_layout.setVisibility(View.VISIBLE);
 
+                      if(name!=null && email!=null)
+                      {
+                          DestinationService service = ServiceBuilder.INSTANCE.buildService(DestinationService.class);
+                          Call<Auth_Response> request = service.login_Google_User(new Google_Login(name,email,account.getId()));
 
-                DestinationService service = ServiceBuilder.INSTANCE.buildService(DestinationService.class);
-                Call<Auth_Response> request = service.login_Google_User(new Google_Login(name,email,account.getId()));
+
+
 
                 request.enqueue(new Callback<Auth_Response>() {
                     @Override
@@ -142,6 +144,8 @@ googleBTN= findViewById(R.id.googleBTN);
                         editor.putString("email",email);
                         editor.putString("jwt_token", response.body().getToken());
                         editor.putString("google_token", account.getId());
+                        Log.d("IDToken", account.getId());
+
                         editor.apply();
                         editor.commit();
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
@@ -157,7 +161,7 @@ googleBTN= findViewById(R.id.googleBTN);
                     }
                 });
 
-
+                      }
 
             }
 

@@ -11,7 +11,9 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -56,7 +58,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawer;
     Button sign_out_button ;
     GoogleSignInClient mGoogleSignInClient;
+    String sharedPrefFile = "Login_Credentials";
     public static TextView textView;
+    SharedPreferences preferences;
 
 
 
@@ -71,9 +75,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
-                new ClassFragment()).commit();
+                new ClassFragment(), "HOME_FRAGMENT").commit();
         textView = findViewById(R.id.name);
-//        sign_out_button= findViewById(R.id.sign_out_button);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar action = getSupportActionBar();
@@ -81,6 +84,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener((NavigationView.OnNavigationItemSelectedListener) this);
         drawer = findViewById(R.id.drawer_layout);
+        preferences =MainActivity.this.getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -92,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch(item.getItemId()){
             case R.id.nav_class:
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
-                        new ClassFragment()).commit();
+                        new ClassFragment(),"HOME_FRAGMENT").commit();
                 break;
             case R.id.nav_calender:
 
@@ -115,12 +120,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_signout:
             {
 
+
+
                 GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                         .requestEmail()
                         .build();
 
                 mGoogleSignInClient = GoogleSignIn.getClient(MainActivity.this, gso);
                 mGoogleSignInClient.signOut();
+
+                SharedPreferences.Editor editor =  preferences.edit();
+                editor.putString("name", null);
+                editor.putString("email",null);
+                editor.putString("jwt_token", null);
+                editor.putString("google_token", null);
+                editor.apply();
+                editor.commit();
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 Toast.makeText(MainActivity.this,"Signed_Out",Toast.LENGTH_LONG).show();
                 startActivity(intent);
@@ -148,7 +163,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);}
         else{
-            super.onBackPressed();
+
+            ClassFragment myFragment = (ClassFragment) getSupportFragmentManager().findFragmentByTag("HOME_FRAGMENT");
+            if (myFragment != null && myFragment.isVisible()) {
+                finishAffinity();
+            }
+            else
+            {
+                super.onBackPressed();
+            }
+
         }
 
     }

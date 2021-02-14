@@ -1,4 +1,4 @@
-package com.example.elite_classroom;
+package com.example.elite_classroom.Dialogs;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.elite_classroom.Fragments.CreateClassFragment;
 import com.example.elite_classroom.Fragments.JoinClassFragment;
+import com.example.elite_classroom.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class ClassBottomSheetDialog extends BottomSheetDialogFragment {

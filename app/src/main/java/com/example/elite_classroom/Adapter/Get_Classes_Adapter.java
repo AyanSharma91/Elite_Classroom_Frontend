@@ -1,6 +1,7 @@
-package com.example.elite_classroom.Adapters;
+package com.example.elite_classroom.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.elite_classroom.Activities.ClassActivity;
+import com.example.elite_classroom.Activities.ClassWorkActivity;
 import com.example.elite_classroom.Models.Recycler_Models.Get_Classes_List;
 import com.example.elite_classroom.R;
 
@@ -40,6 +43,13 @@ public class Get_Classes_Adapter extends RecyclerView.Adapter<Get_Classes_Adapte
          viewHolder.class_name.setText(list1.get(i).getClass_name());
          viewHolder.owner_name.setText(list1.get(i).getOwner_name());
          viewHolder.students_no.setText(list1.get(i).getStudents_no());
+         viewHolder.parent_layout.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 Intent intent = new Intent(context, ClassActivity.class);
+                 context.startActivity(intent);
+             }
+         });
 
     }
 

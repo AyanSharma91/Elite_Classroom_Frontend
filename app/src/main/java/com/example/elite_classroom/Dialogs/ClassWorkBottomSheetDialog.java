@@ -1,4 +1,4 @@
-package com.example.elite_classroom;
+package com.example.elite_classroom.Dialogs;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.example.elite_classroom.Activities.ClassWorkActivity;
+import com.example.elite_classroom.R;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class ClassWorkBottomSheetDialog extends BottomSheetDialogFragment {

@@ -9,7 +9,7 @@ import android.widget.ImageView;
 
 import com.example.elite_classroom.Fragments.Teacher.NewAssignmentFragment;
 import com.example.elite_classroom.Fragments.Teacher.NewMaterialFragment;
-import com.example.elite_classroom.PointDialog;
+import com.example.elite_classroom.Dialogs.PointDialog;
 import com.example.elite_classroom.R;
 
 public class ClassWorkActivity extends AppCompatActivity implements PointDialog.PointDialogListener {

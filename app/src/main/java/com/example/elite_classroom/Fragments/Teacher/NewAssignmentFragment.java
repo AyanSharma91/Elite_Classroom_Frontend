@@ -15,8 +15,7 @@ import androidx.fragment.app.Fragment;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-import com.example.elite_classroom.Activities.ClassWorkActivity;
-import com.example.elite_classroom.PointDialog;
+import com.example.elite_classroom.Dialogs.PointDialog;
 import com.example.elite_classroom.R;
 
 import org.json.JSONException;

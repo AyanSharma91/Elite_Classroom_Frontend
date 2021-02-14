@@ -1,6 +1,7 @@
 package com.example.elite_classroom.Activities;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -33,6 +34,9 @@ public class ClassActivity extends AppCompatActivity implements NavigationView.O
         btview.setOnNavigationItemSelectedListener(navListener);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowTitleEnabled(false);
+
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener((NavigationView.OnNavigationItemSelectedListener) this);
         drawer = findViewById(R.id.drawer_layout);
@@ -68,6 +72,7 @@ public class ClassActivity extends AppCompatActivity implements NavigationView.O
             case R.id.nav_class:
                 Intent i = new Intent(ClassActivity.this,MainActivity.class);
                 startActivity(i);
+                finish();
                 break;
             case R.id.nav_calender:
 
