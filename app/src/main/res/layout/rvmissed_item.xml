@@ -1,48 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginLeft="6dp"
     android:layout_marginRight="6dp"
-    android:layout_marginTop="4dp"
-    android:layout_marginBottom="4dp"
-    app:cardElevation="10dp"
+    app:cardBackgroundColor="#F6F5F5"
     app:cardCornerRadius="5dp"
-    app:cardUseCompatPadding="false"
-    app:cardBackgroundColor="#F6F5F5">
+    app:cardElevation="10dp"
+    app:cardUseCompatPadding="true">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_margin="7dp">
+        android:layout_margin="7dp"
+        android:orientation="vertical">
 
         <TextView
+            android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:id="@+id/tvTitle"
             android:text="Submission Title"
             android:textSize="19dp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/tvDescription"
-            android:text="Submission Description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            />
+            android:text="Submission Description" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Course -"
-            android:textStyle="bold"
             android:layout_marginTop="5dp"
-            android:textSize="15dp"/>
+            android:text="Course -"
+            android:textSize="15dp"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -50,50 +47,50 @@
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/tvClassName"
-                android:text="Class Name"
-                android:layout_gravity="start"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:text="Class Name" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="  by  "/>
+                android:text="  by  " />
 
             <TextView
+                android:id="@+id/tvOwnerName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tvProfID"
-                android:text="Professor ID"/>
+                android:text="Owner Name" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="5dp"
-            android:layout_marginBottom="3dp">
+            android:layout_marginBottom="3dp"
+            android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/tvCreationDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tvCreationDate"
-                android:textSize="15dp"
                 android:text="DD/MM/YYYY"
-                android:textStyle="bold"/>
+                android:textSize="15dp"
+                android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/tvDueDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/tvDueDate"
-                android:text="DD/MM/YYYY"
                 android:gravity="end"
+                android:text="DD/MM/YYYY"
                 android:textSize="15dp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
         </LinearLayout>
 

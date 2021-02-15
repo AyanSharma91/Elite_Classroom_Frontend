@@ -9,14 +9,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class SubmittedAdapter extends RecyclerView.Adapter<SubmittedAdapter.submittedViewHolder>
 {
     private Context context;
-    private SubmittedModel data;
+    private JSONArray data;
 
-    public SubmittedAdapter(Context context, SubmittedModel data)
+    public SubmittedAdapter(Context context, JSONArray data)
     {
         this.context = context;
         this.data = data;
@@ -33,16 +35,19 @@ public class SubmittedAdapter extends RecyclerView.Adapter<SubmittedAdapter.subm
 
     @Override
     public void onBindViewHolder(@NonNull submittedViewHolder holder, int position) {
-        Datum assignment = data.getData().get(position);
-
-        holder.tvWork.setText(assignment.getWork());
-        holder.tvAttachment.setText(assignment.getAttachment());
-        holder.tvSubmissionDate.setText(assignment.getSubmittedOn().substring(0,10));
+        try {
+            JSONObject jsonObject = (JSONObject) data.get(position);
+            holder.tvWork.setText(jsonObject.optString("work"));
+            holder.tvAttachment.setText(jsonObject.optString("attachment"));
+            holder.tvSubmissionDate.setText(jsonObject.optString("submitted_on"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public int getItemCount() {
-        return data.getData().size();
+        return data.length();
     }
 
     public class submittedViewHolder extends RecyclerView.ViewHolder{

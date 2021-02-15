@@ -37,6 +37,7 @@ public class ToDoFragment extends Fragment {
 
         todo_bottom_navigation = view.findViewById(R.id.todo_bottom_navigation);
         todo_bottom_navigation.setSelectedItemId(R.id.nav_submitted);
+        getFragmentManager().beginTransaction().replace(R.id.todo_frame_layout, new SubmittedFragment()).commit();
 
         todo_bottom_navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

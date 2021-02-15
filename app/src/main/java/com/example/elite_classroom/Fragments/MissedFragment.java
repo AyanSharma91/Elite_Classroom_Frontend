@@ -1,37 +1,41 @@
 package com.example.elite_classroom.Fragments;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.elite_classroom.PendingMissedAdapter;
-import com.example.elite_classroom.PendingMissedModel;
+import com.example.elite_classroom.MissedAdapter;
 import com.example.elite_classroom.R;
-import com.example.elite_classroom.SubmittedAdapter;
-import com.example.elite_classroom.SubmittedModel;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Objects;
 
 
 public class MissedFragment extends Fragment {
 
     View view;
     RecyclerView rvMissed;
-    private static final String URL = "https://elite-classroom-server.herokuapp.com/api/submission/missing";
+    ProgressBar progressBar;
+    TextView tvLoading;
+    private static final String URL = "https://elite-classroom-server.herokuapp.com/api/todos/missing";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,29 +54,44 @@ public class MissedFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        progressBar = view.findViewById(R.id.progressBar);
+        tvLoading = view.findViewById(R.id.tvLoading);
+        progressBar.setVisibility(View.VISIBLE);
+        tvLoading.setVisibility(View.VISIBLE);
         rvMissed = view.findViewById(R.id.rv_missed);
         rvMissed.setHasFixedSize(true);
         rvMissed.setLayoutManager(new LinearLayoutManager(this.getActivity()));
 
-        StringRequest request = new StringRequest(URL, new Response.Listener<String>() {
+        RequestQueue requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getActivity()));
+
+        JSONObject object = new JSONObject();
+        try {
+            object.put("reg_id", "2019UGCS097");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, object, new Response.Listener<JSONObject>() {
             @Override
-            public void onResponse(String response) {
-                Log.d("CODE ", response);
-
-                GsonBuilder builder = new GsonBuilder();
-                Gson gson = builder.create();
-                PendingMissedModel missedAssignments = gson.fromJson(response, PendingMissedModel.class);
-
-                rvMissed.setAdapter(new PendingMissedAdapter(getContext(), missedAssignments));
+            public void onResponse(JSONObject response) {
+                try {
+                    JSONArray missedAssignments= new JSONArray(response.get("data").toString());
+                    rvMissed.setAdapter(new MissedAdapter(getContext(), missedAssignments));
+                    progressBar.setVisibility(View.GONE);
+                    tvLoading.setVisibility(View.GONE);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                progressBar.setVisibility(View.GONE);
+                tvLoading.setVisibility(View.GONE);
                 Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
             }
         });
 
-        RequestQueue queue = Volley.newRequestQueue(getContext());
-        queue.add(request);
+        requestQueue.add(jsonObjectRequest);
     }
 }
