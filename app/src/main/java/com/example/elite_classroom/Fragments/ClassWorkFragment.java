@@ -19,7 +19,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.elite_classroom.Adapter.ClassWorkAdapter;
 import com.example.elite_classroom.Dialogs.ClassWorkBottomSheetDialog;
-import com.example.elite_classroom.ModalClass.ClassWork;
+import com.example.elite_classroom.Models.Recycler_Models.ClassWork;
 import com.example.elite_classroom.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 

@@ -17,10 +17,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.elite_classroom.Adapter.ClassWorkAdapter;
 import com.example.elite_classroom.Adapter.StreamAdapter;
-import com.example.elite_classroom.ModalClass.ClassWork;
-import com.example.elite_classroom.ModalClass.Stream;
+import com.example.elite_classroom.Models.Recycler_Models.Stream;
 import com.example.elite_classroom.R;
 
 import org.json.JSONArray;

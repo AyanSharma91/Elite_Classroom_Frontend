@@ -6,16 +6,42 @@
     android:layout_height="match_parent"
     tools:context=".Activities.ClassWorkActivity"
     android:orientation="vertical">
-<androidx.appcompat.widget.Toolbar
-    android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize"
-    android:background="@color/white">
-    <ImageView
-        android:id="@+id/cross"
-        android:layout_width="30sp"
-        android:layout_height="30sp"
-        android:src="@drawable/ic_cross"/>
-</androidx.appcompat.widget.Toolbar>
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/cross"
+                android:layout_width="30sp"
+                android:layout_height="30sp"
+                android:src="@drawable/ic_cross"
+                android:layout_centerVertical="true"/>
+            <ImageView
+                android:id="@+id/attachment"
+                android:layout_width="30sp"
+                android:layout_height="30sp"
+                android:src="@drawable/ic_attachment"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="70dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"/>
+<!--            <TextView-->
+<!--                android:layout_width="30sp"-->
+<!--                android:background="@drawable/indicator"-->
+<!--                android:layout_alignParentEnd="true"-->
+<!--                android:layout_centerVertical="true"-->
+<!--                android:layout_marginEnd="20dp"-->
+<!--                android:layout_height="30sp"-->
+<!--                android:layout_alignParentRight="true"-->
+<!--                android:layout_marginRight="20dp"/>-->
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"

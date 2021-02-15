@@ -20,6 +20,7 @@ public class ClassWorkBottomSheetDialog extends BottomSheetDialogFragment {
         View view = inflater.inflate(R.layout.classworkbottom_sheet, container, false);
         TextView assignment = view.findViewById(R.id.assignment);
         TextView material  = view.findViewById(R.id.material);
+        TextView announcement  = view.findViewById(R.id.announcement);
         assignment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -34,6 +35,15 @@ public class ClassWorkBottomSheetDialog extends BottomSheetDialogFragment {
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), ClassWorkActivity.class);
                 i.putExtra("u",1);
+                startActivity(i);
+                dismiss();
+            }
+        });
+        announcement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity(), ClassWorkActivity.class);
+                i.putExtra("u",2);
                 startActivity(i);
                 dismiss();
             }

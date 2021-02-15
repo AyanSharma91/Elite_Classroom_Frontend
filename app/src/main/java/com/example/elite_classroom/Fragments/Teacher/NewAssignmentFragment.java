@@ -106,6 +106,7 @@ public class NewAssignmentFragment extends Fragment implements PointDialog.Point
             o.put("description", description);
             o.put("points", points);
             o.put("due_date", due);
+            o.put("type",0);
         } catch (JSONException e) {
             e.printStackTrace();
         }

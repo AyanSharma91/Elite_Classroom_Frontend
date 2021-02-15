@@ -10,8 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.elite_classroom.ModalClass.ClassWork;
-import com.example.elite_classroom.ModalClass.Stream;
+import com.example.elite_classroom.Models.Recycler_Models.Stream;
 import com.example.elite_classroom.R;
 
 import java.util.List;

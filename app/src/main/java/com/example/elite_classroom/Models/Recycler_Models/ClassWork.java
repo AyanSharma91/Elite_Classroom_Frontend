@@ -1,4 +1,4 @@
-package com.example.elite_classroom.ModalClass;
+package com.example.elite_classroom.Models.Recycler_Models;
 
 public class ClassWork {
     String title;
