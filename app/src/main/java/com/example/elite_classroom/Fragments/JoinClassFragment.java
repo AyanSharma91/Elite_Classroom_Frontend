@@ -33,7 +33,7 @@ public class JoinClassFragment extends Fragment {
     Button join;
     ImageView profile;
     EditText code;
-    String class_code;
+    String class_code,token="1234r";
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -53,17 +53,19 @@ public class JoinClassFragment extends Fragment {
                     code.requestFocus();
                 }
                 else{
-                    String url="";
+                    String url="https://elite-classroom-server.herokuapp.com/api/classrooms/joinClassroom";
                     RequestQueue requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getActivity()));
                     JSONObject o = new JSONObject();
                     try {
                         o.put("classCode",class_code);
+                        o.put("google_token",token);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                     JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, o, new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
+                            Toast.makeText(getActivity(),"Class joined Successfully",Toast.LENGTH_SHORT).show();
                             Fragment someFragment = new ClassFragment();
                             assert getFragmentManager() != null;
                             FragmentTransaction transaction = getFragmentManager().beginTransaction();

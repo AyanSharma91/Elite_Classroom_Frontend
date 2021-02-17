@@ -34,8 +34,8 @@ import org.json.JSONObject;
 import java.util.Objects;
 
 public class CreateClassFragment extends Fragment {
-    EditText et,et1,et2,et3;
-    String class_name,prof_id,section,room,subject;
+    EditText et;
+    String class_name,token="1234r";
     Button b;
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Nullable
@@ -44,9 +44,6 @@ public class CreateClassFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_createclass, container, false);
         MainActivity.textView.setText("Create Classroom");
         et = view.findViewById(R.id.class_name);
-        et1 = view.findViewById(R.id.prof_id);
-//        et2 = view.findViewById(R.id.room);
-//        et3 = view.findViewById(R.id.subject);
         b = view.findViewById(R.id.btn_create);
         b.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,29 +52,21 @@ public class CreateClassFragment extends Fragment {
                     et.setError("Please Give Class Name");
                     et.requestFocus();
                 }
-                else if(et1.getText().toString().isEmpty()){
-                    et1.setError("Please Give Professor Id");
-                    et1.requestFocus();
-                }
                 else{
                     class_name = et.getText().toString();
-                    prof_id = et1.getText().toString();
-//                    section = et1.getText().toString();
-//                    room = et2.getText().toString();
-//                    subject = et3.getText().toString();
-                    createClass(class_name,prof_id);
+                    createClass(class_name,token);
                 }
             }
         });
         return view;
     }
-    public void createClass(String class_name,String prof_id){
+    public void createClass(String class_name,String token){
         RequestQueue requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getActivity()));
         String url = "https://elite-classroom-server.herokuapp.com/api/classrooms/newClassroom";
         JSONObject o = new JSONObject();
         try{
         o.put("className",class_name);
-        o.put("profID",prof_id);
+        o.put("google_token",token);
         }
         catch (Exception e) {
             e.printStackTrace();

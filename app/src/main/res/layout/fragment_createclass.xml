@@ -20,51 +20,6 @@
             android:hint="Class name"
             android:textColorHint="#7A8089" />
     </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp">
-
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/prof_id"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Prof_ID"
-            android:inputType="phone"
-            android:textColorHint="#7A8089" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-<!--    <com.google.android.material.textfield.TextInputLayout-->
-<!--        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_margin="10dp">-->
-
-<!--        <androidx.appcompat.widget.AppCompatEditText-->
-<!--            android:id="@+id/room"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:hint="Room"-->
-<!--            android:textColorHint="#7A8089" />-->
-
-<!--    </com.google.android.material.textfield.TextInputLayout>-->
-<!--    <com.google.android.material.textfield.TextInputLayout-->
-<!--        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_margin="10dp">-->
-
-<!--        <androidx.appcompat.widget.AppCompatEditText-->
-<!--            android:id="@+id/subject"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:hint="Subject"-->
-<!--            android:textColorHint="#7A8089" />-->
-
-<!--    </com.google.android.material.textfield.TextInputLayout>-->
-
     <Button
         android:id="@+id/btn_create"
         android:layout_width="wrap_content"
