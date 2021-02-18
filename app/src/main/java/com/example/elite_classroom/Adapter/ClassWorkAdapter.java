@@ -41,7 +41,7 @@ public class ClassWorkAdapter extends RecyclerView.Adapter<ClassWorkAdapter.View
         holder.b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PopupMenu popupMenu = new PopupMenu(context, view);
+                PopupMenu popupMenu = new PopupMenu(ctx, view);
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {

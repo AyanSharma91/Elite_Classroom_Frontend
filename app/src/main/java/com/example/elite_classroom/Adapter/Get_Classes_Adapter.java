@@ -42,11 +42,15 @@ public class Get_Classes_Adapter extends RecyclerView.Adapter<Get_Classes_Adapte
 
          viewHolder.class_name.setText(list1.get(i).getClass_name());
          viewHolder.owner_name.setText(list1.get(i).getOwner_name());
-         viewHolder.students_no.setText(list1.get(i).getStudents_no());
+         viewHolder.students_no.setText(list1.get(i).getNumber_of_participants()+" "+ "students");
          viewHolder.parent_layout.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
+
                  Intent intent = new Intent(context, ClassActivity.class);
+                 intent.putExtra("owner_id",list1.get(i).getOwner_id());
+                 intent.putExtra("owner_name",list1.get(i).getOwner_name());
+                 intent.putExtra("class_code",list1.get(i).getClass_code());
                  context.startActivity(intent);
              }
          });
