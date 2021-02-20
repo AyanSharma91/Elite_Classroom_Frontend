@@ -139,13 +139,12 @@ googleBTN= findViewById(R.id.googleBTN);
                 request.enqueue(new Callback<Auth_Response>() {
                     @Override
                     public void onResponse(Call<Auth_Response> call, Response<Auth_Response> response) {
+
                         SharedPreferences.Editor editor =  preferences.edit();
                         editor.putString("name", name);
                         editor.putString("email",email);
                         editor.putString("jwt_token", response.body().getToken());
                         editor.putString("google_token", account.getId());
-                        Log.d("IDToken", account.getId());
-
                         editor.apply();
                         editor.commit();
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
@@ -166,6 +165,8 @@ googleBTN= findViewById(R.id.googleBTN);
             }
 
         } catch (ApiException e) {
+
+            Log.d("gogo",e.toString());
 
         }
 

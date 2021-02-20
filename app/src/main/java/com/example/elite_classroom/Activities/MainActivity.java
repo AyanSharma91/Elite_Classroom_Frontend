@@ -119,9 +119,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_signout:
             {
-
-
-
                 GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                         .requestEmail()
                         .build();
@@ -139,15 +136,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 Toast.makeText(MainActivity.this,"Signed_Out",Toast.LENGTH_LONG).show();
                 startActivity(intent);
-
-
-
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-
-        if(account!=null)
-        {
-            Toast.makeText(MainActivity.this,account.getEmail(),Toast.LENGTH_LONG).show();
-        }
                 break;
             }
 
