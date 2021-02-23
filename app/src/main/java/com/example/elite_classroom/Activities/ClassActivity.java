@@ -23,11 +23,14 @@ import com.google.android.material.navigation.NavigationView;
 
 public class ClassActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     DrawerLayout drawer;
-
+    public static String classCode,owner_id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_class);
+        Intent intent = getIntent();
+        classCode = intent.getStringExtra("class_code");
+        owner_id = intent.getStringExtra("owner_id");
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container1,
                 new StreamFragment()).commit();
         BottomNavigationView btview = findViewById(R.id.bottom_navigation);

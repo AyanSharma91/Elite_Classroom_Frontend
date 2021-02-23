@@ -1,6 +1,7 @@
 package com.example.elite_classroom.Fragments;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +18,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.elite_classroom.Activities.ClassActivity;
 import com.example.elite_classroom.Adapter.ClassWorkAdapter;
 import com.example.elite_classroom.Dialogs.ClassWorkBottomSheetDialog;
 import com.example.elite_classroom.Models.Recycler_Models.ClassWork;
+import com.example.elite_classroom.Models.Recycler_Models.Stream;
 import com.example.elite_classroom.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -36,11 +39,18 @@ public class ClassWorkFragment extends Fragment {
     RecyclerView recyclerView;
     Context ctx;
     String class_code="";
+    String sharedPrefFile = "Login_Credentials",token;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_classwork, container, false);
+        SharedPreferences preferences = getActivity().getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE);
+        token = preferences.getString("google_token",null);
         FloatingActionButton buttonAddNote = view.findViewById(R.id.class_bottom);
+        if(token.equals(ClassActivity.owner_id)){
+            buttonAddNote.setClickable(false);
+            buttonAddNote.setAlpha(0);
+        }
         buttonAddNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,9 +71,23 @@ public class ClassWorkFragment extends Fragment {
                 try {
                     for(int i=0;i<response.length();i++){
                         JSONObject o = response.getJSONObject(i);
-
+                        if(o.getString("class_code").equals(ClassActivity.classCode)){
+                            ClassWork l = new ClassWork(
+                                    o.getString("work_id"),
+                                    o.getString("class_code"),
+                                    o.getString("title"),
+                                    o.getString("description"),
+                                    o.getInt("type"),
+                                    o.getString("attachment"),
+                                    o.getString("created_date"),
+                                    o.getString("due_date"),
+                                    o.getString("points"),
+                                    o.getString("owner_token")
+                            );
+                            list.add(l);
+                        }
                     }
-                    adapter = new ClassWorkAdapter(list,ctx);
+                    adapter = new ClassWorkAdapter(list,ctx,token);
                     recyclerView.setAdapter(adapter);
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -13,7 +13,7 @@
     android:layout_height="40dp"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
-    android:src="@drawable/ic_assignment"
+    android:src="@drawable/ic_stream"
     android:layout_marginTop="3dp"/>
     <TextView
         android:layout_marginLeft="20dp"
