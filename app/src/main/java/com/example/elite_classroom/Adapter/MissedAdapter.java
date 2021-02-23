@@ -43,7 +43,7 @@ public class MissedAdapter extends RecyclerView.Adapter<MissedAdapter.MissedView
             holder.tvOwnerName.setText(jsonObject.optString("owner_name"));
             holder.tvCreationDate.setText(jsonObject.optString("created_date").substring(0,10));
             holder.tvDueDate.setText(jsonObject.optString("due_date").substring(0,10));
-            // holder.tvClassName.setText(data.get(position).getClass().getField("class_name").toString());
+            holder.tvClassName.setText(jsonObject.optString("class_name"));
 
         } catch (JSONException e) {
             e.printStackTrace();

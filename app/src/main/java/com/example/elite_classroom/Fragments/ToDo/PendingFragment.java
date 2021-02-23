@@ -67,7 +67,7 @@ public class PendingFragment extends Fragment {
 
         RequestQueue requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getActivity()));
 
-        URL = URL + "2019UGCS097";
+        URL = URL + "token1";   // later to be replaced by current user token
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
             @Override

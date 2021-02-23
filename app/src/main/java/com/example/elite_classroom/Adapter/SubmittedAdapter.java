@@ -43,7 +43,7 @@ public class SubmittedAdapter extends RecyclerView.Adapter<SubmittedAdapter.subm
             jsonObject = (JSONObject) data.get(position);
             holder.tvWork.setText(jsonObject.optString("work"));
             holder.tvAttachment.setText(jsonObject.optString("attachment"));
-            holder.tvSubmissionDate.setText(jsonObject.optString("submitted_on"));
+            holder.tvSubmissionDate.setText(jsonObject.optString("submitted_on").substring(0, 10));
         } catch (JSONException e) {
             e.printStackTrace();
         }
