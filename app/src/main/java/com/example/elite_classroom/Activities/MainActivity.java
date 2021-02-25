@@ -41,6 +41,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.elite_classroom.Fragments.ClassFragment;
+import com.example.elite_classroom.Fragments.ToDo.ToDoFragment;
 import com.example.elite_classroom.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -103,7 +104,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 break;
             case R.id.nav_todo:
-
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
+                        new ToDoFragment(),"TODO_FRAGMENT").commit();
                 break;
             case R.id.nav_archived:
 

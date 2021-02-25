@@ -13,22 +13,23 @@
         android:theme="@style/Theme.Elite_classroom">
         <activity android:name=".Activities.ClassWorkActivity"></activity>
         <activity android:name=".Activities.LoginActivity"
-            android:noHistory="true"
-            >
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:noHistory="true">
 
         </activity>
+
         <activity
             android:name=".Activities.ClassActivity"
             android:noHistory="true">
 
         </activity>
-        <activity android:name=".Activities.MainActivity" />
+
+        <activity android:name=".Activities.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

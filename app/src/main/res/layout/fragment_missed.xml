@@ -1,34 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".Fragments.ToDo.MissedFragment">
 
     <TextView
-        android:id="@+id/tvClassName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Class Name"
-        android:textStyle="bold"
-        android:layout_marginTop="10dp"
-        android:textSize="25dp"
-        android:gravity="center"/>
-
-    <TextView
-        android:id="@+id/tvOwnerName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="By Owner Name"
-        android:textSize="16dp"
-        android:gravity="center"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Participants :"
-        android:textSize="20dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="5dp"/>
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="7dp"
+        android:fontFamily="@font/quicksand_bold"
+        android:text="Missed Assignments..."
+        android:textSize="28sp" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -48,9 +33,12 @@
         android:gravity="center" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvParticipants"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="6dp"/>
+        android:layout_height="wrap_content"
+        android:id="@+id/rv_missed"
+        android:paddingTop="8dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:paddingBottom="5dp"/>
 
 </LinearLayout>
