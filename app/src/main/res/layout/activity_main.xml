@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:background="#D0FFFFFF"
     tools:openDrawer="start"
     android:id="@+id/drawer_layout"
     tools:context=".Activities.MainActivity">
@@ -77,7 +78,6 @@
        app:itemTextColor="@color/drawable_item"
        android:layout_height="match_parent"
        android:layout_gravity="start"
-
        app:itemBackground="@drawable/drawer_selected_item"
        app:headerLayout="@layout/nav_header"
        app:menu="@menu/drawer_menu" />
