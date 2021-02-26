@@ -1,27 +1,42 @@
 package com.example.elite_classroom.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.elite_classroom.Activities.ClassActivity;
 import com.example.elite_classroom.Models.Recycler_Models.Stream;
 import com.example.elite_classroom.R;
+
+import org.json.JSONObject;
 
 import java.util.List;
 
 public class StreamAdapter extends RecyclerView.Adapter<StreamAdapter.ViewHolder> {
     List<Stream> list;
     Context ctx;
+    String token;
 
-    public StreamAdapter(List<Stream> list, Context ctx) {
+    public StreamAdapter(List<Stream> list, Context ctx,String token) {
         this.list = list;
         this.ctx = ctx;
+        this.token = token;
     }
 
     @NonNull
@@ -34,6 +49,54 @@ public class StreamAdapter extends RecyclerView.Adapter<StreamAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull StreamAdapter.ViewHolder holder, int position) {
         Stream l = list.get(position);
+        holder.t.setText(l.getTitle());
+        holder.t1.setText(l.getPosted_on());
+        holder.mview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        if(token.equals(l.getOwner_token())){
+            holder.b.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    PopupMenu popupMenu = new PopupMenu(ctx, view);
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            // TODO Auto-generated method stub
+                            switch (item.getItemId()) {
+                                case R.id.pop_edit:
+
+                                    return true;
+                                case R.id.pop_delete:
+                                    String url = "https://elite-classroom-server.herokuapp.com/api/notes/deleteNote/"+ l.getNotes_id();
+                                    RequestQueue requestQueue = Volley.newRequestQueue(ctx);
+                                    JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, url, null, new Response.Listener<JSONObject>() {
+                                        @Override
+                                        public void onResponse(JSONObject response) {
+                                            list.remove(position);
+                                            notifyItemRemoved(position);
+                                        }
+                                    }, new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+
+                                        }
+                                    });
+                                    requestQueue.add(request);
+                                    return true;
+                            }
+                            return false;
+                        }
+                    });
+                    popupMenu.inflate(R.menu.pop_menu);
+                    popupMenu.show();
+                }
+            });}else{
+            holder.b.setAlpha(0);
+        }
     }
 
     @Override
@@ -45,11 +108,13 @@ public class StreamAdapter extends RecyclerView.Adapter<StreamAdapter.ViewHolder
         ImageView iv;
         TextView t,t1;
         View mview;
+        Button b;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             iv = itemView.findViewById(R.id.classwork_image);
             t = itemView.findViewById(R.id.classwork_title);
             t1 = itemView.findViewById(R.id.classwork_description);
+            b = itemView.findViewById(R.id.pop_button);
             mview = itemView;
         }
     }

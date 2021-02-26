@@ -23,27 +23,16 @@ import com.google.android.material.navigation.NavigationView;
 
 public class ClassActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     DrawerLayout drawer;
-
-    String class_code;
-
+    public static String classCode,owner_id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_class);
-
-            class_code = getIntent().getStringExtra("class_code");
-
-
-        StreamFragment streamFragment = new StreamFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("class_code", class_code);
-
-        streamFragment.setArguments(bundle);
-
+        Intent intent = getIntent();
+        classCode = intent.getStringExtra("class_code");
+        owner_id = intent.getStringExtra("owner_id");
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container1,
-                streamFragment).commit();
-
+                new StreamFragment()).commit();
         BottomNavigationView btview = findViewById(R.id.bottom_navigation);
         btview.setOnNavigationItemSelectedListener(navListener);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -53,15 +42,12 @@ public class ClassActivity extends AppCompatActivity implements NavigationView.O
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener((NavigationView.OnNavigationItemSelectedListener) this);
-
         drawer = findViewById(R.id.drawer_layout);
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
     }
-
     BottomNavigationView.OnNavigationItemSelectedListener navListener=
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
@@ -69,7 +55,7 @@ public class ClassActivity extends AppCompatActivity implements NavigationView.O
                     switch (item.getItemId()){
                         case R.id.nav_stream:
                             getSupportFragmentManager().beginTransaction().replace(R.id.frame_container1,
-                                    new StreamFragment()).commit();
+                                    new Fragment()).commit();
                             break;
                         case R.id.nav_classwork:
                             getSupportFragmentManager().beginTransaction().replace(R.id.frame_container1,

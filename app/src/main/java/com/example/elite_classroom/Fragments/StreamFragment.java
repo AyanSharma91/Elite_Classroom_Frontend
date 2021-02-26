@@ -1,6 +1,7 @@
 package com.example.elite_classroom.Fragments;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.elite_classroom.Activities.ClassActivity;
 import com.example.elite_classroom.Adapter.StreamAdapter;
 import com.example.elite_classroom.Models.Recycler_Models.Stream;
 import com.example.elite_classroom.R;
@@ -34,40 +36,42 @@ public class StreamFragment extends Fragment {
     StreamAdapter adapter;
     RecyclerView recyclerView;
     Context ctx;
-    String class_code="";
+    String token;
+    String sharedPrefFile = "Login_Credentials";
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_stream, container, false);
-
         ctx=getActivity();
-
+        SharedPreferences preferences = getActivity().getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE);
+        token = preferences.getString("google_token",null);
         list=new ArrayList<>();
-
-
-
         recyclerView=view.findViewById(R.id.recycler_view1);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
-         class_code = getArguments().getString("class_code");
-
-
         RequestQueue requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getActivity()));
-        String url = "https://elite-classroom-server.herokuapp.com/api/notes/getNotescode/"+ class_code;
+        String url = "https://elite-classroom-server.herokuapp.com/api/notes/getNotesCode/"+ ClassActivity.classCode;
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-
                 try {
                     for(int i=0;i<response.length();i++){
                         JSONObject o = response.getJSONObject(i);
-
-
-
+                        if(o.getString("class_code").equals(ClassActivity.classCode)){
+                            Stream l = new Stream(
+                                    o.getString("notes_id"),
+                                    o.getString("class_code"),
+                                    o.getString("attachment_id"),
+                                    o.getString("posted_on"),
+                                    o.getString("title"),
+                                    o.getString("description"),
+                                    o.getString("owner_token")
+                            );
+                            list.add(l);
+                        }
                     }
-                    adapter = new StreamAdapter(list,ctx);
+                    adapter = new StreamAdapter(list,ctx,token);
                     recyclerView.setAdapter(adapter);
                 } catch (Exception e) {
                     e.printStackTrace();

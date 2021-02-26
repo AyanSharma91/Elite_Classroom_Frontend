@@ -1,5 +1,7 @@
 package com.example.elite_classroom.Fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,11 +35,14 @@ public class JoinClassFragment extends Fragment {
     Button join;
     ImageView profile;
     EditText code;
-    String class_code,token="1234r";
+    String class_code,token;
+    String sharedPrefFile = "Login_Credentials";
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_joinclass, container, false);
+        SharedPreferences preferences = getActivity().getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE);
+        token = preferences.getString("google_token",null);
         MainActivity.textView.setText("Join Class");
         name = view.findViewById(R.id.profile_name);
         email = view.findViewById(R.id.profile_email);
