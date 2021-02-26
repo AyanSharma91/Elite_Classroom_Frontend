@@ -54,7 +54,7 @@ public class ClassWorkFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         RequestQueue requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getActivity()));
-        String url = "https://elite-classroom-server.herokuapp.com/api/classwork/getClasswork/"+ class_code;
+        String url = "https://elite-classroom-server.herokuapp.com/api/classworks/getClasswork/"+ class_code;
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {

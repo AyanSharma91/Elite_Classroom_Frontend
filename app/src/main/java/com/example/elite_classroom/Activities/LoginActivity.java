@@ -20,8 +20,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.elite_classroom.Models.Retrofit_Models.Auth_Response;
-import com.example.elite_classroom.Models.Retrofit_Models.Google_Login;
+import com.example.elite_classroom.Models.Retrofit_Models.Auth_Responses;
+import com.example.elite_classroom.Models.Retrofit_Models.Google_Logins;
 import com.example.elite_classroom.R;
 import com.example.elite_classroom.Retrofit.DestinationService;
 import com.example.elite_classroom.Retrofit.ServiceBuilder;
@@ -32,6 +32,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Random;
 
@@ -53,7 +55,6 @@ public class LoginActivity extends AppCompatActivity {
     final Handler handler = new Handler();
 
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,31 +132,40 @@ googleBTN= findViewById(R.id.googleBTN);
                       if(name!=null && email!=null)
                       {
                           DestinationService service = ServiceBuilder.INSTANCE.buildService(DestinationService.class);
-                          Call<Auth_Response> request = service.login_Google_User(new Google_Login(name,email,account.getId()));
+                          Call<Auth_Responses> request = service.login_Google_User(new Google_Logins(name,email,account.getId()));
 
 
-
-
-                request.enqueue(new Callback<Auth_Response>() {
+                          request.enqueue(new Callback<Auth_Responses>() {
                     @Override
-                    public void onResponse(Call<Auth_Response> call, Response<Auth_Response> response) {
+                    public void onResponse(@NotNull Call<Auth_Responses> call, @NotNull Response<Auth_Responses> response) {
 
-                        SharedPreferences.Editor editor =  preferences.edit();
-                        editor.putString("name", name);
-                        editor.putString("email",email);
-                        editor.putString("jwt_token", response.body().getToken());
-                        editor.putString("google_token", account.getId());
-                        editor.apply();
-                        editor.commit();
-                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                        progress_bar.setVisibility(View.GONE);
-                        progress_layout.setVisibility(View.GONE);
+
+                        if(response.body()!=null)
+                        {
+
+                            SharedPreferences.Editor editor =  preferences.edit();
+                            editor.putString("name", name);
+                            editor.putString("email",email);
+                            editor.putString("jwt_token", response.body().getToken());
+                            editor.putString("google_token", account.getId());
+                            editor.apply();
+                            editor.commit();
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            progress_bar.setVisibility(View.GONE);
+                            progress_layout.setVisibility(View.GONE);
+                                }
+                                else
+                                {
+                                   Log.d("Errors", response.message().toString()+" "+response.errorBody()+" ");
+                                }
+
+
 
 
                     }
 
                     @Override
-                    public void onFailure(Call<Auth_Response> call, Throwable t) {
+                    public void onFailure(Call<Auth_Responses> call, Throwable t) {
                         Toast.makeText(LoginActivity.this,"Something Went wrong",Toast.LENGTH_LONG).show();
                     }
                 });

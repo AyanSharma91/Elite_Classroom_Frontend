@@ -24,12 +24,26 @@ import com.google.android.material.navigation.NavigationView;
 public class ClassActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     DrawerLayout drawer;
 
+    String class_code;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_class);
+
+            class_code = getIntent().getStringExtra("class_code");
+
+
+        StreamFragment streamFragment = new StreamFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("class_code", class_code);
+
+        streamFragment.setArguments(bundle);
+
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container1,
-                new StreamFragment()).commit();
+                streamFragment).commit();
+
         BottomNavigationView btview = findViewById(R.id.bottom_navigation);
         btview.setOnNavigationItemSelectedListener(navListener);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -39,12 +53,15 @@ public class ClassActivity extends AppCompatActivity implements NavigationView.O
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener((NavigationView.OnNavigationItemSelectedListener) this);
+
         drawer = findViewById(R.id.drawer_layout);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
     }
+
     BottomNavigationView.OnNavigationItemSelectedListener navListener=
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
@@ -52,7 +69,7 @@ public class ClassActivity extends AppCompatActivity implements NavigationView.O
                     switch (item.getItemId()){
                         case R.id.nav_stream:
                             getSupportFragmentManager().beginTransaction().replace(R.id.frame_container1,
-                                    new Fragment()).commit();
+                                    new StreamFragment()).commit();
                             break;
                         case R.id.nav_classwork:
                             getSupportFragmentManager().beginTransaction().replace(R.id.frame_container1,
