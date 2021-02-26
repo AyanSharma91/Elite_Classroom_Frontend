@@ -156,7 +156,7 @@ googleBTN= findViewById(R.id.googleBTN);
                                 }
                                 else
                                 {
-                                   Log.d("Errors", response.message().toString()+" "+response.errorBody()+" ");
+                                   Toast.makeText(LoginActivity.this,"Body is null",Toast.LENGTH_LONG).show();
                                 }
 
 

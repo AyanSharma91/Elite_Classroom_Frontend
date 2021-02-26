@@ -55,7 +55,7 @@ public class ClassActivity extends AppCompatActivity implements NavigationView.O
                     switch (item.getItemId()){
                         case R.id.nav_stream:
                             getSupportFragmentManager().beginTransaction().replace(R.id.frame_container1,
-                                    new Fragment()).commit();
+                                    new StreamFragment()).commit();
                             break;
                         case R.id.nav_classwork:
                             getSupportFragmentManager().beginTransaction().replace(R.id.frame_container1,
