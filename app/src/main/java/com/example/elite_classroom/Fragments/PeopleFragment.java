@@ -69,7 +69,6 @@ public class PeopleFragment extends Fragment {
                     JSONObject data = response.getJSONObject("data");
 
                     String owner_id = data.getJSONObject("0").optString("owner_id");
-                    tvClassName.setText(data.getJSONObject("0").optString("class_name"));
                     tvOwnerName.setText(data.getJSONObject("0").optString("owner_name"));
 
                     JSONArray participants = data.getJSONArray("participants");

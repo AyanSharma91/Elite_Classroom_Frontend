@@ -31,6 +31,8 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ClassWorkAdapter extends RecyclerView.Adapter<ClassWorkAdapter.ViewHolder>  {
     List<ClassWork> list;
     Context ctx;
@@ -113,7 +115,7 @@ public class ClassWorkAdapter extends RecyclerView.Adapter<ClassWorkAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView iv;
         TextView t,t1;
-        Button b;
+        ImageView b;
         View mview;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

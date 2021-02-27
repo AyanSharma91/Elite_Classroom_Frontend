@@ -76,6 +76,11 @@ public class ClassFragment extends Fragment {
 
         Call<Get_Classes_Response> request = service.get_Classes(google_token);
 
+        if(!classes.isEmpty())
+        {
+            classes.clear();
+        }
+
         request.enqueue(new Callback<Get_Classes_Response>() {
             @Override
             public void onResponse(Call<Get_Classes_Response> call, Response<Get_Classes_Response> response) {

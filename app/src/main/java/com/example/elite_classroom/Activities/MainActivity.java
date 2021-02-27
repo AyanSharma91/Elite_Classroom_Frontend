@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     Button sign_out_button ;
     GoogleSignInClient mGoogleSignInClient;
     String sharedPrefFile = "Login_Credentials";
-    public static TextView textView;
+    public static TextView textView, name;
     SharedPreferences preferences;
 
 
@@ -74,14 +74,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getWindow().setStatusBarColor(ContextCompat.getColor(MainActivity.this,R.color.white));
         setContentView(R.layout.activity_main);
 
+        name= findViewById(R.id.name);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
                 new ClassFragment(), "HOME_FRAGMENT").commit();
+
         textView = findViewById(R.id.name);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar action = getSupportActionBar();
+
         action.setDisplayShowTitleEnabled(false);
+
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener((NavigationView.OnNavigationItemSelectedListener) this);
         drawer = findViewById(R.id.drawer_layout);
@@ -97,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()){
             case R.id.nav_class:
+
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
                         new ClassFragment(),"HOME_FRAGMENT").commit();
                 break;
@@ -104,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 break;
             case R.id.nav_todo:
+                name.setText("To-Do");
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
                         new ToDoFragment(),"TODO_FRAGMENT").commit();
                 break;

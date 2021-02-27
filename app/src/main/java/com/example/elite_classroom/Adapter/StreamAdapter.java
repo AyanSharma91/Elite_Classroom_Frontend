@@ -2,6 +2,7 @@ package com.example.elite_classroom.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,6 +28,8 @@ import com.example.elite_classroom.R;
 import org.json.JSONObject;
 
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class StreamAdapter extends RecyclerView.Adapter<StreamAdapter.ViewHolder> {
     List<Stream> list;
@@ -94,8 +97,12 @@ public class StreamAdapter extends RecyclerView.Adapter<StreamAdapter.ViewHolder
                     popupMenu.inflate(R.menu.pop_menu);
                     popupMenu.show();
                 }
-            });}else{
-            holder.b.setAlpha(0);
+            });
+        }
+        else
+            {
+
+            holder.b.setVisibility(View.GONE);
         }
     }
 
@@ -108,7 +115,7 @@ public class StreamAdapter extends RecyclerView.Adapter<StreamAdapter.ViewHolder
         ImageView iv;
         TextView t,t1;
         View mview;
-        Button b;
+        ImageView b;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             iv = itemView.findViewById(R.id.classwork_image);

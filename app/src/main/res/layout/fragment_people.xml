@@ -2,38 +2,94 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/tvClassName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Class Name"
+        android:text="Teacher"
         android:textStyle="bold"
-        android:layout_marginTop="10dp"
+        android:fontFamily="@font/rubic_light"
+        android:textColor="@color/black"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="30dp"
         android:textSize="25dp"
-        android:gravity="center"/>
+        android:gravity="start"
+        android:layout_marginLeft="20dp" />
 
-    <TextView
-        android:id="@+id/tvOwnerName"
+
+    <View
         android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:background="#090909"
+        android:layout_marginLeft="15dp" />
+
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
         android:layout_height="wrap_content"
-        android:text="By Owner Name"
-        android:textSize="16dp"
-        android:gravity="center"/>
+        >
+
+
+
+        <ImageView
+            android:id="@+id/ivDP"
+            android:layout_width="45sp"
+            android:layout_height="45sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/user"/>
+
+        <TextView
+            android:id="@+id/tvOwnerName"
+            android:layout_centerVertical="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="NAME"
+            android:textColor="@color/black"
+            android:layout_marginLeft="80dp"
+            android:textSize="16dp"
+            android:layout_marginTop="7dp"/>
+
+    </RelativeLayout>
+
+
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Participants :"
-        android:textSize="20dp"
-        android:layout_marginTop="15dp"
+        android:textSize="25dp"
+        android:textColor="@color/black"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="25dp"
         android:layout_marginLeft="5dp"/>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:background="#090909"
+        android:layout_marginLeft="15dp" />
 
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyle"
         android:layout_marginTop="50dp"
+        android:indeterminateTint="@color/black"
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -44,13 +100,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
+        android:textColor="@color/black"
         android:text="Loading"
         android:gravity="center" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvParticipants"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="6dp"/>
+        />
 
 </LinearLayout>
