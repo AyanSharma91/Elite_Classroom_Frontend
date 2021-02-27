@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
@@ -56,9 +57,9 @@ public class ClassWorkAdapter extends RecyclerView.Adapter<ClassWorkAdapter.View
         holder.t.setText(c.getTitle());
         holder.t1.setText(c.getCreated_date());
         if(c.getType()==0)
-        holder.iv.setImageDrawable(Drawable.createFromPath("ic_assignment"));
+        holder.iv.setImageDrawable(ContextCompat.getDrawable(ctx,R.drawable.ic_assignment_second));
         else
-            holder.iv.setImageDrawable(Drawable.createFromPath("ic_announcement"));
+            holder.iv.setImageDrawable(ContextCompat.getDrawable(ctx,R.drawable.ic_announcement_second));
         holder.mview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

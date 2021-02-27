@@ -17,32 +17,71 @@ import com.example.elite_classroom.Dialogs.PointDialog;
 import com.example.elite_classroom.R;
 
 public class ClassWorkActivity extends AppCompatActivity implements PointDialog.PointDialogListener {
-ImageView cross;
-public static ImageView attachment;
+
+    ImageView cross;
+    String class_code="", owner_code,class_name,owner_name;
+
+
+    public static ImageView attachment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_class_work);
         Intent i = getIntent();
         int u = i.getIntExtra("u",0);
+
+
+
+        class_code= i.getStringExtra("class_code");
+        owner_code= i.getStringExtra("owner_id");
+        class_name = i.getStringExtra("class_name");
+        owner_name = i.getStringExtra("owner_name");
+
+
+
+        Bundle b = new Bundle();
+        b.putString("class_code",class_code);
+        b.putString("owner_id",owner_code);
+        b.putString("class_name",class_name);
+        b.putString("owner_name",owner_name);
+
+
+
+
+
+
+
         if(u==0){
+
+            NewAssignmentFragment newAssignmentFragment = new NewAssignmentFragment();
+            newAssignmentFragment.setArguments(b);
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_container2,
-                    new NewAssignmentFragment()).commit();
+                    newAssignmentFragment).commit();
         }
         else if(u==1){
+            NewMaterialFragment newMaterialFragment = new NewMaterialFragment();
+            newMaterialFragment.setArguments(b);
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_container2,
-                    new NewMaterialFragment()).commit();
+                    newMaterialFragment).commit();
         }
         else if(u==2){
+            NewAnnouncementFragment newAnnouncementFragment = new NewAnnouncementFragment();
+            newAnnouncementFragment.setArguments(b);
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_container2,
-                    new NewAnnouncementFragment()).commit();
+                   newAnnouncementFragment ).commit();
         }
         cross = findViewById(R.id.cross);
         cross.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(ClassWorkActivity.this,ClassActivity.class);
+                i.putExtra("class_code",class_code);
+                i.putExtra("owner_id",owner_code);
+                i.putExtra("class_name",class_name);
+                i.putExtra("owner_name",owner_name);
+                i.putExtra("from_Classwork",true);
                 startActivity(i);
+                finish();
             }
         });
         attachment = findViewById(R.id.attachment);
@@ -56,5 +95,17 @@ public static ImageView attachment;
     @Override
     public void applyTexts(String points) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(ClassWorkActivity.this,ClassActivity.class);
+        i.putExtra("class_code",class_code);
+        i.putExtra("owner_id",owner_code);
+        i.putExtra("class_name",class_name);
+        i.putExtra("owner_name",owner_name);
+        i.putExtra("from_Classwork",true);
+        startActivity(i);
+        finish();
     }
 }

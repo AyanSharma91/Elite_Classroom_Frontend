@@ -11,7 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Elite_classroom">
-        <activity android:name=".Activities.ClassWorkActivity"></activity>
+        <activity android:name=".Activities.ClassWorkActivity"
+            android:noHistory="true"
+            ></activity>
         <activity android:name=".Activities.LoginActivity"
             android:noHistory="true">
 
@@ -26,11 +28,10 @@
         <activity
             android:name=".Activities.ClassActivity"
             android:noHistory="true">
-
         </activity>
 
-        <activity android:name=".Activities.MainActivity">
-
+        <activity android:name=".Activities.MainActivity"
+            >
         </activity>
 
 

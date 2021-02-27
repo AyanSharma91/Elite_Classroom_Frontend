@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -23,6 +24,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.elite_classroom.Activities.ClassActivity;
+import com.example.elite_classroom.Activities.ClassWorkActivity;
 import com.example.elite_classroom.Dialogs.PointDialog;
 import com.example.elite_classroom.R;
 
@@ -36,15 +38,36 @@ import java.util.Objects;
 import java.util.TimeZone;
 
 public class NewAssignmentFragment extends Fragment implements PointDialog.PointDialogListener {
+
     EditText assignment_title,assignment_description,point,due_date;
     Button crete_assignment;
     Calendar myCalendar;
+    String class_code="", owner_code,class_name,owner_name;
     String title,description="",points="100",due="No due date",token;
     String sharedPrefFile = "Login_Credentials";
     @Nullable
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_newassignment, container, false);
+
+
+
+        class_code= getArguments().getString("class_code");
+        owner_code= getArguments().getString("owner_id");
+        class_name = getArguments().getString("class_name");
+        owner_name = getArguments().getString("owner_name");
+
+
+        ClassWorkActivity.attachment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(),"Attachement Clicked",Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+
         SharedPreferences preferences = getActivity().getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE);
         token= preferences.getString("google_token",null);
         //DatePicker
@@ -108,17 +131,18 @@ public class NewAssignmentFragment extends Fragment implements PointDialog.Point
         assert getFragmentManager() != null;
         pointDialog.show(getFragmentManager(), "point dialog");
     }
-    public void createAssignment(String title,String description,String points,String due){
+    public void createAssignment(String title,String description,String points,String due_date){
         RequestQueue requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getActivity()));
-        String url = "https://elite-classroom-server.herokuapp.com/api/classrooms/createClasswork";
+        String url = "https://elite-classroom-server.herokuapp.com/api/classworks/createClasswork";
         JSONObject o = new JSONObject();
         try {
-            o.put("class_code", ClassActivity.classCode);
+
+            o.put("class_code", class_code);
             o.put("title", title);
             o.put("description", description);
             o.put("type",0);
-            o.put("attachment",null);
-            o.put("due_date", due);
+            o.put("attachment","");
+            o.put("due_date", due_date);
             o.put("google_token",token);
             o.put("points", points);
         } catch (JSONException e) {
@@ -128,7 +152,13 @@ public class NewAssignmentFragment extends Fragment implements PointDialog.Point
             @Override
             public void onResponse(JSONObject response) {
                 Intent i = new Intent(getActivity(),ClassActivity.class);
+                i.putExtra("class_code",class_code);
+                i.putExtra("owner_id",owner_code);
+                i.putExtra("class_name",class_name);
+                i.putExtra("owner_name",owner_name);
+                i.putExtra("from_Classwork",true);
                 startActivity(i);
+
             }
         }, new Response.ErrorListener() {
             @Override

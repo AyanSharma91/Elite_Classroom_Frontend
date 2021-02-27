@@ -35,7 +35,7 @@ public class JoinClassFragment extends Fragment {
     Button join;
     ImageView profile;
     EditText code;
-    String class_code,token;
+    String class_code,token,name_,email_;
     String sharedPrefFile = "Login_Credentials";
     @Nullable
     @Override
@@ -43,9 +43,15 @@ public class JoinClassFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_joinclass, container, false);
         SharedPreferences preferences = getActivity().getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE);
         token = preferences.getString("google_token",null);
+        name_= preferences.getString("name",null);
+        email_= preferences.getString("email", null);
+
         MainActivity.textView.setText("Join Class");
         name = view.findViewById(R.id.profile_name);
         email = view.findViewById(R.id.profile_email);
+
+        name.setText(name_);
+        email.setText(email_);
         profile = view.findViewById(R.id.profile_photo);
         join = view.findViewById(R.id.join_btn);
         code = view.findViewById(R.id.class_code);
@@ -84,9 +90,11 @@ public class JoinClassFragment extends Fragment {
                             Toast.makeText(getActivity(),"Please Check the Class Code",Toast.LENGTH_SHORT).show();
                         }
                     });
+                    requestQueue.add(request);
                 }
             }
         });
+
         return view;
     }
 }

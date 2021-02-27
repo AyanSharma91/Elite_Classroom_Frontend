@@ -45,7 +45,7 @@ public class StreamAdapter extends RecyclerView.Adapter<StreamAdapter.ViewHolder
     @NonNull
     @Override
     public StreamAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_classwork,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_stream,parent,false);
         return new StreamAdapter.ViewHolder(view);
     }
 

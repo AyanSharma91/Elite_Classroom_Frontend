@@ -33,6 +33,8 @@ public class ClassActivity extends AppCompatActivity implements NavigationView.O
         setContentView(R.layout.activity_class);
 
         name_second = findViewById(R.id.name_second);
+        BottomNavigationView btview = findViewById(R.id.bottom_navigation);
+
 
         Intent intent = getIntent();
         classCode = intent.getStringExtra("class_code");
@@ -47,15 +49,89 @@ public class ClassActivity extends AppCompatActivity implements NavigationView.O
         bundle.putString("owner_id",owner_id);
 
 
+        BottomNavigationView.OnNavigationItemSelectedListener navListener=
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        switch (item.getItemId()){
+                            case R.id.nav_stream:
 
-        StreamFragment streamFragment = new StreamFragment();
-        streamFragment.setArguments(bundle);
+                                StreamFragment  streamFragment = new StreamFragment();
+                                streamFragment.setArguments(bundle);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container1,
-                streamFragment).commit();
+                                name_second.setText("");
+                                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container1,
+                                        streamFragment).commit();
+                                break;
+                            case R.id.nav_classwork:
+                                if(class_name.length()>9)
+                                {
+                                    name_second.setText(class_name.substring(0,9)+"...");
+
+                                }
+                                else
+                                {
+                                    name_second.setText(class_name);
+                                }
+
+                                ClassWorkFragment classWorkFragment = new ClassWorkFragment();
+                                classWorkFragment.setArguments(bundle);
+                                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container1,
+                                        classWorkFragment).commit();
+                                break;
+                            case R.id.nav_people:
+
+                                if(class_name.length()>9)
+                                {
+                                    name_second.setText(class_name.substring(0,9)+"...");
+
+                                }
+                                else
+                                {
+                                    name_second.setText(class_name);
+                                }
+                                PeopleFragment peopleFragment = new PeopleFragment();
+                                peopleFragment.setArguments(bundle);
+                                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container1,
+                                        peopleFragment).commit();
+                                break;
+                        }
+                        return true;
+                    }
+                };
+
+        if(getIntent().getBooleanExtra("from_Classwork",false))
+        {
+
+            if(class_name.length()>9)
+            {
+                name_second.setText(class_name.substring(0,9)+"...");
+
+            }
+            else
+            {
+                name_second.setText(class_name);
+            }
+            ClassWorkFragment classWorkFragment = new ClassWorkFragment();
+            classWorkFragment.setArguments(bundle);
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container1,
+                    classWorkFragment).commit();
+            btview.setSelectedItemId(R.id.nav_classwork);
+
+        }
+
+        else
+        {
+
+            StreamFragment streamFragment = new StreamFragment();
+            streamFragment.setArguments(bundle);
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container1,
+                    streamFragment).commit();
+
+        }
 
 
-        BottomNavigationView btview = findViewById(R.id.bottom_navigation);
+
 
 
         btview.setOnNavigationItemSelectedListener(navListener);
@@ -76,52 +152,7 @@ public class ClassActivity extends AppCompatActivity implements NavigationView.O
         drawer.addDrawerListener(toggle);
         toggle.syncState();
     }
-    BottomNavigationView.OnNavigationItemSelectedListener navListener=
-            new BottomNavigationView.OnNavigationItemSelectedListener() {
-                @Override
-                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    switch (item.getItemId()){
-                        case R.id.nav_stream:
 
-                            StreamFragment  streamFragment = new StreamFragment();
-                            streamFragment.setArguments(bundle);
-
-                            name_second.setText("");
-                            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container1,
-                                    streamFragment).commit();
-                            break;
-                        case R.id.nav_classwork:
-                            if(class_name.length()>9)
-                            {
-                                name_second.setText(class_name.substring(0,9)+"...");
-
-                            }
-                            else
-                            {
-                                name_second.setText(class_name);
-                            }
-
-                            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container1,
-                                    new ClassWorkFragment()).commit();
-                            break;
-                        case R.id.nav_people:
-
-                            if(class_name.length()>9)
-                            {
-                                name_second.setText(class_name.substring(0,9)+"...");
-
-                            }
-                            else
-                            {
-                                name_second.setText(class_name);
-                            }
-                            getSupportFragmentManager().beginTransaction().replace(R.id.frame_container1,
-                                    new PeopleFragment()).commit();
-                            break;
-                    }
-                    return true;
-                }
-    };
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()){

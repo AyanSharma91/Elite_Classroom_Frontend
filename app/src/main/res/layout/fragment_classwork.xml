@@ -8,6 +8,7 @@
         android:id="@+id/class_bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:backgroundTint="#2D9DF6"
         android:background="@color/white"
         app:tint="@android:color/white"

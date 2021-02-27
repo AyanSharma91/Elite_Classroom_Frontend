@@ -33,6 +33,8 @@ public class PeopleFragment extends Fragment {
     View view;
     RecyclerView rvParticipants;
     ProgressBar progressBar;
+    String class_code="", owner_code,class_name,owner_name;
+
     TextView tvLoading, tvClassName, tvOwnerName;
     private String URL = "https://elite-classroom-server.herokuapp.com/api/classrooms/";
 
@@ -41,12 +43,20 @@ public class PeopleFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_people, container, false);
+
+
         return view;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+
+        class_code= getArguments().getString("class_code");
+        owner_code= getArguments().getString("owner_id");
+        class_name = getArguments().getString("class_name");
+        owner_name = getArguments().getString("owner_name");
 
         progressBar = view.findViewById(R.id.progressBar);
         tvLoading = view.findViewById(R.id.tvLoading);
@@ -60,7 +70,11 @@ public class PeopleFragment extends Fragment {
 
         RequestQueue requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getActivity()));
 
-        URL += "OUUAj5_thAZIFVO_6LHe";       // class_code
+
+        URL += class_code;       // class_code
+
+
+//        URL += "OUUAj5_thAZIFVO_6LHe";       // class_code
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
             @Override

@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -30,12 +31,22 @@ import java.util.Objects;
 public class NewMaterialFragment extends Fragment {
     EditText material_title,material_description;
     Button create_material;
+    String class_code="", owner_code,class_name,owner_name;
     String title,description="",token;
     String sharedPrefFile = "Login_Credentials";
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_newmaterial, container, false);
+
+
+        class_code= getArguments().getString("class_code");
+        owner_code= getArguments().getString("owner_id");
+        class_name = getArguments().getString("class_name");
+        owner_name = getArguments().getString("owner_name");
+
+
+
         SharedPreferences preferences = getActivity().getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE);
         token = preferences.getString("google_token",null);
         material_title = view.findViewById(R.id.material_title);
@@ -58,12 +69,12 @@ public class NewMaterialFragment extends Fragment {
     }
     public void createMaterial(String title,String description){
         RequestQueue requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getActivity()));
-        String url = "https://elite-classroom-server.herokuapp.com/api/notes/createNotes"+ ClassActivity.classCode;
+        String url = "https://elite-classroom-server.herokuapp.com/api/notes/createNotes/"+class_code;
         JSONObject o = new JSONObject();
         try {
             o.put("title",title);
             o.put("description",description);
-            o.put("attachment_id",null);
+            o.put("attachment_id","");
             o.put("google_token",token);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -72,11 +83,18 @@ public class NewMaterialFragment extends Fragment {
             @Override
             public void onResponse(JSONObject response) {
                 Intent i = new Intent(getActivity(),ClassActivity.class);
+                i.putExtra("class_code",class_code);
+                i.putExtra("owner_id",owner_code);
+                i.putExtra("class_name",class_name);
+                i.putExtra("owner_name",owner_name);
+                i.putExtra("from_Classwork",true);
                 startActivity(i);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+
+                Toast.makeText(getContext(),error.toString(),Toast.LENGTH_LONG).show();
 
             }
         });
