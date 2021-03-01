@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Fragments.ToDo.ToDoFragment">
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignTop="@+id/todo_bottom_navigation"
-        android:id="@+id/todo_frame_layout"
-        />
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/todo_bottom_navigation"
+    android:orientation="vertical"
+    android:background="#3C3C3C">
+    <com.google.android.material.tabs.TabLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:itemBackground="@color/green"
-        app:itemIconTint="@drawable/selector"
-        app:itemTextColor="@drawable/selector"
-        android:layout_alignParentBottom="true"
-        app:menu="@menu/todo_navigation" />
-
-
-</RelativeLayout>
+        app:tabGravity="fill"
+        app:tabMode="fixed"
+        android:id="@+id/tablayout_id"
+        app:tabTextColor="@color/black"
+        app:tabIndicatorColor="@color/purple_700"
+        android:background="@color/white"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#B8AFAF"/>
+    <androidx.viewpager.widget.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/viewpager_id"
+        android:background="@color/white"/>
+</androidx.appcompat.widget.LinearLayoutCompat>

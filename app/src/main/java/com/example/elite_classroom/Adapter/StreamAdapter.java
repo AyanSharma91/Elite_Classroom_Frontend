@@ -29,7 +29,6 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class StreamAdapter extends RecyclerView.Adapter<StreamAdapter.ViewHolder> {
     List<Stream> list;
