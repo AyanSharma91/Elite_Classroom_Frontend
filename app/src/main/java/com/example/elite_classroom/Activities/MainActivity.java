@@ -7,13 +7,16 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -54,6 +57,7 @@ import org.json.JSONObject;
 import java.security.AlgorithmConstraints;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private DrawerLayout drawer;
@@ -61,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     GoogleSignInClient mGoogleSignInClient;
     String sharedPrefFile = "Login_Credentials";
     public static TextView textView, name;
+    TextView test;
     SharedPreferences preferences;
 
 
@@ -73,6 +78,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         getWindow().setStatusBarColor(ContextCompat.getColor(MainActivity.this,R.color.white));
         setContentView(R.layout.activity_main);
+
+        test = findViewById(R.id.test);
+
+
+
+
 
         name= findViewById(R.id.name);
 
@@ -170,4 +181,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
     }
+
+
+
+
 }

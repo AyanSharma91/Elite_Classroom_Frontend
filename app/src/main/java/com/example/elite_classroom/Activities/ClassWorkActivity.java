@@ -1,20 +1,38 @@
-package com.example.elite_classroom.Activities;
+    package com.example.elite_classroom.Activities;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.elite_classroom.Fragments.Teacher.NewAnnouncementFragment;
 import com.example.elite_classroom.Fragments.Teacher.NewAssignmentFragment;
 import com.example.elite_classroom.Fragments.Teacher.NewMaterialFragment;
 import com.example.elite_classroom.Dialogs.PointDialog;
 import com.example.elite_classroom.R;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Objects;
 
 public class ClassWorkActivity extends AppCompatActivity implements PointDialog.PointDialogListener {
 
@@ -27,8 +45,12 @@ public class ClassWorkActivity extends AppCompatActivity implements PointDialog.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_class_work);
+
+        attachment =findViewById(R.id.attachment);
+
         Intent i = getIntent();
         int u = i.getIntExtra("u",0);
+
 
 
 
@@ -70,6 +92,8 @@ public class ClassWorkActivity extends AppCompatActivity implements PointDialog.
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_container2,
                    newAnnouncementFragment ).commit();
         }
+
+
         cross = findViewById(R.id.cross);
         cross.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +121,8 @@ public class ClassWorkActivity extends AppCompatActivity implements PointDialog.
 
     }
 
+
+
     @Override
     public void onBackPressed() {
         Intent i = new Intent(ClassWorkActivity.this,ClassActivity.class);
@@ -107,5 +133,8 @@ public class ClassWorkActivity extends AppCompatActivity implements PointDialog.
         i.putExtra("from_Classwork",true);
         startActivity(i);
         finish();
+        super.onBackPressed();
     }
+
+
 }
