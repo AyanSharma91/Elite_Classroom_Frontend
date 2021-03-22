@@ -40,7 +40,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.elite_classroom.Fragments.AboutFragment;
 import com.example.elite_classroom.Fragments.ClassFragment;
+import com.example.elite_classroom.Fragments.FeedbackFragment;
 import com.example.elite_classroom.Fragments.ToDo.ToDoFragment;
 import com.example.elite_classroom.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -74,7 +76,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getWindow().setStatusBarColor(ContextCompat.getColor(MainActivity.this,R.color.white));
         setContentView(R.layout.activity_main);
 
-
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
                 new ClassFragment(), "HOME_FRAGMENT").commit();
         textView = findViewById(R.id.name);
@@ -91,8 +92,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-//
     }
+
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()){
@@ -116,8 +118,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_setting:
 
                 break;
-            case R.id.nav_help:
-
+            case R.id.nav_about:
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
+                        new AboutFragment(),"ABOUT_FRAGMENT").commit();
+                break;
+            case R.id.nav_feedback:
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
+                        new FeedbackFragment(),"FEEDBACK_FRAGMENT").commit();
                 break;
             case R.id.nav_signout:
             {

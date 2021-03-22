@@ -92,7 +92,7 @@ public class ClassActivity extends AppCompatActivity implements NavigationView.O
             case R.id.nav_setting:
 
                 break;
-            case R.id.nav_help:
+            case R.id.nav_about:
 
                 break;
             case R.id.nav_signout:
@@ -109,26 +109,5 @@ public class ClassActivity extends AppCompatActivity implements NavigationView.O
         else{
             super.onBackPressed();
         }
-//        else if(i == 0){
-//            Intent a = new Intent(Intent.ACTION_MAIN);
-//            a.addCategory(Intent.CATEGORY_HOME);
-//            a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            startActivity(a);}
-//        else if(i==1){
-//            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-//                    new SellerFragment()).commit();
-//        }
-//        else if(i==2){
-//            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-//                    new ItemListFragment()).commit();
-//        }
-//        else if(i==3){
-//            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-//                    new OrderFragment()).commit();
-//        }
-//        else if(i==4){
-//            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-//                    new OrderFragment()).commit();
-//        }
     }
 }
