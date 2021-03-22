@@ -3,6 +3,7 @@ package com.example.elite_classroom.Fragments;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,6 +100,7 @@ public class ClassFragment extends Fragment {
                            single_class.getOwner_name()
                            ));
                }
+
 
                 LinearLayoutManager manager = new LinearLayoutManager(getActivity());
                 adapter = new Get_Classes_Adapter(getActivity(),classes);

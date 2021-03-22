@@ -16,8 +16,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Elite_classroom">
-        <activity android:name=".Activities.Assignment_Submission_Activity"></activity>
-        <activity android:name=".Activities.ClassWorkActivity"></activity>
+        <activity android:name=".Activities.CalenderActivity"></activity>
+        <activity android:name=".Activities.Assignment_Submission_Activity" />
+        <activity android:name=".Activities.ClassWorkActivity" />
         <activity
             android:name=".Activities.LoginActivity"
             android:noHistory="true">
@@ -27,8 +28,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.ClassActivity"></activity>
-        <activity android:name=".Activities.MainActivity"></activity>
+        <activity android:name=".Activities.ClassActivity" />
+        <activity android:name=".Activities.MainActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

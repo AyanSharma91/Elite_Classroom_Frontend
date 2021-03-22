@@ -32,7 +32,7 @@ public class ToDoFragment extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setText("Missed"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
          viewpager =(ViewPager)view.findViewById(R.id.viewpager_id);
-        ViewPagerAdapter_Second tabsAdapter = new ViewPagerAdapter_Second(getFragmentManager(),tabLayout.getTabCount());
+        ViewPagerAdapter tabsAdapter = new ViewPagerAdapter(getFragmentManager(),tabLayout.getTabCount());
         viewpager.setAdapter(tabsAdapter);
         viewpager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

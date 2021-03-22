@@ -43,6 +43,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.elite_classroom.Fragments.Calender_Fragment;
 import com.example.elite_classroom.Fragments.ClassFragment;
 import com.example.elite_classroom.Fragments.ToDo.ToDoFragment;
 import com.example.elite_classroom.R;
@@ -119,6 +120,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_calender:
 
+                startActivity(new Intent(MainActivity.this,CalenderActivity.class));
+
                 break;
             case R.id.nav_todo:
                 name.setText("To-Do");
@@ -175,6 +178,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             else
             {
+
                 super.onBackPressed();
             }
 
