@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -91,6 +92,7 @@ public class ClassWorkFragment extends Fragment {
                     for(int i=0;i<response.length();i++){
                         JSONObject o = response.getJSONObject(i);
                         if(o.getString("class_code").equals(ClassActivity.classCode)){
+
                             ClassWork l = new ClassWork(
                                     o.getString("work_id"),
                                     o.getString("class_code"),
@@ -102,10 +104,13 @@ public class ClassWorkFragment extends Fragment {
                                     o.getString("due_date"),
                                     o.getString("points"),
                                     o.getString("owner_token")
+
+
                             );
                             list.add(l);
                         }
                     }
+
 
                     adapter = new ClassWorkAdapter(list,ctx,token);
                     recyclerView.setAdapter(adapter);

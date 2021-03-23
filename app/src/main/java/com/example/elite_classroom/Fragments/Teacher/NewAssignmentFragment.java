@@ -171,6 +171,7 @@ public class NewAssignmentFragment extends Fragment implements PointDialog.Point
         DestinationService service = ServiceBuilder.INSTANCE.buildService(DestinationService.class);
         RequestBody requestFile = RequestBody.create(MediaType.parse(getMimeType(file_uri)), file);
         Log.d("MIME_type",getMimeType(file_uri).toString());
+
         MultipartBody.Part multipartBody =MultipartBody.Part.createFormData("file",file.getName(),requestFile);
         Call<Upload_Response> responseBodyCall = service.uploadFile( multipartBody);
 
@@ -179,6 +180,9 @@ public class NewAssignmentFragment extends Fragment implements PointDialog.Point
             public void onResponse(Call<Upload_Response> call, retrofit2.Response<Upload_Response> response) {
 
                 attachment_link = response.body().getLocation();
+
+
+
                 title = assignment_title.getText().toString();
                 description = assignment_description.getText().toString();
                 points = point.getText().toString();
@@ -301,6 +305,7 @@ public class NewAssignmentFragment extends Fragment implements PointDialog.Point
 
         file_uri= data.getData();
          file = new File(filePath);
+
 
         if(file!=null)
         {

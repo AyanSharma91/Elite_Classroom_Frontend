@@ -65,6 +65,9 @@ public class StreamFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+
+
+
         RequestQueue requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getActivity()));
 
         String url = "https://elite-classroom-server.herokuapp.com/api/notes/getNotesCode/"+ ClassActivity.classCode;

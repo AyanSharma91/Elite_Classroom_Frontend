@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +24,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.elite_classroom.Activities.Assignment_Submission_Activity;
 import com.example.elite_classroom.Activities.ClassActivity;
 import com.example.elite_classroom.Activities.ClassWorkActivity;
 import com.example.elite_classroom.Models.Recycler_Models.ClassWork;
@@ -106,6 +108,47 @@ public class ClassWorkAdapter extends RecyclerView.Adapter<ClassWorkAdapter.View
         });}else{
             holder.b.setAlpha(0);
         }
+
+        holder.parent_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ctx, Assignment_Submission_Activity.class);
+                intent.putExtra("title", c.getTitle());
+                intent.putExtra("description",c.getDescription());
+                intent.putExtra("work_id", c.getWork_id());
+                intent.putExtra("due_data",c.getDue_date());
+                intent.putExtra("attachment_link", c.getAttachment());
+                intent.putExtra("class_code", c.getClass_code());
+
+
+
+                if(c.getType()==0)
+                {
+                    //Assignment is there
+
+                    //user is a student
+                    if(!(c.getOwner_token().equals(token)))
+                    {
+
+                        intent.putExtra("user_status", "assignment_owner");
+
+                    }
+                    else
+                    {
+                        intent.putExtra("user_status", "assignment_student");
+                    }
+
+
+                }
+                else if (c.getType()==1)
+                {
+                   //Announcement is there
+                    intent.putExtra("user_status", "announcement");
+                }
+                ctx.startActivity(intent);
+
+            }
+        });
     }
 
     @Override
@@ -118,8 +161,10 @@ public class ClassWorkAdapter extends RecyclerView.Adapter<ClassWorkAdapter.View
         TextView t,t1;
         ImageView b;
         View mview;
+        RelativeLayout parent_layout;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            parent_layout = itemView.findViewById(R.id.parent_layout);
             iv = itemView.findViewById(R.id.classwork_image);
             t = itemView.findViewById(R.id.classwork_title);
             t1 = itemView.findViewById(R.id.classwork_description);

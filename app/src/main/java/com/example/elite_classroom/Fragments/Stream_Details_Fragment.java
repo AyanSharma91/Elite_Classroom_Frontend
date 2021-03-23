@@ -1,41 +1,45 @@
 package com.example.elite_classroom.Fragments;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.webkit.MimeTypeMap;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import com.example.elite_classroom.R;
 
-public class Teacher_Instructions_Fragment extends Fragment {
 
 
-    String title, description, work_id, due_data, attachment_link, class_code,user_status;
-    TextView  due_date, title_field,description_field;
+public class Stream_Details_Fragment extends Fragment {
+
+
+    String notes_id,class_code,attachment_id,posted_on,title,description,owner_token;
+
+
+    TextView due_date, title_field,description_field;
     ImageView file_symbol;
     TextView file_name;
 
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.teacher_instruction_fragment, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
-        title=           getArguments().getString("title");
-        description=      getArguments().getString("description");
-        work_id=          getArguments().getString("work_id");
-        due_data=           getArguments().getString("due_data");
-        attachment_link=   getArguments().getString("attachment_link");
-        class_code=        getArguments().getString("class_code");
+         View view = inflater.inflate(R.layout.fragment_stream__details_, container, false);
 
+
+      notes_id=  getArguments().getString("notes_id");
+      class_code=  getArguments().getString("class_code");
+      attachment_id=  getArguments().getString("attachment_id");
+      posted_on=  getArguments().getString("posted_on");
+     title=   getArguments().getString("title");
+     description=   getArguments().getString("description");
+     owner_token=   getArguments().getString("owner_token");
 
 
         due_date = view.findViewById(R.id.due_date);
@@ -45,15 +49,16 @@ public class Teacher_Instructions_Fragment extends Fragment {
         file_name= view.findViewById(R.id.file_name);
 
 
+        due_date.setText(posted_on);
         title_field.setText(title);
-        due_date.setText(due_data);
         description_field.setText(description);
 
+
         String mineType="";
-        if(!attachment_link.isEmpty())
+        if(!attachment_id.isEmpty())
         {
-            file_name.setText(attachment_link.substring(attachment_link.lastIndexOf('/')+1));
-            mineType=attachment_link.substring(attachment_link.lastIndexOf('.')) ;
+            file_name.setText(attachment_id.substring(attachment_id.lastIndexOf('/')+1));
+            mineType=attachment_id.substring(attachment_id.lastIndexOf('.')) ;
         }
 
 
@@ -100,6 +105,11 @@ public class Teacher_Instructions_Fragment extends Fragment {
             }
 
         }
+
+
+
+
+
 
 
         return view;

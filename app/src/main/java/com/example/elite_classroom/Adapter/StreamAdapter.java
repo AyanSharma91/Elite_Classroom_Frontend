@@ -9,7 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
@@ -21,6 +23,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.elite_classroom.Activities.Assignment_Submission_Activity;
 import com.example.elite_classroom.Activities.ClassActivity;
 import com.example.elite_classroom.Models.Recycler_Models.Stream;
 import com.example.elite_classroom.R;
@@ -34,6 +37,7 @@ public class StreamAdapter extends RecyclerView.Adapter<StreamAdapter.ViewHolder
     List<Stream> list;
     Context ctx;
     String token;
+
 
     public StreamAdapter(List<Stream> list, Context ctx,String token) {
         this.list = list;
@@ -53,12 +57,27 @@ public class StreamAdapter extends RecyclerView.Adapter<StreamAdapter.ViewHolder
         Stream l = list.get(position);
         holder.t.setText(l.getTitle());
         holder.t1.setText(l.getPosted_on());
-        holder.mview.setOnClickListener(new View.OnClickListener() {
+
+        holder.parent_layout_second.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+
+                Intent intent = new Intent(ctx, Assignment_Submission_Activity.class);
+                intent.putExtra("notes_id", l.getNotes_id());
+                intent.putExtra("class_code",l.getClass_code());
+                intent.putExtra("attachment_id" , l.getAttachment_id());
+                intent.putExtra("posted_on" , l.getPosted_on());
+                intent.putExtra("title" , l.getTitle());
+                intent.putExtra("description", l.getDescription());
+                intent.putExtra("owner_token", l.getOwner_token());
+                intent.putExtra("stream_type", "stream_type");
+                ctx.startActivity(intent);
+
+
             }
         });
+
         if(token.equals(l.getOwner_token())){
             holder.b.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -113,15 +132,17 @@ public class StreamAdapter extends RecyclerView.Adapter<StreamAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView iv;
         TextView t,t1;
-        View mview;
+
         ImageView b;
+        RelativeLayout parent_layout_second;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            parent_layout_second= itemView.findViewById(R.id.parent_layout_second);
             iv = itemView.findViewById(R.id.classwork_image);
             t = itemView.findViewById(R.id.classwork_title);
             t1 = itemView.findViewById(R.id.classwork_description);
             b = itemView.findViewById(R.id.pop_button);
-            mview = itemView;
+
         }
     }
 }
