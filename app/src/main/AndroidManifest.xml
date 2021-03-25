@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.elite_classroom">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
 
     <application
         android:allowBackup="true"
@@ -11,28 +16,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Elite_classroom">
-        <activity android:name=".Activities.ClassWorkActivity"></activity>
-        <activity android:name=".Activities.LoginActivity"
+        <activity android:name=".Activities.CalenderActivity"></activity>
+        <activity android:name=".Activities.Assignment_Submission_Activity" />
+        <activity android:name=".Activities.ClassWorkActivity" />
+        <activity
+            android:name=".Activities.LoginActivity"
             android:noHistory="true">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
+        <activity android:name=".Activities.ClassActivity" />
+        <activity android:name=".Activities.MainActivity" />
 
-        <activity
-            android:name=".Activities.ClassActivity"
-            android:noHistory="true">
-
-        </activity>
-
-        <activity android:name=".Activities.MainActivity">
-
-        </activity>
-
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.podium.app.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
 
         <meta-data
             android:name="com.google.android.gms.version"

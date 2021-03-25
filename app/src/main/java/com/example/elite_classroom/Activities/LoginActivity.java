@@ -195,6 +195,7 @@ googleBTN= findViewById(R.id.googleBTN);
 
         if(preferences.getString("google_token",null)!=null)
         {
+            Log.d("token",preferences.getString("google_token",null));
             startActivity(new Intent(LoginActivity.this,MainActivity.class));
 
         }

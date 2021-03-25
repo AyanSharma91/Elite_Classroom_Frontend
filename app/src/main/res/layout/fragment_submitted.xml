@@ -6,15 +6,6 @@
     android:orientation="vertical"
     tools:context=".Fragments.ToDo.SubmittedFragment">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
-        android:layout_marginTop="7dp"
-        android:fontFamily="@font/quicksand_bold"
-        android:text="Submitted Assignments..."
-        android:textSize="28sp" />
-
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyle"

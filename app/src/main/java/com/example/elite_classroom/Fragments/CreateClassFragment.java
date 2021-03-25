@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,11 +46,17 @@ public class CreateClassFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_createclass, container, false);
+
         SharedPreferences preferences = getActivity().getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE);
+
         token = preferences.getString("google_token",null);
+
         MainActivity.textView.setText("Create Classroom");
+
         et = view.findViewById(R.id.class_name);
+
         b = view.findViewById(R.id.btn_create);
+
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

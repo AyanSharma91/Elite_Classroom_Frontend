@@ -3,9 +3,11 @@ package com.example.elite_classroom.Fragments;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -38,23 +40,41 @@ public class ClassWorkFragment extends Fragment {
     ClassWorkAdapter adapter;
     RecyclerView recyclerView;
     Context ctx;
-    String class_code="";
+    String class_code="", owner_code,class_name,owner_name;
     String sharedPrefFile = "Login_Credentials",token;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_classwork, container, false);
+
+
+
+       class_code= getArguments().getString("class_code");
+       owner_code= getArguments().getString("owner_id");
+       class_name = getArguments().getString("class_name");
+       owner_name = getArguments().getString("owner_name");
+
+       Bundle b = new Bundle();
+       b.putString("class_code",class_code);
+       b.putString("owner_id",owner_code);
+       b.putString("class_name",class_name);
+       b.putString("owner_name",owner_name);
+
+
+
         SharedPreferences preferences = getActivity().getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE);
         token = preferences.getString("google_token",null);
+
         FloatingActionButton buttonAddNote = view.findViewById(R.id.class_bottom);
-        if(token.equals(ClassActivity.owner_id)){
+        if(token.equals(owner_code)){
             buttonAddNote.setClickable(false);
-            buttonAddNote.setAlpha(0);
+            buttonAddNote.setVisibility(View.VISIBLE);
         }
         buttonAddNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ClassWorkBottomSheetDialog bottomSheet = new ClassWorkBottomSheetDialog();
+                bottomSheet.setArguments(b);
                 bottomSheet.show(getFragmentManager(), "ClassWorkBottomSheet");
             }
         });
@@ -72,6 +92,7 @@ public class ClassWorkFragment extends Fragment {
                     for(int i=0;i<response.length();i++){
                         JSONObject o = response.getJSONObject(i);
                         if(o.getString("class_code").equals(ClassActivity.classCode)){
+
                             ClassWork l = new ClassWork(
                                     o.getString("work_id"),
                                     o.getString("class_code"),
@@ -83,10 +104,14 @@ public class ClassWorkFragment extends Fragment {
                                     o.getString("due_date"),
                                     o.getString("points"),
                                     o.getString("owner_token")
+
+
                             );
                             list.add(l);
                         }
                     }
+
+
                     adapter = new ClassWorkAdapter(list,ctx,token);
                     recyclerView.setAdapter(adapter);
                 } catch (Exception e) {

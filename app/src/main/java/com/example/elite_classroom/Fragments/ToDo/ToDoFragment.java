@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -12,61 +13,43 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.example.elite_classroom.Adapter.ViewPagerAdapter;
+import com.example.elite_classroom.Adapter.ViewPagerAdapter_Second;
 import com.example.elite_classroom.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.tabs.TabLayout;
 
 
 public class ToDoFragment extends Fragment {
-
-    BottomNavigationView todo_bottom_navigation;
-    FrameLayout todo_frame_layout;
-    View view;
-
-
+    private TabLayout tabLayout;
+    private ViewPager viewpager;
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        todo_frame_layout = view.findViewById(R.id.todo_frame_layout);
-
-        todo_bottom_navigation = view.findViewById(R.id.todo_bottom_navigation);
-        todo_bottom_navigation.setSelectedItemId(R.id.nav_submitted);
-        getFragmentManager().beginTransaction().replace(R.id.todo_frame_layout, new SubmittedFragment()).commit();
-
-        todo_bottom_navigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_to_do, container, false);
+        tabLayout = (TabLayout) view.findViewById(R.id.tablayout_id);
+        tabLayout.addTab(tabLayout.newTab().setText("Submitted"));
+        tabLayout.addTab(tabLayout.newTab().setText("Pending"));
+        tabLayout.addTab(tabLayout.newTab().setText("Missed"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+         viewpager =(ViewPager)view.findViewById(R.id.viewpager_id);
+        ViewPagerAdapter tabsAdapter = new ViewPagerAdapter(getFragmentManager(),tabLayout.getTabCount());
+        viewpager.setAdapter(tabsAdapter);
+        viewpager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewpager.setCurrentItem(tab.getPosition());
+            }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
 
-                switch (item.getItemId()) {
-                    case R.id.nav_submitted:
-                        getFragmentManager().beginTransaction().replace(R.id.todo_frame_layout,
-                                new SubmittedFragment()).commit();
-                        return true;
-                    case R.id.nav_pending:
-                        getFragmentManager().beginTransaction().replace(R.id.todo_frame_layout,
-                                new PendingFragment()).commit();
-                        return true;
-                    case R.id.nav_missed:
-                        getFragmentManager().beginTransaction().replace(R.id.todo_frame_layout,
-                                new MissedFragment()).commit();
-                        return true;
-                }
-                return false;
+            }
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
             }
         });
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        view = inflater.inflate(R.layout.fragment_to_do, container, false);
+        viewpager.getAdapter().notifyDataSetChanged();
         return view;
     }
 }

@@ -15,7 +15,8 @@
     <color name="blue">#009688</color>
     <color name="purple">#673AB7</color>
     <color name="red">#F44336</color>
-
+    <color name="tabtextcolor">#F7F8F8</color>
+    <color name="tabindicatorcolor">#090909</color>
 
 
 

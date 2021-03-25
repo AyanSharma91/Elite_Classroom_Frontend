@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -35,6 +36,7 @@ public class StreamFragment extends Fragment {
     List<Stream> list;
     StreamAdapter adapter;
     RecyclerView recyclerView;
+    TextView class_name, owner_name;
     Context ctx;
     String token;
     String sharedPrefFile = "Login_Credentials";
@@ -43,14 +45,31 @@ public class StreamFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_stream, container, false);
+
+        String class_names =getArguments().getString("class_name");
+        String owner_names = getArguments().getString("owner_name");
+
+        class_name= view.findViewById(R.id.class_name);
+        owner_name= view.findViewById(R.id.owner_name);
+
+        class_name.setText(class_names);
+        owner_name.setText(owner_names);
         ctx=getActivity();
+
         SharedPreferences preferences = getActivity().getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE);
         token = preferences.getString("google_token",null);
+
         list=new ArrayList<>();
+
         recyclerView=view.findViewById(R.id.recycler_view1);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+
+
+
         RequestQueue requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getActivity()));
+
         String url = "https://elite-classroom-server.herokuapp.com/api/notes/getNotesCode/"+ ClassActivity.classCode;
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override

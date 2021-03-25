@@ -50,6 +50,7 @@ public class Get_Classes_Adapter extends RecyclerView.Adapter<Get_Classes_Adapte
                  Intent intent = new Intent(context, ClassActivity.class);
                  intent.putExtra("owner_id",list1.get(i).getOwner_id());
                  intent.putExtra("owner_name",list1.get(i).getOwner_name());
+                 intent.putExtra("class_name",list1.get(i).getClass_name());
                  intent.putExtra("class_code",list1.get(i).getClass_code());
                  context.startActivity(intent);
              }
