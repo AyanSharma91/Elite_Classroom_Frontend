@@ -8,13 +8,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +26,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -45,19 +40,15 @@ import com.example.elite_classroom.Activities.ClassWorkActivity;
 import com.example.elite_classroom.Dialogs.PointDialog;
 import com.example.elite_classroom.FeedExtraUtilsKotlin;
 import com.example.elite_classroom.FileUtils;
-import com.example.elite_classroom.Models.Retrofit_Models.Auth_Responses;
-import com.example.elite_classroom.Models.Retrofit_Models.Google_Logins;
 import com.example.elite_classroom.Models.Retrofit_Models.Upload_Response;
 import com.example.elite_classroom.R;
 import com.example.elite_classroom.Retrofit.DestinationService;
 import com.example.elite_classroom.Retrofit.ServiceBuilder;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -68,12 +59,8 @@ import java.util.TimeZone;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
-
-import static android.app.Activity.RESULT_OK;
-import static android.view.View.GONE;
 
 public class NewAssignmentFragment extends Fragment implements PointDialog.PointDialogListener {
 

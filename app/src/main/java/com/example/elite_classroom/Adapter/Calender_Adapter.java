@@ -1,20 +1,15 @@
 package com.example.elite_classroom.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.elite_classroom.Activities.ClassActivity;
 import com.example.elite_classroom.Models.Recycler_Models.Class_Fixtures;
-import com.example.elite_classroom.Models.Recycler_Models.Get_Classes_List;
-import com.example.elite_classroom.Models.Retrofit_Models.Get_Calender_Fixtures;
 import com.example.elite_classroom.R;
 
 import java.util.ArrayList;

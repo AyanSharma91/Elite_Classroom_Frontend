@@ -4,14 +4,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.elite_classroom.Activities.Assignment_Submission_Activity;
-import com.example.elite_classroom.Adapter.ViewPagerAdapter;
 import com.example.elite_classroom.Adapter.ViewPagerAdapter_Second;
 import com.example.elite_classroom.R;
 import com.google.android.material.tabs.TabLayout;
