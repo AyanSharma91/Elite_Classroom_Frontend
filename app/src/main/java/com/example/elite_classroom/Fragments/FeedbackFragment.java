@@ -45,6 +45,9 @@ public class FeedbackFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_feedback, container, false);
 
         MainActivity.textView.setText("Feedback");
+        etFeedback = view.findViewById(R.id.et_feedback);
+        submit_feedback = view.findViewById(R.id.submit_feedback);
+
         return view;
     }
 
@@ -52,8 +55,6 @@ public class FeedbackFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        etFeedback = view.findViewById(R.id.et_feedback);
-        submit_feedback = view.findViewById(R.id.submit_feedback);
 
 
         submit_feedback.setOnClickListener(new View.OnClickListener() {
