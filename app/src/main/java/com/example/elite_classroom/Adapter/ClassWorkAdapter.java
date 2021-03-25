@@ -127,7 +127,7 @@ public class ClassWorkAdapter extends RecyclerView.Adapter<ClassWorkAdapter.View
                     //Assignment is there
 
                     //user is a student
-                    if(!(c.getOwner_token().equals(token)))
+                    if((c.getOwner_token().equals(token)))
                     {
 
                         intent.putExtra("user_status", "assignment_owner");

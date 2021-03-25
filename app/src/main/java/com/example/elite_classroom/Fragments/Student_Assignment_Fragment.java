@@ -5,10 +5,12 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +25,29 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.elite_classroom.Activities.LoginActivity;
 import com.example.elite_classroom.FeedExtraUtilsKotlin;
 import com.example.elite_classroom.FileUtils;
+import com.example.elite_classroom.Models.Retrofit_Models.Auth_Responses;
+import com.example.elite_classroom.Models.Retrofit_Models.Google_Logins;
+import com.example.elite_classroom.Models.Retrofit_Models.Submission_Response;
+import com.example.elite_classroom.Models.Retrofit_Models.Submit_Assignment;
+import com.example.elite_classroom.Models.Retrofit_Models.Upload_Response;
 import com.example.elite_classroom.R;
+import com.example.elite_classroom.Retrofit.DestinationService;
+import com.example.elite_classroom.Retrofit.ServiceBuilder;
 
 import java.io.File;
+import java.time.Year;
+import java.util.Calendar;
 import java.util.Objects;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Student_Assignment_Fragment extends Fragment {
 
@@ -43,6 +62,9 @@ public class Student_Assignment_Fragment extends Fragment {
     ImageView file_symbol_second;
     TextView file_name_second;
     TextView attachemnt_button, submit_button;
+
+    String sharedPrefFile = "Login_Credentials";
+    SharedPreferences preferences;
 
 
     @Nullable
@@ -63,6 +85,8 @@ public class Student_Assignment_Fragment extends Fragment {
         attachemnt_button= view.findViewById(R.id.attachemnt_button);
         submit_button = view.findViewById(R.id.submit_button);
 
+        preferences = getActivity().getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE);
+
 
 
         due_date = view.findViewById(R.id.due_date);
@@ -79,6 +103,59 @@ public class Student_Assignment_Fragment extends Fragment {
         });
 
 
+        submit_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+
+                DestinationService service = ServiceBuilder.INSTANCE.buildService(DestinationService.class);
+                RequestBody requestFile = RequestBody.create(MediaType.parse(getMimeType(file_uri)), file);
+                Log.d("MIME_type",getMimeType(file_uri).toString());
+
+                MultipartBody.Part multipartBody =MultipartBody.Part.createFormData("file",file.getName(),requestFile);
+                Call<Upload_Response> responseBodyCall = service.uploadFile( multipartBody);
+
+                responseBodyCall.enqueue(new Callback<Upload_Response>() {
+                    @Override
+                    public void onResponse(Call<Upload_Response> call, Response<Upload_Response> response) {
+
+                       String  attachment_link_second = response.body().getLocation();
+
+                       if(attachment_link_second!=null)
+                       {
+                           DestinationService service = ServiceBuilder.INSTANCE.buildService(DestinationService.class);
+//                           "2000-09-12 10:10:00
+                        String date =  Calendar.YEAR +"-"+Calendar.MONTH+"-"+Calendar.DATE+" "+Calendar.HOUR_OF_DAY+":"+Calendar.MINUTE+":"+Calendar.SECOND;
+                          Submit_Assignment submit_assignment = new Submit_Assignment(preferences.getString("google_token",null),Integer.parseInt(work_id), "Assignment_Submission",attachment_link_second, date);
+                           Call<Submission_Response> request = service.submit_assignment(submit_assignment);
+                           request.enqueue(new Callback<Submission_Response>() {
+                               @Override
+                               public void onResponse(Call<Submission_Response> call, Response<Submission_Response> response) {
+                                   Log.d("Assignment Status is" , response.toString());
+                               }
+
+                               @Override
+                               public void onFailure(Call<Submission_Response> call, Throwable t) {
+
+                               }
+                           });
+
+                       }
+                       else
+                       {
+                           Toast.makeText(getContext(),"Assignment Could not be submitted",Toast.LENGTH_LONG).show();
+                       }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<Upload_Response> call, Throwable t) {
+
+                    }
+                });
+            }
+        });
 
 
 
@@ -245,6 +322,8 @@ public class Student_Assignment_Fragment extends Fragment {
 
             file_name_second.setText(file.getName());
 
+            attachemnt_button.setVisibility(View.GONE);
+
 
             String mineType = getMimeType(data.getData());
 
@@ -291,6 +370,10 @@ public class Student_Assignment_Fragment extends Fragment {
                 }
 
             }
+        }
+        else
+        {
+            attachemnt_button.setVisibility(View.VISIBLE);
         }
 
 

@@ -27,4 +27,7 @@ interface DestinationService {
     @GET("weekly-calender/getCalender-nextWeek/{google_token}")
     fun next_calender(@Path("google_token") google_token: String): Call<ArrayList<Class_Fixtures>>
 
+    @POST("work/create/submit")
+    fun submit_assignment(@Body Submit_Assignment : Submit_Assignment) : Call<Submission_Response>
+
 }
