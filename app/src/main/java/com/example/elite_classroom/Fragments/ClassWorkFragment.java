@@ -3,11 +3,9 @@ package com.example.elite_classroom.Fragments;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -24,7 +22,6 @@ import com.example.elite_classroom.Activities.ClassActivity;
 import com.example.elite_classroom.Adapter.ClassWorkAdapter;
 import com.example.elite_classroom.Dialogs.ClassWorkBottomSheetDialog;
 import com.example.elite_classroom.Models.Recycler_Models.ClassWork;
-import com.example.elite_classroom.Models.Recycler_Models.Stream;
 import com.example.elite_classroom.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 

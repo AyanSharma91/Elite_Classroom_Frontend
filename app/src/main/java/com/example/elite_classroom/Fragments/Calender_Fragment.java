@@ -3,24 +3,18 @@ package com.example.elite_classroom.Fragments;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.elite_classroom.Activities.LoginActivity;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.elite_classroom.Adapter.Calender_Adapter;
 import com.example.elite_classroom.Models.Recycler_Models.Class_Fixtures;
-import com.example.elite_classroom.Models.Recycler_Models.Get_Classes_List;
-import com.example.elite_classroom.Models.Retrofit_Models.Auth_Responses;
-import com.example.elite_classroom.Models.Retrofit_Models.Get_Calender_Fixtures;
-import com.example.elite_classroom.Models.Retrofit_Models.Google_Logins;
 import com.example.elite_classroom.R;
 import com.example.elite_classroom.Retrofit.DestinationService;
 import com.example.elite_classroom.Retrofit.ServiceBuilder;

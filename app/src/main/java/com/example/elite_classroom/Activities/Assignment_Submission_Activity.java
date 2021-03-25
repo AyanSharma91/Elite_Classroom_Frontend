@@ -1,15 +1,11 @@
 package com.example.elite_classroom.Activities;
 
+import android.os.Bundle;
+import android.widget.RelativeLayout;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Bundle;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
-
 import com.example.elite_classroom.Fragments.Announcement_Fragment;
-import com.example.elite_classroom.Fragments.ClassFragment;
-import com.example.elite_classroom.Fragments.StreamFragment;
 import com.example.elite_classroom.Fragments.Stream_Details_Fragment;
 import com.example.elite_classroom.Fragments.Student_Assignment_Fragment;
 import com.example.elite_classroom.Fragments.Teacher_Assignment_Fragment;

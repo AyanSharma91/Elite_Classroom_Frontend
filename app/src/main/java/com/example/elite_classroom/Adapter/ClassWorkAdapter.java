@@ -2,16 +2,13 @@ package com.example.elite_classroom.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
@@ -25,16 +22,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.elite_classroom.Activities.Assignment_Submission_Activity;
-import com.example.elite_classroom.Activities.ClassActivity;
-import com.example.elite_classroom.Activities.ClassWorkActivity;
 import com.example.elite_classroom.Models.Recycler_Models.ClassWork;
 import com.example.elite_classroom.R;
 
 import org.json.JSONObject;
 
 import java.util.List;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ClassWorkAdapter extends RecyclerView.Adapter<ClassWorkAdapter.ViewHolder>  {
     List<ClassWork> list;

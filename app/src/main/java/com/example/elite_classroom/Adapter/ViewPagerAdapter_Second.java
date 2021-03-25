@@ -8,9 +8,6 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.example.elite_classroom.Fragments.Teacher_Instructions_Fragment;
 import com.example.elite_classroom.Fragments.Teacher_Student_Work_Fragment;
-import com.example.elite_classroom.Fragments.ToDo.MissedFragment;
-import com.example.elite_classroom.Fragments.ToDo.PendingFragment;
-import com.example.elite_classroom.Fragments.ToDo.SubmittedFragment;
 
 public class ViewPagerAdapter_Second extends FragmentPagerAdapter {
     int mNumOfTabs;

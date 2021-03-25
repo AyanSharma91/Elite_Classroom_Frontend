@@ -1,38 +1,17 @@
     package com.example.elite_classroom.Activities;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+    import android.content.Intent;
+    import android.os.Bundle;
+    import android.view.View;
+    import android.widget.ImageView;
 
-import android.Manifest;
-import android.app.Activity;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.Toast;
+    import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.elite_classroom.Fragments.Teacher.NewAnnouncementFragment;
-import com.example.elite_classroom.Fragments.Teacher.NewAssignmentFragment;
-import com.example.elite_classroom.Fragments.Teacher.NewMaterialFragment;
-import com.example.elite_classroom.Dialogs.PointDialog;
-import com.example.elite_classroom.R;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Objects;
+    import com.example.elite_classroom.Dialogs.PointDialog;
+    import com.example.elite_classroom.Fragments.Teacher.NewAnnouncementFragment;
+    import com.example.elite_classroom.Fragments.Teacher.NewAssignmentFragment;
+    import com.example.elite_classroom.Fragments.Teacher.NewMaterialFragment;
+    import com.example.elite_classroom.R;
 
 public class ClassWorkActivity extends AppCompatActivity implements PointDialog.PointDialogListener {
 

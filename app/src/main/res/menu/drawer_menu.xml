@@ -37,9 +37,13 @@
                     android:title="Settings"
                     android:icon="@drawable/ic_setting"/>
                 <item
-                    android:id="@+id/nav_help"
-                    android:title="Help"
-                    android:icon="@drawable/ic_help"/>
+                    android:id="@+id/nav_about"
+                    android:title="About"
+                    android:icon="@drawable/ic_about"/>
+                <item
+                    android:id="@+id/nav_feedback"
+                    android:title="Submit Feedback"
+                    android:icon="@drawable/ic_feedback"/>
                 <item
                     android:id="@+id/nav_signout"
                     android:title="Log Out"
