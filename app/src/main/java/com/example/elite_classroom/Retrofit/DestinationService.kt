@@ -30,4 +30,13 @@ interface DestinationService {
     @POST("work/create/submit")
     fun submit_assignment(@Body Submit_Assignment : Submit_Assignment) : Call<Submission_Response>
 
+    @POST("calender/scheduleClass")
+    fun schedule_Class(@Body Schedule_Class_Request : Schedule_Class_Request) :Call<Schedule_Class_Response>
+
+    @GET("work/read/work/{workid}/{uid}")
+    fun get_student_submission(@Path("workid") workid : Int , @Path("uid") uid : String) : Call<ArrayList<Student_Submission_Response>>
+
+    @DELETE("work/delete/{sid}")
+    fun delete_submission(@Path("sid") sid : Int) : Call<Delete_Submission_Response>
+
 }

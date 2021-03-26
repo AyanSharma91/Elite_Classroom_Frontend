@@ -29,7 +29,9 @@ import com.example.elite_classroom.Activities.LoginActivity;
 import com.example.elite_classroom.FeedExtraUtilsKotlin;
 import com.example.elite_classroom.FileUtils;
 import com.example.elite_classroom.Models.Retrofit_Models.Auth_Responses;
+import com.example.elite_classroom.Models.Retrofit_Models.Delete_Submission_Response;
 import com.example.elite_classroom.Models.Retrofit_Models.Google_Logins;
+import com.example.elite_classroom.Models.Retrofit_Models.Student_Submission_Response;
 import com.example.elite_classroom.Models.Retrofit_Models.Submission_Response;
 import com.example.elite_classroom.Models.Retrofit_Models.Submit_Assignment;
 import com.example.elite_classroom.Models.Retrofit_Models.Upload_Response;
@@ -39,6 +41,7 @@ import com.example.elite_classroom.Retrofit.ServiceBuilder;
 
 import java.io.File;
 import java.time.Year;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Objects;
 
@@ -56,11 +59,12 @@ public class Student_Assignment_Fragment extends Fragment {
     TextView due_date, title_field,description_field;
     ImageView file_symbol;
     TextView file_name;
+    Integer  submitted_Assignment_=-20;
     File file;
     Uri file_uri;
     RelativeLayout attachement_layout_second;
     ImageView file_symbol_second;
-    TextView file_name_second;
+    TextView file_name_second,resubmit_button;
     TextView attachemnt_button, submit_button;
 
     String sharedPrefFile = "Login_Credentials";
@@ -79,21 +83,34 @@ public class Student_Assignment_Fragment extends Fragment {
         attachment_link=   getArguments().getString("attachment_link");
         class_code=        getArguments().getString("class_code");
 
+
         attachement_layout_second = view.findViewById(R.id.attachement_layout_second);
         file_symbol_second= view.findViewById(R.id.file_symbol_second);
         file_name_second= view.findViewById(R.id.file_name_second);
         attachemnt_button= view.findViewById(R.id.attachemnt_button);
+        attachemnt_button.setVisibility(View.GONE);
         submit_button = view.findViewById(R.id.submit_button);
+        resubmit_button= view.findViewById(R.id.resubmit_button);
 
         preferences = getActivity().getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE);
 
-
+Log.d("work_id", work_id+"  is your work id");
+        get_Previous_Submissions(work_id);
 
         due_date = view.findViewById(R.id.due_date);
         title_field    = view.findViewById(R.id.title);
         description_field = view.findViewById(R.id.description);
         file_symbol = view.findViewById(R.id.file_symbol);
         file_name= view.findViewById(R.id.file_name);
+
+
+
+        title_field.setText(title);
+        due_date.setText(due_data);
+        description_field.setText(description);
+
+
+
 
         attachemnt_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,7 +149,14 @@ public class Student_Assignment_Fragment extends Fragment {
                            request.enqueue(new Callback<Submission_Response>() {
                                @Override
                                public void onResponse(Call<Submission_Response> call, Response<Submission_Response> response) {
-                                   Log.d("Assignment Status is" , response.toString());
+                                   if(response.body().getProtocol41())
+                                   {
+                                       Toast.makeText(getContext(),"Assignment Submitted Successfully",Toast.LENGTH_LONG).show();
+                                       submitted_Assignment_ =  response.body().getInsertId();
+                                       attachemnt_button.setVisibility(View.GONE);
+                                       submit_button.setVisibility(View.GONE);
+                                       resubmit_button.setVisibility(View.VISIBLE);
+                                   }
                                }
 
                                @Override
@@ -159,10 +183,48 @@ public class Student_Assignment_Fragment extends Fragment {
 
 
 
-        title_field.setText(title);
-        due_date.setText(due_data);
-        description_field.setText(description);
+        resubmit_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                //delete the Assignment fetched
+                if(submitted_Assignment_!=-20)
+                {
+                    DestinationService service = ServiceBuilder.INSTANCE.buildService(DestinationService.class);
+                    Call<Delete_Submission_Response>  request = service.delete_submission(submitted_Assignment_);
+
+                    request.enqueue(new Callback<Delete_Submission_Response>() {
+                        @Override
+                        public void onResponse(Call<Delete_Submission_Response> call, Response<Delete_Submission_Response> response) {
+
+                            if(response.body()!=null)
+                            {
+
+
+                            if(response.body().getProtocol41())
+                            {
+                                Toast.makeText(getContext(),"Deleted Successfully",Toast.LENGTH_LONG).show();
+                                resubmit_button.setVisibility(View.GONE);
+                                attachemnt_button.setVisibility(View.VISIBLE);
+                                attachement_layout_second.setVisibility(View.GONE);
+                                submit_button.setVisibility(View.VISIBLE);
+                            }
+                            }
+                            else
+                            {
+                                Toast.makeText(getContext(),"Unable to delete your submission",Toast.LENGTH_LONG).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Delete_Submission_Response> call, Throwable t) {
+
+                            Toast.makeText(getContext(),"Failed To delete Submission",Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            }
+        });
 
 
         String mineType="";
@@ -170,6 +232,8 @@ public class Student_Assignment_Fragment extends Fragment {
         {
             file_name.setText(attachment_link.substring(attachment_link.lastIndexOf('/')+1));
             mineType=attachment_link.substring(attachment_link.lastIndexOf('.')) ;
+//            submit_button.setVisibility(View.GONE);
+//            resubmit_button.setVisibility(View.VISIBLE);
         }
 
 
@@ -221,6 +285,90 @@ public class Student_Assignment_Fragment extends Fragment {
 
 
         return view;
+    }
+
+    private void get_Previous_Submissions(String work_id) {
+
+        DestinationService service = ServiceBuilder.INSTANCE.buildService(DestinationService.class);
+       Call<ArrayList<Student_Submission_Response>> request = service.get_student_submission(Integer.parseInt(work_id),preferences.getString("google_token",null));
+                  request.enqueue(new Callback<ArrayList<Student_Submission_Response>>() {
+                      @Override
+                      public void onResponse(Call<ArrayList<Student_Submission_Response>> call, Response<ArrayList<Student_Submission_Response>> response) {
+                          if(response.body().size()==0)
+                          {
+                              attachemnt_button.setVisibility(View.VISIBLE);
+                              resubmit_button.setVisibility(View.GONE);
+                              submit_button.setVisibility(View.VISIBLE);
+                          }
+                          else
+                          {
+
+                              resubmit_button.setVisibility(View.VISIBLE);
+                              attachement_layout_second.setVisibility(View.VISIBLE);
+                              file_symbol_second.setVisibility(View.VISIBLE);
+                              String attachment_link_second = response.body().get(response.body().size()-1).getAttachment();
+                              submitted_Assignment_ = response.body().get(response.body().size()-1).getSubmission_id();
+                              String mineType="";
+                              if(!(attachment_link_second.isEmpty()))
+                              {
+                                  file_name_second.setText(attachment_link.substring(attachment_link.lastIndexOf('/')+1));
+                                  mineType=attachment_link.substring(attachment_link.lastIndexOf('.')) ;
+                              }
+
+
+                              switch (mineType)
+                              {
+                                  case ".pdf":
+                                  {
+                                      file_symbol_second.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.pdf_placeholder));
+                                      break;
+                                  }
+
+                                  case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+                                  {
+
+                                      file_symbol_second.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ms_word_placeholder));
+                                      break;
+                                  }
+
+                                  case "application/vnd.openxmlformats-officedocument.presentationml.presentation":
+                                  {
+                                      file_symbol_second.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.powerpoint_placeholder));
+                                      break;
+                                  }
+
+                                  case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+                                  {
+                                      file_symbol_second.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.exce_placeholder));
+                                      break;
+                                  }
+                                  default:{
+
+                                      if(mineType.contains("image"))
+                                      {
+                                          file_symbol_second.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.image_placeholder));
+                                      }
+                                      else if(mineType.contains("video"))
+                                      {
+                                          file_symbol_second.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.video_placeholder));
+                                      }
+                                      else
+                                      {
+                                          file_symbol_second.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_attachment));
+                                      }
+                                  }
+
+                              }
+
+
+                          }
+                      }
+
+                      @Override
+                      public void onFailure(Call<ArrayList<Student_Submission_Response>> call, Throwable t) {
+
+                      }
+                  });
     }
 
 
@@ -402,4 +550,6 @@ public class Student_Assignment_Fragment extends Fragment {
         }
         return mimeType;
     }
+
+
 }

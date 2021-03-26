@@ -11,16 +11,13 @@ public class Class_Fixtures {
     String fri;
     String sat;
     String class_code;
-    String last_modified_on;
-    String email;
-    String name;
-    String google_token;
-    String profile_pic;
+   String class_link;
+   String class_name;
+   String desciption;
 
-    public Class_Fixtures(Integer week_no, String sun, String mon, String tue, String wed, String thu,
-                          String fri, String sat, String class_code, String last_modified_on, String email,
-                          String name, String google_token, String profile_pic)
-    {
+    public Class_Fixtures(Integer week_no, String sun, String mon, String tue,
+                          String wed, String thu, String fri, String sat, String class_code,
+                          String class_link, String class_name, String desciption) {
         this.week_no = week_no;
         this.sun = sun;
         this.mon = mon;
@@ -30,11 +27,9 @@ public class Class_Fixtures {
         this.fri = fri;
         this.sat = sat;
         this.class_code = class_code;
-        this.last_modified_on = last_modified_on;
-        this.email = email;
-        this.name = name;
-        this.google_token = google_token;
-        this.profile_pic = profile_pic;
+        this.class_link = class_link;
+        this.class_name = class_name;
+        this.desciption = desciption;
     }
 
     public Integer getWeek_no() {
@@ -109,43 +104,27 @@ public class Class_Fixtures {
         this.class_code = class_code;
     }
 
-    public String getLast_modified_on() {
-        return last_modified_on;
+    public String getClass_link() {
+        return class_link;
     }
 
-    public void setLast_modified_on(String last_modified_on) {
-        this.last_modified_on = last_modified_on;
+    public void setClass_link(String class_link) {
+        this.class_link = class_link;
     }
 
-    public String getEmail() {
-        return email;
+    public String getClass_name() {
+        return class_name;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setClass_name(String class_name) {
+        this.class_name = class_name;
     }
 
-    public String getName() {
-        return name;
+    public String getDesciption() {
+        return desciption;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getGoogle_token() {
-        return google_token;
-    }
-
-    public void setGoogle_token(String google_token) {
-        this.google_token = google_token;
-    }
-
-    public String getProfile_pic() {
-        return profile_pic;
-    }
-
-    public void setProfile_pic(String profile_pic) {
-        this.profile_pic = profile_pic;
+    public void setDesciption(String desciption) {
+        this.desciption = desciption;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.elite_classroom.Adapter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.elite_classroom.Fragments.Schedule_Class_Fragment;
 import com.example.elite_classroom.Models.Recycler_Models.Get_Classes_List;
+import com.example.elite_classroom.Models.Retrofit_Models.Schedule_Class_Request;
 import com.example.elite_classroom.R;
 
 import java.util.ArrayList;
@@ -45,9 +47,12 @@ public class Owner_Fragment_Adapter extends RecyclerView.Adapter<Owner_Fragment_
          viewHolder.parent_layout.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
-
+                 Bundle b = new Bundle();
+                 b.putString("class_code", list1.get(i).getClass_code());
+                  Schedule_Class_Fragment schedule_class_fragment= new Schedule_Class_Fragment();
+                  schedule_class_fragment.setArguments(b);
                  ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
-                         new Schedule_Class_Fragment(),"Schedule_FRAGMENT").commit();
+                        schedule_class_fragment,"Schedule_FRAGMENT").commit();
 //                 Intent intent = new Intent(context, ClassActivity.class);
 //                 intent.putExtra("owner_id",list1.get(i).getOwner_id());
 //                 intent.putExtra("owner_name",list1.get(i).getOwner_name());

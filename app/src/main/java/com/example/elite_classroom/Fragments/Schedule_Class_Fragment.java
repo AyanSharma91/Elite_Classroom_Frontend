@@ -10,16 +10,28 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.fragment.app.Fragment;
 
+import com.example.elite_classroom.Models.Retrofit_Models.Auth_Responses;
+import com.example.elite_classroom.Models.Retrofit_Models.Google_Logins;
+import com.example.elite_classroom.Models.Retrofit_Models.Schedule_Class_Request;
+import com.example.elite_classroom.Models.Retrofit_Models.Schedule_Class_Response;
 import com.example.elite_classroom.R;
+import com.example.elite_classroom.Retrofit.DestinationService;
+import com.example.elite_classroom.Retrofit.ServiceBuilder;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Schedule_Class_Fragment extends Fragment {
 
@@ -30,6 +42,7 @@ public class Schedule_Class_Fragment extends Fragment {
     Calendar myCalendar;
     TextView select_time;
     Button schedule_button;
+    String classcode="";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,12 +50,45 @@ public class Schedule_Class_Fragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_schedule__class_, container, false);
 
+        classcode = getArguments().getString("class_code");
+
         class_link = view.findViewById(R.id.class_link);
         class_description = view.findViewById(R.id.class_description);
         select_date = view.findViewById(R.id.select_date);
         select_time = view.findViewById(R.id.select_time);
         schedule_button = view.findViewById(R.id.schedule_button);
         myCalendar = Calendar.getInstance();
+
+
+        schedule_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                DestinationService service = ServiceBuilder.INSTANCE.buildService(DestinationService.class);
+                Schedule_Class_Request schedule_class = new Schedule_Class_Request(classcode,select_date.getText().toString(),select_time.getText().toString(),class_description.getText().toString(),class_link.getText().toString());
+                Call<Schedule_Class_Response> request = service.schedule_Class(schedule_class);
+                request.enqueue(new Callback<Schedule_Class_Response>() {
+                    @Override
+                    public void onResponse(Call<Schedule_Class_Response> call, Response<Schedule_Class_Response> response) {
+
+                        if(response.body().getMessage().equals("Class scheduled!"));
+                        {
+                            Toast.makeText(getContext(), "Class Scheduled", Toast.LENGTH_LONG).show();
+                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
+                                    new Calender_Fragment(), "Calender_FRAGMENT").commit();
+
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Schedule_Class_Response> call, Throwable t) {
+
+                    }
+                });
+
+        }
+        });
 
 
         DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {

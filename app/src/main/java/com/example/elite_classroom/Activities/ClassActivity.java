@@ -1,8 +1,11 @@
 package com.example.elite_classroom.Activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,6 +26,10 @@ import com.google.android.material.navigation.NavigationView;
 public class ClassActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     DrawerLayout drawer;
     TextView name_second;
+
+    String sharedPrefFile = "Login_Credentials";
+    SharedPreferences preferences;
+    TextView settings;
     Bundle bundle;
     public static String classCode, owner_id, class_name, owner_name;
 
@@ -30,6 +37,11 @@ public class ClassActivity extends AppCompatActivity implements NavigationView.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_class);
+
+        preferences =ClassActivity.this.getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE);
+        settings = findViewById(R.id.settings);
+
+
 
         name_second = findViewById(R.id.name_second);
         BottomNavigationView btview = findViewById(R.id.bottom_navigation);
@@ -46,6 +58,17 @@ public class ClassActivity extends AppCompatActivity implements NavigationView.O
         bundle.putString("class_name", class_name);
         bundle.putString("owner_name", owner_name);
         bundle.putString("owner_id", owner_id);
+
+
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ClassActivity.this, ChatActivity.class);
+                intent.putExtra("class_code",classCode);
+                intent.putExtra("google_token",preferences.getString("google_token",null));
+                startActivity(intent);
+            }
+        });
 
 
         BottomNavigationView.OnNavigationItemSelectedListener navListener =
