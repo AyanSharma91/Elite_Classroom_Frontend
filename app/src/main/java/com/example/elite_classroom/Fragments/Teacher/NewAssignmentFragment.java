@@ -280,18 +280,27 @@ public class NewAssignmentFragment extends Fragment implements PointDialog.Point
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
               String filePath = "";
-       if(getPathFromUri(getContext(),data.getData())!=null)
-        {
+              if(data!=null)
+              {
+                  if(getPathFromUri(getContext(),data.getData())!=null)
+                  {
 
-            filePath = getPathFromUri(getContext(),data.getData());
-        }
-        else if(FileUtils.getPath(getContext(),data.getData())!=null)
-        {
-            filePath = FileUtils.getPath(getContext(),data.getData());
-        }
+                      filePath = getPathFromUri(getContext(),data.getData());
+                  }
+                  else if(FileUtils.getPath(getContext(),data.getData())!=null)
+                  {
+                      filePath = FileUtils.getPath(getContext(),data.getData());
+                  }
 
-        file_uri= data.getData();
-         file = new File(filePath);
+                  file_uri= data.getData();
+                  file = new File(filePath);
+              }
+              else {
+
+              }
+
+
+
 
 
         if(file!=null)

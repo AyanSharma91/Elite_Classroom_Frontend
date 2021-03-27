@@ -2,6 +2,7 @@ package com.example.elite_classroom.Fragments;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.DownloadManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,6 +53,7 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Url;
 
 public class Student_Assignment_Fragment extends Fragment {
 
@@ -60,13 +63,15 @@ public class Student_Assignment_Fragment extends Fragment {
     ImageView file_symbol;
     TextView file_name;
     Integer  submitted_Assignment_=-20;
+    String  attachment_link_second="";
     File file;
     Uri file_uri;
     RelativeLayout attachement_layout_second;
+    RelativeLayout attachement_layout;
     ImageView file_symbol_second;
     TextView file_name_second,resubmit_button;
     TextView attachemnt_button, submit_button;
-
+String append = "https://elite-classroom-server.herokuapp.com/api/storage/download?url=";
     String sharedPrefFile = "Login_Credentials";
     SharedPreferences preferences;
 
@@ -91,10 +96,47 @@ public class Student_Assignment_Fragment extends Fragment {
         attachemnt_button.setVisibility(View.GONE);
         submit_button = view.findViewById(R.id.submit_button);
         resubmit_button= view.findViewById(R.id.resubmit_button);
+        attachement_layout= view.findViewById(R.id.attachement_layout);
+
+        attachement_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(!(attachment_link.isEmpty()))
+                {
+                    if(ContextCompat.checkSelfPermission(Objects.requireNonNull((Activity)getContext()), Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED ||  ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)
+                    {
+                        // Log.e(TAG, "setxml: peremission prob");
+                        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},114);
+
+
+
+                    } else {
+                        startDownloading(attachment_link,null);
+                    }
+                }
+            }
+        });
+        attachement_layout_second.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                        if(!(attachment_link_second.isEmpty())) {
+                            startDownloading(attachment_link_second, null);
+                        }
+                        else if(file_uri!=null)
+                        {
+
+                        }
+
+
+            }
+        });
 
         preferences = getActivity().getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE);
 
-Log.d("work_id", work_id+"  is your work id");
+        Log.d("work_id", work_id+"  is your work id");
         get_Previous_Submissions(work_id);
 
         due_date = view.findViewById(R.id.due_date);
@@ -137,7 +179,7 @@ Log.d("work_id", work_id+"  is your work id");
                     @Override
                     public void onResponse(Call<Upload_Response> call, Response<Upload_Response> response) {
 
-                       String  attachment_link_second = response.body().getLocation();
+                       attachment_link_second = response.body().getLocation();
 
                        if(attachment_link_second!=null)
                        {
@@ -306,7 +348,7 @@ Log.d("work_id", work_id+"  is your work id");
                               resubmit_button.setVisibility(View.VISIBLE);
                               attachement_layout_second.setVisibility(View.VISIBLE);
                               file_symbol_second.setVisibility(View.VISIBLE);
-                              String attachment_link_second = response.body().get(response.body().size()-1).getAttachment();
+                               attachment_link_second = response.body().get(response.body().size()-1).getAttachment();
                               submitted_Assignment_ = response.body().get(response.body().size()-1).getSubmission_id();
                               String mineType="";
                               if(!(attachment_link_second.isEmpty()))
@@ -403,6 +445,10 @@ Log.d("work_id", work_id+"  is your work id");
                 Toast.makeText(getContext(),"Access Denied",Toast.LENGTH_LONG).show();
             }
         }
+        else if(requestCode==114)
+        {
+            startDownloading(attachment_link,null);
+        }
     }
 
     private void open_Intent(int type) {
@@ -448,6 +494,7 @@ Log.d("work_id", work_id+"  is your work id");
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         String filePath = "";
+
         if(getPathFromUri(getContext(),data.getData())!=null)
         {
 
@@ -551,5 +598,23 @@ Log.d("work_id", work_id+"  is your work id");
         return mimeType;
     }
 
+    private void startDownloading(String url,Uri uri) {
 
+        if(uri==null)
+        {
+            Log.d("download_url", url.toString());
+            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(append+url));
+            request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
+
+            request.setTitle("Download");
+            request.setDescription("Downloading file.....");
+            request.allowScanningByMediaScanner();
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,""+System.currentTimeMillis());
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+
+            DownloadManager manager  = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
+            manager.enqueue(request);
+            Toast.makeText(getContext(),"Downloading file.....",Toast.LENGTH_LONG).show();
+        }
+    }
 }

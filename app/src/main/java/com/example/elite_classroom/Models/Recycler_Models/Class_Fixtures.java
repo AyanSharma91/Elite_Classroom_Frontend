@@ -14,6 +14,8 @@ public class Class_Fixtures {
    String class_link;
    String class_name;
    String desciption;
+   Integer owner_id;
+   String profile_pic;
 
     public Class_Fixtures(Integer week_no, String sun, String mon, String tue,
                           String wed, String thu, String fri, String sat, String class_code,

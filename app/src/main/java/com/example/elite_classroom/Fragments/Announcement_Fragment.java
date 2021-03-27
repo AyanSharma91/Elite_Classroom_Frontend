@@ -1,17 +1,29 @@
 package com.example.elite_classroom.Fragments;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.DownloadManager;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.elite_classroom.R;
+
+import java.util.Objects;
 
 
 public class Announcement_Fragment extends Fragment {
@@ -21,6 +33,8 @@ public class Announcement_Fragment extends Fragment {
 
     TextView due_date, title_field,description_field;
     ImageView file_symbol;
+    String append = "https://elite-classroom-server.herokuapp.com/api/storage/download?url=";
+    RelativeLayout attachement_layout;
     TextView file_name;
 
 
@@ -50,6 +64,26 @@ public class Announcement_Fragment extends Fragment {
         due_date.setText(due_data);
         description_field.setText(description);
 
+        attachement_layout = view.findViewById(R.id.attachement_layout);
+        attachement_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(!(attachment_link.isEmpty()))
+                {
+                    if(ContextCompat.checkSelfPermission(Objects.requireNonNull((Activity)getContext()), Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED ||  ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)
+                    {
+                        // Log.e(TAG, "setxml: peremission prob");
+                        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},114);
+
+
+
+                    } else {
+                        startDownloading(attachment_link,null);
+                    }
+                }
+            }
+        });
         String mineType="";
         if(!attachment_link.isEmpty())
         {
@@ -103,5 +137,25 @@ public class Announcement_Fragment extends Fragment {
         }
 
         return view;
+    }
+
+    private void startDownloading(String url, Uri uri) {
+
+        if(uri==null)
+        {
+            Log.d("download_url", url.toString());
+            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(append+url));
+            request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
+
+            request.setTitle("Download");
+            request.setDescription("Downloading file.....");
+            request.allowScanningByMediaScanner();
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,""+System.currentTimeMillis());
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+
+            DownloadManager manager  = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
+            manager.enqueue(request);
+            Toast.makeText(getContext(),"Downloading file.....",Toast.LENGTH_LONG).show();
+        }
     }
 }
