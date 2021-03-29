@@ -1,5 +1,6 @@
 package com.example.elite_classroom.Activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -16,22 +18,29 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.elite_classroom.Fragments.AboutFragment;
 import com.example.elite_classroom.Fragments.ClassWorkFragment;
+import com.example.elite_classroom.Fragments.FeedbackFragment;
 import com.example.elite_classroom.Fragments.PeopleFragment;
 import com.example.elite_classroom.Fragments.StreamFragment;
+import com.example.elite_classroom.Fragments.ToDo.ToDoFragment;
 import com.example.elite_classroom.R;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
 public class ClassActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     DrawerLayout drawer;
     TextView name_second;
-
+    GoogleSignInClient mGoogleSignInClient;
     String sharedPrefFile = "Login_Credentials";
-    SharedPreferences preferences;
+    public static SharedPreferences preferences;
     TextView settings;
     Bundle bundle;
     public static String classCode, owner_id, class_name, owner_name;
+    public static TextView name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,10 +72,7 @@ public class ClassActivity extends AppCompatActivity implements NavigationView.O
         settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ClassActivity.this, ChatActivity.class);
-                intent.putExtra("class_code",classCode);
-                intent.putExtra("google_token",preferences.getString("google_token",null));
-                startActivity(intent);
+
             }
         });
 
@@ -168,28 +174,35 @@ public class ClassActivity extends AppCompatActivity implements NavigationView.O
                 finish();
                 break;
             case R.id.nav_calender:
-
+                startActivity(new Intent(ClassActivity.this,CalenderActivity.class));
                 break;
             case R.id.nav_todo:
-
-                break;
-            case R.id.nav_archived:
-
-                break;
-            case R.id.nav_folder:
-
-                break;
-            case R.id.nav_setting:
-
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container1,
+                        new ToDoFragment(),"TODO_FRAGMENT").commit();
                 break;
             case R.id.nav_about:
-
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container1,
+                    new AboutFragment(),"ABOUT_FRAGMENT").commit();
                 break;
             case R.id.nav_feedback:
-
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container1,
+                        new FeedbackFragment(),"FEEDBACK_FRAGMENT").commit();
                 break;
             case R.id.nav_signout:
+                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build();
+                mGoogleSignInClient = GoogleSignIn.getClient(ClassActivity.this, gso);
+                mGoogleSignInClient.signOut();
 
+                SharedPreferences.Editor editor =  preferences.edit();
+                editor.putString("name", null);
+                editor.putString("email",null);
+                editor.putString("jwt_token", null);
+                editor.putString("google_token", null);
+                editor.apply();
+                editor.commit();
+                Intent intent = new Intent(ClassActivity.this, LoginActivity.class);
+                Toast.makeText(ClassActivity.this,"Signed_Out",Toast.LENGTH_LONG).show();
+                startActivity(intent);
                 break;
         }
         drawer.closeDrawer(GravityCompat.START);
@@ -201,7 +214,10 @@ public class ClassActivity extends AppCompatActivity implements NavigationView.O
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Intent a = new Intent(Intent.ACTION_MAIN);
+            a.addCategory(Intent.CATEGORY_HOME);
+            a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(a);
         }
 
     }

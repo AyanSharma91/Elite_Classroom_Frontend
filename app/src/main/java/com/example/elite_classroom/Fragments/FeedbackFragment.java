@@ -1,6 +1,7 @@
 package com.example.elite_classroom.Fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,13 +26,15 @@ import org.json.JSONObject;
 
 import java.util.Objects;
 
+import static com.example.elite_classroom.Activities.LoginActivity.preferences;
+
+
 public class FeedbackFragment extends Fragment {
 
-    View view;
     EditText etFeedback;
     Button submit_feedback;
 
-    private String URL = "https://elite-classroom-server.herokuapp.com/api/feedback/submitFeedback";
+    final String URL = "https://elite-classroom-server.herokuapp.com/api/feedback/submitFeedback";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,7 +50,6 @@ public class FeedbackFragment extends Fragment {
         MainActivity.textView.setText("Feedback");
         etFeedback = view.findViewById(R.id.et_feedback);
         submit_feedback = view.findViewById(R.id.submit_feedback);
-
         return view;
     }
 
@@ -71,13 +73,13 @@ public class FeedbackFragment extends Fragment {
                     JSONObject obj = new JSONObject();
 
                     try {
-                        obj.put("user_id","11");    // later replaced by user ID
+                        obj.put("user_id",preferences.getString("google_token",null));
                         obj.put("feedback_msg",feedback);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
-                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, obj, new Response.Listener<JSONObject>() {
+                    JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, URL, obj, new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
                             try {
@@ -94,7 +96,7 @@ public class FeedbackFragment extends Fragment {
                         }
                     });
 
-                    requestQueue.add(jsonObjectRequest);
+                    requestQueue.add(request);
                 }
             }
         });

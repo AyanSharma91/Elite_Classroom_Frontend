@@ -50,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
     ProgressBar progress_bar;
     Integer RC_SIGN_IN =0;
     Window window;
-    SharedPreferences preferences;
+    public static SharedPreferences preferences;
     final Handler handler = new Handler();
 
 
@@ -252,4 +252,13 @@ googleBTN= findViewById(R.id.googleBTN);
                handler.postDelayed(this,1550);
         }
     };
+
+    @Override
+    public void onBackPressed() {
+        Intent a = new Intent(Intent.ACTION_MAIN);
+        a.addCategory(Intent.CATEGORY_HOME);
+        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(a);
+
+    }
 }
