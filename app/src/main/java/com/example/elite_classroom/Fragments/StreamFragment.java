@@ -1,6 +1,7 @@
 package com.example.elite_classroom.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,10 +20,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.elite_classroom.Activities.ChatActivity;
 import com.example.elite_classroom.Activities.ClassActivity;
 import com.example.elite_classroom.Adapter.StreamAdapter;
+import com.example.elite_classroom.Dialogs.ClassBottomSheetDialog;
+import com.example.elite_classroom.Dialogs.ClassWorkBottomSheetDialog;
 import com.example.elite_classroom.Models.Recycler_Models.Stream;
 import com.example.elite_classroom.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -30,6 +35,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import static com.example.elite_classroom.Activities.ClassActivity.classCode;
+import static com.example.elite_classroom.Activities.ClassActivity.preferences;
 
 public class StreamFragment extends Fragment {
     List<Stream> list;
@@ -39,6 +47,7 @@ public class StreamFragment extends Fragment {
     Context ctx;
     String token;
     String sharedPrefFile = "Login_Credentials";
+    FloatingActionButton chat;
 
     @Nullable
     @Override
@@ -55,6 +64,17 @@ public class StreamFragment extends Fragment {
         owner_name.setText(owner_names);
         ctx=getActivity();
 
+        chat = view.findViewById(R.id.class_bottom);
+        chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ChatActivity.class);
+                intent.putExtra("class_code",classCode);
+                intent.putExtra("google_token",preferences.getString("google_token",null));
+                startActivity(intent);
+            }
+        });
+
         SharedPreferences preferences = getActivity().getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE);
         token = preferences.getString("google_token",null);
 
@@ -69,14 +89,14 @@ public class StreamFragment extends Fragment {
 
         RequestQueue requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getActivity()));
 
-        String url = "https://elite-classroom-server.herokuapp.com/api/notes/getNotesCode/"+ ClassActivity.classCode;
+        String url = "https://elite-classroom-server.herokuapp.com/api/notes/getNotesCode/"+ classCode;
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 try {
                     for(int i=0;i<response.length();i++){
                         JSONObject o = response.getJSONObject(i);
-                        if(o.getString("class_code").equals(ClassActivity.classCode)){
+                        if(o.getString("class_code").equals(classCode)){
                             Stream l = new Stream(
                                     o.getString("notes_id"),
                                     o.getString("class_code"),

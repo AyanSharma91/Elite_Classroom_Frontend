@@ -25,18 +25,6 @@
            <menu>
             <group android:checkableBehavior="single">
                 <item
-                    android:id="@+id/nav_archived"
-                    android:title="Archived Classes"
-                    android:icon="@drawable/ic_archived"/>
-                <item
-                    android:id="@+id/nav_folder"
-                    android:title="Classroom Folder"
-                    android:icon="@drawable/ic_folder"/>
-                <item
-                    android:id="@+id/nav_setting"
-                    android:title="Settings"
-                    android:icon="@drawable/ic_setting"/>
-                <item
                     android:id="@+id/nav_about"
                     android:title="About"
                     android:icon="@drawable/ic_about"/>

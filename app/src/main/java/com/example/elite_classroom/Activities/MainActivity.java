@@ -15,6 +15,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
@@ -49,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         getWindow().setStatusBarColor(ContextCompat.getColor(MainActivity.this,R.color.white));
         setContentView(R.layout.activity_main);
+
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         test = findViewById(R.id.test);
 
@@ -98,15 +101,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 name.setText("To-Do");
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
                         new ToDoFragment(),"TODO_FRAGMENT").commit();
-                break;
-            case R.id.nav_archived:
-
-                break;
-            case R.id.nav_folder:
-
-                break;
-            case R.id.nav_setting:
-
                 break;
             case R.id.nav_about:
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
