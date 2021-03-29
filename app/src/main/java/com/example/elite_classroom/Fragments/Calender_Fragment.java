@@ -238,7 +238,7 @@ public class Calender_Fragment extends Fragment {
 
 
 
-                Calender_Adapter adapter = new Calender_Adapter(getContext(),arranged_fixtures,false);
+                Calender_Adapter adapter = new Calender_Adapter(getContext(),arranged_fixtures,false,preferences.getString("google_token",null));
                 LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
                 current_next_week_second.setAdapter(adapter);
                 current_next_week_second.setLayoutManager(layoutManager);
@@ -419,7 +419,7 @@ public class Calender_Fragment extends Fragment {
 
 
 
-                Calender_Adapter adapter = new Calender_Adapter(getContext(),arranged_fixtures ,true);
+                Calender_Adapter adapter = new Calender_Adapter(getContext(),arranged_fixtures ,true,preferences.getString("google_token",null));
                 LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
                 current_next_week.setAdapter(adapter);
                 current_next_week.setLayoutManager(layoutManager);

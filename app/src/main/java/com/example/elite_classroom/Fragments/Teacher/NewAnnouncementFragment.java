@@ -111,21 +111,7 @@ public class NewAnnouncementFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                DestinationService service = ServiceBuilder.INSTANCE.buildService(DestinationService.class);
-                RequestBody requestFile = RequestBody.create(MediaType.parse(getMimeType(file_uri)), file);
-                Log.d("MIME_type",getMimeType(file_uri).toString());
-
-                MultipartBody.Part multipartBody =MultipartBody.Part.createFormData("file",file.getName(),requestFile);
-                Call<Upload_Response> responseBodyCall = service.uploadFile( multipartBody);
-
-                responseBodyCall.enqueue(new Callback<Upload_Response>() {
-                    @Override
-                    public void onResponse(Call<Upload_Response> call, retrofit2.Response<Upload_Response> response) {
-
-
-                        attachment_link = response.body().getLocation();
-
-                        String title = announcement_title.getText().toString();
+                String title = announcement_title.getText().toString();
                         String description = announcement_description.getText().toString();
                         if(title.isEmpty()){
                             announcement_title.setError("Please enter Title");
@@ -136,18 +122,9 @@ public class NewAnnouncementFragment extends Fragment {
                             announcement_description.requestFocus();
                         }
                         else{
-                            announcement(title,description,attachment_link);
+                            announcement(title,description,"");
                         }
                     }
-
-                    @Override
-                    public void onFailure(Call<Upload_Response> call, Throwable t) {
-
-                    }
-                });
-
-
-            }
         });
         return view;
     }
@@ -303,25 +280,7 @@ public class NewAnnouncementFragment extends Fragment {
             }
         }
 
-//        DestinationService service = ServiceBuilder.INSTANCE.buildService(DestinationService.class);
-//        RequestBody requestFile = RequestBody.create(MediaType.parse(getMimeType(data.getData())), file);
-//        Log.d("MIME_type",getMimeType(data.getData()).toString());
-//        MultipartBody.Part multipartBody =MultipartBody.Part.createFormData("file",file.getName(),requestFile);
-//        Call<Upload_Response> responseBodyCall = service.uploadFile( multipartBody);
-//
-//        responseBodyCall.enqueue(new Callback<Upload_Response>() {
-//            @Override
-//            public void onResponse(Call<Upload_Response> call, retrofit2.Response<Upload_Response> response) {
-//
-//                Log.d("File_Upload",response.body().getLocation());
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Upload_Response> call, Throwable t) {
-//
-//            }
-//        });
-//
+
 
 
     }

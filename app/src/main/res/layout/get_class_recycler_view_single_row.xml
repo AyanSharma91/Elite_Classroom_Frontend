@@ -6,15 +6,18 @@
     android:layout_marginBottom="5dp"
     android:layout_marginStart="4dp"
     android:layout_marginEnd="4dp"
+
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="10dp"
-    android:id="@+id/parent_layout"
+
     android:layout_height="140dp">
 
+<!--    android:background="#044F8A"-->
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:background="#044F8A"
+
+        android:id="@+id/parent_layout"
         android:layout_height="match_parent">
 
         <TextView

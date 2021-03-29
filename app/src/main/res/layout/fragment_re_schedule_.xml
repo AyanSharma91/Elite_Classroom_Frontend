@@ -19,6 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/class_link"
+            android:autoLink="web|email"
             android:hint="Class Link"
             android:textColorHint="#7A8089" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -113,6 +114,20 @@
         android:layout_height="wrap_content">
     </Button>
 
+    <ImageView
+        android:id="@+id/delete_class"
+        android:visibility="gone"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40dp"
+        android:layout_marginEnd="40dp"
+        android:src="@drawable/delete"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="40dp">
+
+    </ImageView>
 
 
 

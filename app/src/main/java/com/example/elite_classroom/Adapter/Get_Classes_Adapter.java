@@ -2,6 +2,11 @@ package com.example.elite_classroom.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,11 +14,15 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.elite_classroom.Activities.ClassActivity;
 import com.example.elite_classroom.Models.Recycler_Models.Get_Classes_List;
 import com.example.elite_classroom.R;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +47,29 @@ public class Get_Classes_Adapter extends RecyclerView.Adapter<Get_Classes_Adapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+
+
+
+        Picasso.get().load("https://elite-classroom-server.herokuapp.com/api/theme/get").into(new Target(){
+
+
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+
+                Drawable d = new BitmapDrawable(context.getResources(), bitmap);
+                viewHolder.parent_layout.setBackground(d);
+            }
+
+            @Override
+            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
+
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        });
 
          viewHolder.class_name.setText(list1.get(i).getClass_name());
          viewHolder.owner_name.setText(list1.get(i).getOwner_name());
@@ -66,7 +98,7 @@ public class Get_Classes_Adapter extends RecyclerView.Adapter<Get_Classes_Adapte
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        CardView parent_layout ;
+        ConstraintLayout parent_layout ;
         TextView  class_name;
         TextView  owner_name;
         TextView students_no;

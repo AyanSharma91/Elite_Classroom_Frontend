@@ -39,4 +39,13 @@ interface DestinationService {
     @DELETE("work/delete/{sid}")
     fun delete_submission(@Path("sid") sid : Int) : Call<Delete_Submission_Response>
 
+    @PUT("calender/rescheduleClass")
+    fun  reschedule_Class(@Body  Reschedule_Class : Reschedule_Class) : Call<Reschedule_Response>
+
+    @DELETE("calender/cancelClass")
+    fun cancel_Class(@Body Cancel_Class_Request : Cancel_Class_Request) : Call<Reschedule_Response>
+
+    @GET("work/read/work/{workid}")
+    fun get_student_submissions(@Path("workid") workid: Int) : Call<ArrayList<Student_Submissions_Record>>
+
 }

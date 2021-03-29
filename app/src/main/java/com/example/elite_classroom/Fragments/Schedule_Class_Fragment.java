@@ -41,7 +41,7 @@ public class Schedule_Class_Fragment extends Fragment {
     TextView select_date;
     Calendar myCalendar;
     TextView select_time;
-    Button schedule_button;
+    Button schedule_button,reschedule_button;
     String classcode="";
 
     @Override
@@ -49,6 +49,9 @@ public class Schedule_Class_Fragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_schedule__class_, container, false);
+
+
+
 
         classcode = getArguments().getString("class_code");
 

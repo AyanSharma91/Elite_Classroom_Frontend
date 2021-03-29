@@ -1,15 +1,24 @@
 package com.example.elite_classroom.Adapter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.elite_classroom.Activities.CalenderActivity;
+import com.example.elite_classroom.Activities.ClassActivity;
+import com.example.elite_classroom.Fragments.Owner_Create_Class;
+import com.example.elite_classroom.Fragments.ReSchedule_Fragment;
+import com.example.elite_classroom.Fragments.Schedule_Class_Fragment;
 import com.example.elite_classroom.Models.Recycler_Models.Class_Fixtures;
 import com.example.elite_classroom.R;
 
@@ -25,11 +34,14 @@ public class Calender_Adapter extends RecyclerView.Adapter<Calender_Adapter.View
     List<Class_Fixtures> list1;
     Context context;
     Boolean is_current;
+    String google_token;
 
-    public Calender_Adapter(Context context, ArrayList<Class_Fixtures> list,Boolean is_current) {
+
+    public Calender_Adapter(Context context, ArrayList<Class_Fixtures> list,Boolean is_current , String google_token) {
         this.list1=list;
         this.context=context;
         this.is_current = is_current;
+        this.google_token = google_token;
     }
 
     @NonNull
@@ -43,6 +55,20 @@ public class Calender_Adapter extends RecyclerView.Adapter<Calender_Adapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
 
+
+        Bundle b = new Bundle();
+        b.putString("class_link" , list1.get(i).getClass_link());
+        b.putString("class_description" , list1.get(i).getDesciption());
+        b.putString("class_code", list1.get(i).getClass_code());
+
+        if(( list1.get(i).getDesciption())!=null)
+        {
+        Log.d("Passed_Credentials", list1.get(i).getDesciption());
+        }
+
+
+
+
         if(is_current)
         {
             viewHolder.class_name.setText(list1.get(i).getClass_name());
@@ -54,12 +80,14 @@ public class Calender_Adapter extends RecyclerView.Adapter<Calender_Adapter.View
                 {
                     viewHolder.week_day.setText("MON");
                     viewHolder.class_time.setText(list1.get(i).getMon().substring(0,8));
-                    viewHolder.date.setText(getDate(2).toString());
+                    b.putString("old_time",list1.get(i).getMon().substring(0,7));
+                    viewHolder.date.setText(getDate(1).toString());
                 }
                 else
                 {
                     viewHolder.week_day.setText("");
                     viewHolder.class_time.setText(list1.get(i).getMon());
+                    b.putString("old_time",list1.get(i).getMon());
                     viewHolder.date.setText("");
                 }
 
@@ -71,11 +99,13 @@ public class Calender_Adapter extends RecyclerView.Adapter<Calender_Adapter.View
                 {
                     viewHolder.week_day.setText("TUE");
                     viewHolder.class_time.setText(list1.get(i).getTue().substring(0,8));
-                    viewHolder.date.setText(getDate(3).toString());
+                    b.putString("old_time",list1.get(i).getTue().substring(0,7));
+                    viewHolder.date.setText(getDate(2).toString());
                 }
                 else {
                     viewHolder.week_day.setText("");
                     viewHolder.class_time.setText(list1.get(i).getTue());
+                    b.putString("old_time",list1.get(i).getTue());
                     viewHolder.date.setText("");
 
                 }
@@ -88,12 +118,14 @@ public class Calender_Adapter extends RecyclerView.Adapter<Calender_Adapter.View
                 {
                     viewHolder.week_day.setText("WED");
                     viewHolder.class_time.setText(list1.get(i).getWed().substring(0,8));
-                    viewHolder.date.setText(getDate(4).toString());
+                    b.putString("old_time",list1.get(i).getWed().substring(0,7));
+                    viewHolder.date.setText(getDate(3).toString());
                 }
                 else
                 {
                     viewHolder.week_day.setText("");
                     viewHolder.class_time.setText(list1.get(i).getWed());
+                    b.putString("old_time",list1.get(i).getWed());
                     viewHolder.date.setText("");
                 }
 
@@ -104,12 +136,14 @@ public class Calender_Adapter extends RecyclerView.Adapter<Calender_Adapter.View
                 {
                     viewHolder.week_day.setText("THU");
                     viewHolder.class_time.setText(list1.get(i).getThu().substring(0,8));
-                    viewHolder.date.setText(getDate(5).toString());
+                    b.putString("old_time",list1.get(i).getThu().substring(0,7));
+                    viewHolder.date.setText(getDate(4).toString());
                 }
                 else
                 {
                     viewHolder.week_day.setText("");
                     viewHolder.class_time.setText(list1.get(i).getThu());
+                    b.putString("old_time",list1.get(i).getThu());
                     viewHolder.date.setText("");
                 }
 
@@ -120,12 +154,14 @@ public class Calender_Adapter extends RecyclerView.Adapter<Calender_Adapter.View
                 {
                     viewHolder.week_day.setText("FRI");
                     viewHolder.class_time.setText(list1.get(i).getFri().substring(0,8));
-                    viewHolder.date.setText(getDate(6).toString());
+                    b.putString("old_time",list1.get(i).getFri().substring(0,7));
+                    viewHolder.date.setText(getDate(5).toString());
                 }
                 else
                 {
                     viewHolder.week_day.setText("");
                     viewHolder.class_time.setText(list1.get(i).getFri());
+                    b.putString("old_time",list1.get(i).getFri());
                     viewHolder.date.setText("");
                 }
 
@@ -135,12 +171,14 @@ public class Calender_Adapter extends RecyclerView.Adapter<Calender_Adapter.View
                 if ((list1.get(i).getSat().contains("first"))) {
                     viewHolder.week_day.setText("SAT");
                     viewHolder.class_time.setText(list1.get(i).getSat().substring(0, 8));
-                    viewHolder.date.setText(getDate(7).toString());
+                    b.putString("old_time",list1.get(i).getSat().substring(0,7));
+                    viewHolder.date.setText(getDate(6).toString());
                 }
                 else
                 {
                     viewHolder.week_day.setText("");
                     viewHolder.class_time.setText(list1.get(i).getSat());
+                    b.putString("old_time",list1.get(i).getSat());
                     viewHolder.date.setText("");
                 }
 
@@ -152,12 +190,14 @@ public class Calender_Adapter extends RecyclerView.Adapter<Calender_Adapter.View
                 {
                     viewHolder.week_day.setText("SUN");
                     viewHolder.class_time.setText(list1.get(i).getSun().substring(0,8));
-                    viewHolder.date.setText(getDate(1+7).toString());
+                    b.putString("old_time",list1.get(i).getSun().substring(0,7));
+                    viewHolder.date.setText(getDate(7).toString());
                 }
                 else
                 {
                     viewHolder.week_day.setText("");
                     viewHolder.class_time.setText(list1.get(i).getSun());
+                    b.putString("old_time",list1.get(i).getSun());
                     viewHolder.date.setText("");
                 }
 
@@ -176,12 +216,14 @@ public class Calender_Adapter extends RecyclerView.Adapter<Calender_Adapter.View
                 {
                     viewHolder.week_day.setText("MON");
                     viewHolder.class_time.setText(list1.get(i).getMon().substring(0,8));
-                    viewHolder.date.setText(getDate_next_week(2).toString());
+                    b.putString("old_time",list1.get(i).getMon().substring(0,7));
+                    viewHolder.date.setText(getDate_next_week(1).toString());
                 }
                 else
                 {
                     viewHolder.week_day.setText("");
                     viewHolder.class_time.setText(list1.get(i).getMon());
+                    b.putString("old_time",list1.get(i).getMon());
                     viewHolder.date.setText("");
                 }
 
@@ -193,11 +235,14 @@ public class Calender_Adapter extends RecyclerView.Adapter<Calender_Adapter.View
                 {
                     viewHolder.week_day.setText("TUE");
                     viewHolder.class_time.setText(list1.get(i).getTue().substring(0,8));
-                    viewHolder.date.setText(getDate_next_week(3).toString());
+                    b.putString("old_time",list1.get(i).getTue().substring(0,7));
+                    viewHolder.date.setText(getDate_next_week(2).toString());
                 }
                 else {
                     viewHolder.week_day.setText("");
                     viewHolder.class_time.setText(list1.get(i).getTue());
+                    b.putString("old_time",list1.get(i).getTue());
+
                     viewHolder.date.setText("");
 
                 }
@@ -210,12 +255,14 @@ public class Calender_Adapter extends RecyclerView.Adapter<Calender_Adapter.View
                 {
                     viewHolder.week_day.setText("WED");
                     viewHolder.class_time.setText(list1.get(i).getWed().substring(0,8));
-                    viewHolder.date.setText(getDate_next_week(4).toString());
+                    b.putString("old_time",list1.get(i).getWed().substring(0,7));
+                    viewHolder.date.setText(getDate_next_week(3).toString());
                 }
                 else
                 {
                     viewHolder.week_day.setText("");
                     viewHolder.class_time.setText(list1.get(i).getWed());
+                    b.putString("old_time",list1.get(i).getWed());
                     viewHolder.date.setText("");
                 }
 
@@ -226,12 +273,14 @@ public class Calender_Adapter extends RecyclerView.Adapter<Calender_Adapter.View
                 {
                     viewHolder.week_day.setText("THU");
                     viewHolder.class_time.setText(list1.get(i).getThu().substring(0,8));
-                    viewHolder.date.setText(getDate_next_week(5).toString());
+                    b.putString("old_time",list1.get(i).getThu().substring(0,7));
+                    viewHolder.date.setText(getDate_next_week(4).toString());
                 }
                 else
                 {
                     viewHolder.week_day.setText("");
                     viewHolder.class_time.setText(list1.get(i).getThu());
+                    b.putString("old_time",list1.get(i).getThu());
                     viewHolder.date.setText("");
                 }
 
@@ -242,12 +291,14 @@ public class Calender_Adapter extends RecyclerView.Adapter<Calender_Adapter.View
                 {
                     viewHolder.week_day.setText("FRI");
                     viewHolder.class_time.setText(list1.get(i).getFri().substring(0,8));
-                    viewHolder.date.setText(getDate_next_week(6).toString());
+                    b.putString("old_time",list1.get(i).getFri().substring(0,7));
+                    viewHolder.date.setText(getDate_next_week(5).toString());
                 }
                 else
                 {
                     viewHolder.week_day.setText("");
                     viewHolder.class_time.setText(list1.get(i).getFri());
+                    b.putString("old_time",list1.get(i).getFri());
                     viewHolder.date.setText("");
                 }
 
@@ -257,12 +308,14 @@ public class Calender_Adapter extends RecyclerView.Adapter<Calender_Adapter.View
                 if ((list1.get(i).getSat().contains("first"))) {
                     viewHolder.week_day.setText("SAT");
                     viewHolder.class_time.setText(list1.get(i).getSat().substring(0, 8));
-                    viewHolder.date.setText(getDate_next_week(7).toString());
+                    b.putString("old_time",list1.get(i).getSat().substring(0,7));
+                    viewHolder.date.setText(getDate_next_week(6).toString());
                 }
                 else
                 {
                     viewHolder.week_day.setText("");
                     viewHolder.class_time.setText(list1.get(i).getSat());
+                    b.putString("old_time",list1.get(i).getSat());
                     viewHolder.date.setText("");
                 }
 
@@ -274,12 +327,14 @@ public class Calender_Adapter extends RecyclerView.Adapter<Calender_Adapter.View
                 {
                     viewHolder.week_day.setText("SUN");
                     viewHolder.class_time.setText(list1.get(i).getSun().substring(0,8));
-                    viewHolder.date.setText(getDate_next_week(1+7).toString());
+                    b.putString("old_time",list1.get(i).getSun().substring(0,7));
+                    viewHolder.date.setText(getDate_next_week(7).toString());
                 }
                 else
                 {
                     viewHolder.week_day.setText("");
                     viewHolder.class_time.setText(list1.get(i).getSun());
+                    b.putString("old_time",list1.get(i).getSun());
                     viewHolder.date.setText("");
                 }
 
@@ -288,7 +343,28 @@ public class Calender_Adapter extends RecyclerView.Adapter<Calender_Adapter.View
 
         }
 
+        viewHolder.calender_single_parent_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                ReSchedule_Fragment reSchedule_fragment = new ReSchedule_Fragment();
+                if(list1.get(i).getOwner_token().equals(google_token))
+                {
+                    b.putString("is_owner", "owner");
+                    reSchedule_fragment.setArguments(b);
+                    ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
+                            reSchedule_fragment,"Reschedule_FRAGMENT").commit();
+                }
+                else
+                {
+                    b.putString("is_owner", "participant");
+                    reSchedule_fragment.setArguments(b);
+                    ((AppCompatActivity)context).getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
+                            reSchedule_fragment,"Reschedule_FRAGMENT").commit();
+                }
+
+            }
+        });
 
     }
 
@@ -305,12 +381,14 @@ public class Calender_Adapter extends RecyclerView.Adapter<Calender_Adapter.View
         TextView date;
         TextView class_name;
         TextView class_time ;
+        RelativeLayout calender_single_parent_layout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
 
             week_day = itemView.findViewById(R.id.week_day);
+            calender_single_parent_layout = itemView.findViewById(R.id.calender_single_parent_layout);
             date= itemView.findViewById(R.id.date) ;
             class_name = itemView.findViewById(R.id.class_name);
             class_time = itemView.findViewById(R.id.class_time);

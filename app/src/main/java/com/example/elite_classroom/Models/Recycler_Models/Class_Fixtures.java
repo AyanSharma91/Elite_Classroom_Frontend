@@ -13,13 +13,16 @@ public class Class_Fixtures {
     String class_code;
    String class_link;
    String class_name;
-   String desciption;
+   String description;
    Integer owner_id;
    String profile_pic;
+   String owner_token;
 
-    public Class_Fixtures(Integer week_no, String sun, String mon, String tue,
-                          String wed, String thu, String fri, String sat, String class_code,
-                          String class_link, String class_name, String desciption) {
+
+    public Class_Fixtures(Integer week_no, String sun, String mon, String tue, String wed,
+                          String thu, String fri, String sat, String class_code, String class_link,
+                          String class_name, String desciption, Integer owner_id, String profile_pic,
+                          String owner_token) {
         this.week_no = week_no;
         this.sun = sun;
         this.mon = mon;
@@ -31,7 +34,10 @@ public class Class_Fixtures {
         this.class_code = class_code;
         this.class_link = class_link;
         this.class_name = class_name;
-        this.desciption = desciption;
+        this.description = desciption;
+        this.owner_id = owner_id;
+        this.profile_pic = profile_pic;
+        this.owner_token = owner_token;
     }
 
     public Integer getWeek_no() {
@@ -123,10 +129,34 @@ public class Class_Fixtures {
     }
 
     public String getDesciption() {
-        return desciption;
+        return description;
     }
 
     public void setDesciption(String desciption) {
-        this.desciption = desciption;
+        this.description = desciption;
+    }
+
+    public Integer getOwner_id() {
+        return owner_id;
+    }
+
+    public void setOwner_id(Integer owner_id) {
+        this.owner_id = owner_id;
+    }
+
+    public String getProfile_pic() {
+        return profile_pic;
+    }
+
+    public void setProfile_pic(String profile_pic) {
+        this.profile_pic = profile_pic;
+    }
+
+    public String getOwner_token() {
+        return owner_token;
+    }
+
+    public void setOwner_token(String owner_token) {
+        this.owner_token = owner_token;
     }
 }

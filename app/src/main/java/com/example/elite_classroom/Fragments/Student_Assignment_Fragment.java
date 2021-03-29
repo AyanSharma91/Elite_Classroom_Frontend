@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -40,8 +42,14 @@ import com.example.elite_classroom.Models.Retrofit_Models.Upload_Response;
 import com.example.elite_classroom.R;
 import com.example.elite_classroom.Retrofit.DestinationService;
 import com.example.elite_classroom.Retrofit.ServiceBuilder;
+import com.example.elite_classroom.Upload_Request;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -64,8 +72,9 @@ public class Student_Assignment_Fragment extends Fragment {
     TextView file_name;
     Integer  submitted_Assignment_=-20;
     String  attachment_link_second="";
-    File file;
-    Uri file_uri;
+    ParcelFileDescriptor parcelFileDesciptor;
+    File file,file_second;
+    Uri file_uri ,file_uri_second;
     RelativeLayout attachement_layout_second;
     RelativeLayout attachement_layout;
     ImageView file_symbol_second;
@@ -102,19 +111,27 @@ String append = "https://elite-classroom-server.herokuapp.com/api/storage/downlo
             @Override
             public void onClick(View view) {
 
-                if(!(attachment_link.isEmpty()))
-                {
-                    if(ContextCompat.checkSelfPermission(Objects.requireNonNull((Activity)getContext()), Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED ||  ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)
+
+                    if(!(attachment_link.isEmpty()))
                     {
-                        // Log.e(TAG, "setxml: peremission prob");
-                        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},114);
+                        if(ContextCompat.checkSelfPermission(Objects.requireNonNull((Activity)getContext()), Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED ||  ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)
+                        {
+                            // Log.e(TAG, "setxml: peremission prob");
+                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},114);
 
 
 
-                    } else {
-                        startDownloading(attachment_link,null);
-                    }
+                        } else {
+                            startDownloading(attachment_link,null);
+                        }
+
+
+
                 }
+
+
+
+
             }
         });
         attachement_layout_second.setOnClickListener(new View.OnClickListener() {
@@ -123,6 +140,7 @@ String append = "https://elite-classroom-server.herokuapp.com/api/storage/downlo
 
 
                         if(!(attachment_link_second.isEmpty())) {
+                            Log.d("attachment_link_second",attachment_link_second);
                             startDownloading(attachment_link_second, null);
                         }
                         else if(file_uri!=null)
@@ -167,59 +185,67 @@ String append = "https://elite-classroom-server.herokuapp.com/api/storage/downlo
             public void onClick(View view) {
 
 
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+                {
+                    create_Assignment_above_versions(file_uri_second);
+                }
+                else
+                {
+                    DestinationService service = ServiceBuilder.INSTANCE.buildService(DestinationService.class);
+                    RequestBody requestFile = RequestBody.create(MediaType.parse(getMimeType(file_uri)), file);
+                    Log.d("MIME_type",getMimeType(file_uri).toString());
 
-                DestinationService service = ServiceBuilder.INSTANCE.buildService(DestinationService.class);
-                RequestBody requestFile = RequestBody.create(MediaType.parse(getMimeType(file_uri)), file);
-                Log.d("MIME_type",getMimeType(file_uri).toString());
+                    MultipartBody.Part multipartBody =MultipartBody.Part.createFormData("file",file.getName(),requestFile);
+                    Call<Upload_Response> responseBodyCall = service.uploadFile( multipartBody);
 
-                MultipartBody.Part multipartBody =MultipartBody.Part.createFormData("file",file.getName(),requestFile);
-                Call<Upload_Response> responseBodyCall = service.uploadFile( multipartBody);
+                    responseBodyCall.enqueue(new Callback<Upload_Response>() {
+                        @Override
+                        public void onResponse(Call<Upload_Response> call, Response<Upload_Response> response) {
 
-                responseBodyCall.enqueue(new Callback<Upload_Response>() {
-                    @Override
-                    public void onResponse(Call<Upload_Response> call, Response<Upload_Response> response) {
+                            attachment_link_second = response.body().getLocation();
 
-                       attachment_link_second = response.body().getLocation();
-
-                       if(attachment_link_second!=null)
-                       {
-                           DestinationService service = ServiceBuilder.INSTANCE.buildService(DestinationService.class);
+                            if(attachment_link_second!=null)
+                            {
+                                DestinationService service = ServiceBuilder.INSTANCE.buildService(DestinationService.class);
 //                           "2000-09-12 10:10:00
-                        String date =  Calendar.YEAR +"-"+Calendar.MONTH+"-"+Calendar.DATE+" "+Calendar.HOUR_OF_DAY+":"+Calendar.MINUTE+":"+Calendar.SECOND;
-                          Submit_Assignment submit_assignment = new Submit_Assignment(preferences.getString("google_token",null),Integer.parseInt(work_id), "Assignment_Submission",attachment_link_second, date);
-                           Call<Submission_Response> request = service.submit_assignment(submit_assignment);
-                           request.enqueue(new Callback<Submission_Response>() {
-                               @Override
-                               public void onResponse(Call<Submission_Response> call, Response<Submission_Response> response) {
-                                   if(response.body().getProtocol41())
-                                   {
-                                       Toast.makeText(getContext(),"Assignment Submitted Successfully",Toast.LENGTH_LONG).show();
-                                       submitted_Assignment_ =  response.body().getInsertId();
-                                       attachemnt_button.setVisibility(View.GONE);
-                                       submit_button.setVisibility(View.GONE);
-                                       resubmit_button.setVisibility(View.VISIBLE);
-                                   }
-                               }
+                                String date =  Calendar.YEAR +"-"+Calendar.MONTH+"-"+Calendar.DATE+" "+Calendar.HOUR_OF_DAY+":"+Calendar.MINUTE+":"+Calendar.SECOND;
+                                Submit_Assignment submit_assignment = new Submit_Assignment(preferences.getString("google_token",null),Integer.parseInt(work_id), "Assignment_Submission",attachment_link_second, date);
+                                Call<Submission_Response> request = service.submit_assignment(submit_assignment);
+                                request.enqueue(new Callback<Submission_Response>() {
+                                    @Override
+                                    public void onResponse(Call<Submission_Response> call, Response<Submission_Response> response) {
+                                        if(response.body().getProtocol41())
+                                        {
+                                            Toast.makeText(getContext(),"Assignment Submitted Successfully",Toast.LENGTH_LONG).show();
+                                            submitted_Assignment_ =  response.body().getInsertId();
+                                            attachemnt_button.setVisibility(View.GONE);
+                                            submit_button.setVisibility(View.GONE);
+                                            resubmit_button.setVisibility(View.VISIBLE);
+                                        }
+                                    }
 
-                               @Override
-                               public void onFailure(Call<Submission_Response> call, Throwable t) {
+                                    @Override
+                                    public void onFailure(Call<Submission_Response> call, Throwable t) {
 
-                               }
-                           });
+                                    }
+                                });
 
-                       }
-                       else
-                       {
-                           Toast.makeText(getContext(),"Assignment Could not be submitted",Toast.LENGTH_LONG).show();
-                       }
+                            }
+                            else
+                            {
+                                Toast.makeText(getContext(),"Assignment Could not be submitted",Toast.LENGTH_LONG).show();
+                            }
 
-                    }
+                        }
 
-                    @Override
-                    public void onFailure(Call<Upload_Response> call, Throwable t) {
+                        @Override
+                        public void onFailure(Call<Upload_Response> call, Throwable t) {
 
-                    }
-                });
+                        }
+                    });
+                }
+
+
             }
         });
 
@@ -353,8 +379,8 @@ String append = "https://elite-classroom-server.herokuapp.com/api/storage/downlo
                               String mineType="";
                               if(!(attachment_link_second.isEmpty()))
                               {
-                                  file_name_second.setText(attachment_link.substring(attachment_link.lastIndexOf('/')+1));
-                                  mineType=attachment_link.substring(attachment_link.lastIndexOf('.')) ;
+                                  file_name_second.setText(attachment_link_second.substring(attachment_link_second.lastIndexOf('/')+1));
+                                  mineType=attachment_link_second.substring(attachment_link_second.lastIndexOf('.')) ;
                               }
 
 
@@ -415,15 +441,26 @@ String append = "https://elite-classroom-server.herokuapp.com/api/storage/downlo
 
 
     private void show_img_dialog(int type) {
-        if(ContextCompat.checkSelfPermission(Objects.requireNonNull((Activity)getContext()), Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED ||  ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
         {
-            // Log.e(TAG, "setxml: peremission prob");
-            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},112);
+
+            openFile();
+
+        }
+        else
+        {
+            if(ContextCompat.checkSelfPermission(Objects.requireNonNull((Activity)getContext()), Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED ||  ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)
+            {
+                // Log.e(TAG, "setxml: peremission prob");
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},112);
 
 
 
-        } else {
-            open_Intent(type);
+            } else {
+                open_Intent(type);
+            }
+
         }
 
     }
@@ -490,86 +527,188 @@ String append = "https://elite-classroom-server.herokuapp.com/api/storage/downlo
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        String filePath = "";
 
-        if(getPathFromUri(getContext(),data.getData())!=null)
+        if(requestCode==111)
         {
-
-            filePath = getPathFromUri(getContext(),data.getData());
-        }
-        else if(FileUtils.getPath(getContext(),data.getData())!=null)
-        {
-            filePath = FileUtils.getPath(getContext(),data.getData());
-        }
-
-        file_uri= data.getData();
-        file = new File(filePath);
-
-
-        if(file!=null)
-        {
-
-
-            attachement_layout_second.setVisibility(View.VISIBLE);
-
-            file_name_second.setText(file.getName());
-
-            attachemnt_button.setVisibility(View.GONE);
-
-
-            String mineType = getMimeType(data.getData());
-
-            switch (mineType)
+            if(data!=null)
             {
-                case "application/pdf":
-                {
-                    file_symbol_second.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.pdf_placeholder));
-                    break;
-                }
 
-                case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-                {
 
-                    file_symbol_second.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ms_word_placeholder));
-                    break;
-                }
 
-                case "application/vnd.openxmlformats-officedocument.presentationml.presentation":
-                {
-                    file_symbol_second.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.powerpoint_placeholder));
-                    break;
-                }
-
-                case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
-                {
-                    file_symbol_second.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.exce_placeholder));
-                    break;
-                }
-                default:{
-
-                    if(mineType.contains("image"))
+                try {
+                    parcelFileDesciptor = getContext().getContentResolver().openFileDescriptor(data.getData(),"r",null);
+                    if(parcelFileDesciptor==null)
                     {
-                        file_symbol_second.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.image_placeholder));
-                    }
-                    else if(mineType.contains("video"))
-                    {
-                        file_symbol_second.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.video_placeholder));
+                        Toast.makeText(getContext(),"File Desciptor is null",Toast.LENGTH_LONG).show();
+                        return;
                     }
                     else
                     {
-                        file_symbol_second.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_attachment));
+                        file_uri_second = data.getData();
+
+                        if(file_uri_second!=null)
+                        {
+
+
+                            attachement_layout_second.setVisibility(View.VISIBLE);
+
+                            file_name_second.setText(new Upload_Request().getFileName(getContext().getContentResolver(),file_uri_second));
+
+                            attachemnt_button.setVisibility(View.GONE);
+
+
+                            String mineType = getMimeType(file_uri_second);
+
+                            switch (mineType)
+                            {
+                                case "application/pdf":
+                                {
+                                    file_symbol_second.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.pdf_placeholder));
+                                    break;
+                                }
+
+                                case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+                                {
+
+                                    file_symbol_second.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ms_word_placeholder));
+                                    break;
+                                }
+
+                                case "application/vnd.openxmlformats-officedocument.presentationml.presentation":
+                                {
+                                    file_symbol_second.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.powerpoint_placeholder));
+                                    break;
+                                }
+
+                                case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+                                {
+                                    file_symbol_second.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.exce_placeholder));
+                                    break;
+                                }
+                                default:{
+
+                                    if(mineType.contains("image"))
+                                    {
+                                        file_symbol_second.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.image_placeholder));
+                                    }
+                                    else if(mineType.contains("video"))
+                                    {
+                                        file_symbol_second.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.video_placeholder));
+                                    }
+                                    else
+                                    {
+                                        file_symbol_second.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_attachment));
+                                    }
+                                }
+
+                            }
+                        }
+                        else
+                        {
+                            attachemnt_button.setVisibility(View.VISIBLE);
+                        }
+
+
+
                     }
+
+                } catch (FileNotFoundException e) {
+                    Toast.makeText(getContext(),e.toString(),Toast.LENGTH_LONG).show();
                 }
+            }
+            else
+            {
 
             }
         }
+
+
         else
         {
-            attachemnt_button.setVisibility(View.VISIBLE);
+            String filePath = "";
+
+            if(getPathFromUri(getContext(),data.getData())!=null)
+            {
+
+                filePath = getPathFromUri(getContext(),data.getData());
+            }
+            else if(FileUtils.getPath(getContext(),data.getData())!=null)
+            {
+                filePath = FileUtils.getPath(getContext(),data.getData());
+            }
+
+            file_uri= data.getData();
+            file = new File(filePath);
+
+
+            if(file!=null)
+            {
+
+
+                attachement_layout_second.setVisibility(View.VISIBLE);
+
+                file_name_second.setText(file.getName());
+
+                attachemnt_button.setVisibility(View.GONE);
+
+
+                String mineType = getMimeType(data.getData());
+
+                switch (mineType)
+                {
+                    case "application/pdf":
+                    {
+                        file_symbol_second.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.pdf_placeholder));
+                        break;
+                    }
+
+                    case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+                    {
+
+                        file_symbol_second.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ms_word_placeholder));
+                        break;
+                    }
+
+                    case "application/vnd.openxmlformats-officedocument.presentationml.presentation":
+                    {
+                        file_symbol_second.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.powerpoint_placeholder));
+                        break;
+                    }
+
+                    case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+                    {
+                        file_symbol_second.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.exce_placeholder));
+                        break;
+                    }
+                    default:{
+
+                        if(mineType.contains("image"))
+                        {
+                            file_symbol_second.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.image_placeholder));
+                        }
+                        else if(mineType.contains("video"))
+                        {
+                            file_symbol_second.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.video_placeholder));
+                        }
+                        else
+                        {
+                            file_symbol_second.setImageDrawable(ContextCompat.getDrawable(getContext(),R.drawable.ic_attachment));
+                        }
+                    }
+
+                }
+            }
+            else
+            {
+                attachemnt_button.setVisibility(View.VISIBLE);
+            }
+
         }
+
 
 
 
@@ -611,10 +750,121 @@ String append = "https://elite-classroom-server.herokuapp.com/api/storage/downlo
             request.allowScanningByMediaScanner();
             request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,""+System.currentTimeMillis());
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-
             DownloadManager manager  = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
             manager.enqueue(request);
             Toast.makeText(getContext(),"Downloading file.....",Toast.LENGTH_LONG).show();
         }
     }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void openFile() {
+
+
+        String[] mimeTypes =
+                {"application/msword","application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .doc & .docx
+                        "application/vnd.ms-powerpoint","application/vnd.openxmlformats-officedocument.presentationml.presentation", // .ppt & .pptx
+                        "application/vnd.ms-excel","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xls & .xlsx
+                        "text/plain",
+                        "application/pdf",
+                        "application/zip",
+                        "video/*", "image/*"
+                };
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        intent.setType("application/pdf");
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+        startActivityForResult(intent, 111);
+
+
+
+    }
+
+
+    private void create_Assignment_above_versions(Uri file_uri_second) {
+
+
+        InputStream inputStream = new FileInputStream(parcelFileDesciptor.getFileDescriptor());
+        file_second = new File(getContext().getCacheDir(), new Upload_Request().getFileName(getContext().getContentResolver(),file_uri_second));
+        copyInputStreamToFile(inputStream,file_second);
+
+
+        DestinationService service = ServiceBuilder.INSTANCE.buildService(DestinationService.class);
+        RequestBody requestFile = RequestBody.create(MediaType.parse(getMimeType(file_uri_second)), file_second);
+        Log.d("MIME_type",getMimeType(file_uri_second).toString());
+
+        MultipartBody.Part multipartBody =MultipartBody.Part.createFormData("file",new Upload_Request().getFileName(getContext().getContentResolver(),file_uri_second),requestFile);
+        Call<Upload_Response> responseBodyCall = service.uploadFile( multipartBody);
+
+        responseBodyCall.enqueue(new Callback<Upload_Response>() {
+            @Override
+            public void onResponse(Call<Upload_Response> call, retrofit2.Response<Upload_Response> response) {
+
+                attachment_link_second= response.body().getLocation();
+
+                if(attachment_link_second!=null)
+                {
+                    DestinationService service = ServiceBuilder.INSTANCE.buildService(DestinationService.class);
+//                           "2000-09-12 10:10:00
+                    String date =  Calendar.YEAR +"-"+Calendar.MONTH+"-"+Calendar.DATE+" "+Calendar.HOUR_OF_DAY+":"+Calendar.MINUTE+":"+Calendar.SECOND;
+                    Submit_Assignment submit_assignment = new Submit_Assignment(preferences.getString("google_token",null),Integer.parseInt(work_id), "Assignment_Submission",attachment_link_second, date);
+                    Call<Submission_Response> request = service.submit_assignment(submit_assignment);
+                    request.enqueue(new Callback<Submission_Response>() {
+                        @Override
+                        public void onResponse(Call<Submission_Response> call, Response<Submission_Response> response) {
+                            if(response.body()!=null)
+                            {
+                                Toast.makeText(getContext(),"Assignment Submitted Successfully",Toast.LENGTH_LONG).show();
+                                submitted_Assignment_ =  response.body().getInsertId();
+                                attachemnt_button.setVisibility(View.GONE);
+                                submit_button.setVisibility(View.GONE);
+                                resubmit_button.setVisibility(View.VISIBLE);
+                            }
+                            else
+                            {
+                                Toast.makeText(getContext(),"Could not submit_Assignment",Toast.LENGTH_LONG).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Submission_Response> call, Throwable t) {
+
+                        }
+                    });
+
+                }
+                else
+                {
+                    Toast.makeText(getContext(),"Assignment Could not be submitted",Toast.LENGTH_LONG).show();
+                }
+
+
+
+            }
+
+            @Override
+            public void onFailure(Call<Upload_Response> call, Throwable t) {
+                Log.d("Access_Error", t.toString());
+            }
+        });
+
+
+    }
+
+    private void copyInputStreamToFile( InputStream in, File file ) {
+        try {
+            OutputStream out = new FileOutputStream(file);
+            byte[] buf = new byte[1024];
+            int len;
+            while((len=in.read(buf))>0){
+                out.write(buf,0,len);
+            }
+            out.close();
+            in.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

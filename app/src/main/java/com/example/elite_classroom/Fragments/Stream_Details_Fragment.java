@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -85,6 +86,8 @@ public class Stream_Details_Fragment extends Fragment {
         });
 
 
+
+
         due_date.setText(posted_on);
         title_field.setText(title);
         description_field.setText(description);
@@ -96,6 +99,7 @@ public class Stream_Details_Fragment extends Fragment {
             file_name.setText(attachment_id.substring(attachment_id.lastIndexOf('/')+1));
             mineType=attachment_id.substring(attachment_id.lastIndexOf('.')) ;
         }
+
 
 
         switch (mineType)
@@ -170,4 +174,19 @@ public class Stream_Details_Fragment extends Fragment {
             Toast.makeText(getContext(),"Downloading file.....",Toast.LENGTH_LONG).show();
         }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+
+      if(requestCode==114)
+        {
+
+            startDownloading(attachment_id, null);
+
+        }
+    }
+
 }
