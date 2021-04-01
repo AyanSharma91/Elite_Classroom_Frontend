@@ -2,8 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/people_refresh"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+ >
+
+
+
+
 
     <TextView
         android:id="@+id/tvClassName"
@@ -12,7 +18,7 @@
         android:text="Teacher"
         android:textStyle="bold"
         android:fontFamily="@font/rubic_light"
-        android:textColor="@color/black"
+        android:textColor="@color/blue_colour"
         android:layout_marginStart="15dp"
         android:layout_marginTop="30dp"
         android:textSize="25dp"
@@ -26,7 +32,8 @@
         android:layout_marginTop="10dp"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
-        android:background="#090909"
+        android:background="@color/blue_colour"
+        android:textColor="@color/blue_colour"
         android:layout_marginLeft="15dp" />
 
 
@@ -70,7 +77,7 @@
         android:layout_height="wrap_content"
         android:text="Participants :"
         android:textSize="25dp"
-        android:textColor="@color/black"
+        android:textColor="@color/blue_colour"
         android:layout_marginStart="15dp"
         android:layout_marginTop="25dp"
         android:layout_marginLeft="5dp"/>
@@ -82,7 +89,8 @@
         android:layout_marginTop="10dp"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
-        android:background="#090909"
+        android:background="@color/blue_colour"
+        android:textColor="@color/blue_colour"
         android:layout_marginLeft="15dp" />
 
     <ProgressBar
@@ -114,3 +122,5 @@
         />
 
 </LinearLayout>
+
+

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="10dp"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
     <com.google.android.material.textfield.TextInputLayout
@@ -33,6 +34,7 @@
             android:textColorHint="#7A8089" />
     </com.google.android.material.textfield.TextInputLayout>
     <Button
+        android:visibility="gone"
         android:id="@+id/create_announcement"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

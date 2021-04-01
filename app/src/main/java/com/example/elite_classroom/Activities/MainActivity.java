@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +39,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     String sharedPrefFile = "Login_Credentials";
     public static TextView textView, name;
     TextView test;
+   public static View line_divider_main ;
+    NavigationView navigationView;
     SharedPreferences preferences;
 
 
@@ -51,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getWindow().setStatusBarColor(ContextCompat.getColor(MainActivity.this,R.color.white));
         setContentView(R.layout.activity_main);
 
+
+        line_divider_main = findViewById(R.id.line_divider_main);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         test = findViewById(R.id.test);
@@ -64,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
                 new ClassFragment(), "HOME_FRAGMENT").commit();
 
+
         textView = findViewById(R.id.name);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -72,8 +78,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         action.setDisplayShowTitleEnabled(false);
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
+         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener((NavigationView.OnNavigationItemSelectedListener) this);
+        navigationView.setCheckedItem(R.id.nav_class);
         drawer = findViewById(R.id.drawer_layout);
         preferences =MainActivity.this.getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE);
 
@@ -84,31 +91,41 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
+
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId())
         {
             case R.id.nav_class:
+
+
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
                         new ClassFragment(),"HOME_FRAGMENT").commit();
+                navigationView.setCheckedItem(R.id.nav_class);
                 break;
             case R.id.nav_calender:
 
                 startActivity(new Intent(MainActivity.this,CalenderActivity.class));
-
+                navigationView.setCheckedItem(R.id.nav_calender);
                 break;
             case R.id.nav_todo:
                 name.setText("To-Do");
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
                         new ToDoFragment(),"TODO_FRAGMENT").commit();
+                navigationView.setCheckedItem(R.id.nav_todo);
+
                 break;
             case R.id.nav_about:
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
                         new AboutFragment(),"ABOUT_FRAGMENT").commit();
+                navigationView.setCheckedItem(R.id.nav_about);
+
                 break;
             case R.id.nav_feedback:
                 getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
                         new FeedbackFragment(),"FEEDBACK_FRAGMENT").commit();
+                navigationView.setCheckedItem(R.id.nav_feedback);
+
                 break;
             case R.id.nav_signout:
             {
@@ -148,10 +165,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             else
             {
-                super.onBackPressed();
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
+                        new ClassFragment(),"HOME_FRAGMENT").commit();
+                navigationView.setCheckedItem(R.id.nav_class);
             }
 
         }
 
+    }
+    @Override
+    protected void onResume() {
+        navigationView.setCheckedItem(R.id.nav_class);
+
+        super.onResume();
     }
 }

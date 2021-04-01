@@ -2,15 +2,20 @@ package com.example.elite_classroom.Fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.icu.text.UnicodeSetSpanner;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -37,6 +42,7 @@ public class ClassWorkFragment extends Fragment {
     ClassWorkAdapter adapter;
     RecyclerView recyclerView;
     Context ctx;
+    public  static  SwipeRefreshLayout classwork_refresh;
     String class_code="", owner_code,class_name,owner_name;
     String sharedPrefFile = "Login_Credentials",token;
     @Nullable
@@ -50,6 +56,8 @@ public class ClassWorkFragment extends Fragment {
        owner_code= getArguments().getString("owner_id");
        class_name = getArguments().getString("class_name");
        owner_name = getArguments().getString("owner_name");
+
+       classwork_refresh= view.findViewById(R.id.classwork_refresh);
 
        Bundle b = new Bundle();
        b.putString("class_code",class_code);
@@ -75,11 +83,71 @@ public class ClassWorkFragment extends Fragment {
                 bottomSheet.show(getFragmentManager(), "ClassWorkBottomSheet");
             }
         });
+
+
+
+
         ctx=getActivity();
         list=new ArrayList<>();
         recyclerView=view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+
+        getClassWork();
+
+
+        classwork_refresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getClassWork();
+            }
+        });
+        ClassActivity.top_menu.setVisibility(View.GONE);
+        ClassActivity.top_menu_second.setVisibility(View.VISIBLE);
+
+        ClassActivity.top_menu_second.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                PopupMenu popupMenu = new PopupMenu(getContext(),view);
+                popupMenu.getMenuInflater().inflate(R.menu.refresh_menu, popupMenu.getMenu());
+
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+
+                        if(item.getItemId()==R.id.refresh_option)
+                        {
+                             ClassWorkFragment.classwork_refresh.setRefreshing(true);
+                            getClassWork();
+
+
+                        }
+
+
+
+                        return true;
+                    }
+                });
+                popupMenu.show();
+
+            }
+        });
+
+
+
+        return view;
+    }
+
+    private void getClassWork() {
+
+
+
+        if(!(list.isEmpty()))
+        {
+            list.clear();
+        }
         RequestQueue requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getActivity()));
         String url = "https://elite-classroom-server.herokuapp.com/api/classworks/getClasswork/"+ class_code;
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
@@ -111,6 +179,10 @@ public class ClassWorkFragment extends Fragment {
 
                     adapter = new ClassWorkAdapter(list,ctx,token);
                     recyclerView.setAdapter(adapter);
+                    if(classwork_refresh.isRefreshing())
+                    {
+                        classwork_refresh.setRefreshing(false);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -122,6 +194,5 @@ public class ClassWorkFragment extends Fragment {
             }
         });
         requestQueue.add(request);
-        return view;
     }
 }

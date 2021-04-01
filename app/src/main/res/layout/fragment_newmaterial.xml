@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
+    android:padding="15dp"
     android:orientation="vertical">
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -33,6 +34,7 @@
             android:textColorHint="#7A8089" />
     </com.google.android.material.textfield.TextInputLayout>
     <Button
+        android:visibility="gone"
         android:id="@+id/create_material"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -46,6 +48,9 @@
         android:id="@+id/attachement_text"
         android:layout_width="wrap_content"
         android:text="Attachments"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="20dp"
         android:textSize="18sp"
         android:visibility="gone"
         android:layout_height="wrap_content">
@@ -55,6 +60,8 @@
         android:id="@+id/attachment_divider"
         android:layout_width="match_parent"
         android:layout_marginTop="15dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:visibility="gone"
         android:layout_height="1dp"
         android:background="#D3D1D1"/>

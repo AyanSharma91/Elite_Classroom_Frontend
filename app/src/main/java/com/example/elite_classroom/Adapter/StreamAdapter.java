@@ -52,7 +52,7 @@ public class StreamAdapter extends RecyclerView.Adapter<StreamAdapter.ViewHolder
     public void onBindViewHolder(@NonNull StreamAdapter.ViewHolder holder, int position) {
         Stream l = list.get(position);
         holder.t.setText(l.getTitle());
-        holder.t1.setText(l.getPosted_on());
+        holder.t1.setText(getDateFormat(l.getPosted_on()));
 
         holder.parent_layout_second.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,5 +140,85 @@ public class StreamAdapter extends RecyclerView.Adapter<StreamAdapter.ViewHolder
             b = itemView.findViewById(R.id.pop_button);
 
         }
+    }
+
+    String getDateFormat(String date)
+    {
+        String identified_date;
+
+        identified_date="Posted ";
+
+        switch(date.substring(5,7))
+        {
+            case "01":
+            {
+                identified_date=identified_date+"Jan";
+                break;
+            }
+
+            case "02":
+            {
+                identified_date=identified_date+"Feb";
+                break;
+            }
+            case "03":
+            {
+                identified_date=identified_date+"Mar";
+                break;
+            }
+            case "04":
+            {
+                identified_date=identified_date+"Apr";
+                break;
+            }
+            case "05":
+            {
+                identified_date=identified_date+"May";
+                break;
+            }
+            case "06":
+            {
+                identified_date=identified_date+"Jun";
+                break;
+            }
+            case "07":
+            {
+                identified_date=identified_date+"July";
+                break;
+            }
+            case "08":
+            {
+                identified_date=identified_date+"Aug";
+                break;
+            }
+            case "09":
+            {
+                identified_date=identified_date+"Sep";
+                break;
+            }
+            case "10":
+            {
+                identified_date=identified_date+"Oct";
+                break;
+            }
+            case "11":
+            {
+                identified_date=identified_date+"Nov";
+                break;
+            }
+            case "12":
+            {
+                identified_date=identified_date+"Dec";
+                break;
+            }
+
+
+        }
+
+        identified_date=identified_date+" "+date.substring(8,10);
+
+        return identified_date;
+
+
     }
 }

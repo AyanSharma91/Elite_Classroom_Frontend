@@ -48,6 +48,8 @@ public class FeedbackFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_feedback, container, false);
 
         MainActivity.textView.setText("Feedback");
+        MainActivity.line_divider_main.setVisibility(View.VISIBLE);
+
         etFeedback = view.findViewById(R.id.et_feedback);
         submit_feedback = view.findViewById(R.id.submit_feedback);
         return view;

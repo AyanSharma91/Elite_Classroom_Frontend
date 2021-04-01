@@ -1,5 +1,7 @@
 package com.example.elite_classroom.Fragments.ToDo;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -32,6 +34,9 @@ import java.util.Objects;
 
 public class MissedFragment extends Fragment {
 
+
+    String sharedPrefFile = "Login_Credentials";
+    SharedPreferences preferences;
     View view;
     RecyclerView rvMissed;
     ProgressBar progressBar;
@@ -65,7 +70,10 @@ public class MissedFragment extends Fragment {
 
         RequestQueue requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getActivity()));
 
-        URL = URL + "token1";   // later to be replaced by current user token
+        preferences = getContext().getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE);
+
+
+        URL = URL + preferences.getString("google_token",null);   // later to be replaced by current user token
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
             @Override

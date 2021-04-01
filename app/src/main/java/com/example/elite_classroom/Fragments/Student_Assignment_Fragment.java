@@ -29,6 +29,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.elite_classroom.Activities.Assignment_Submission_Activity;
 import com.example.elite_classroom.Activities.LoginActivity;
 import com.example.elite_classroom.FeedExtraUtilsKotlin;
 import com.example.elite_classroom.FileUtils;
@@ -83,6 +84,7 @@ public class Student_Assignment_Fragment extends Fragment {
 String append = "https://elite-classroom-server.herokuapp.com/api/storage/download?url=";
     String sharedPrefFile = "Login_Credentials";
     SharedPreferences preferences;
+    TextView attachments;
 
 
     @Nullable
@@ -106,13 +108,19 @@ String append = "https://elite-classroom-server.herokuapp.com/api/storage/downlo
         submit_button = view.findViewById(R.id.submit_button);
         resubmit_button= view.findViewById(R.id.resubmit_button);
         attachement_layout= view.findViewById(R.id.attachement_layout);
+          attachments = view.findViewById(R.id.attachments);
+        if(!(attachment_link.trim().isEmpty()))
+        {
+            attachement_layout.setVisibility(View.VISIBLE);
+            attachments.setVisibility(View.VISIBLE);
+        }
 
         attachement_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
 
-                    if(!(attachment_link.isEmpty()))
+                    if(!(attachment_link.trim().isEmpty()))
                     {
                         if(ContextCompat.checkSelfPermission(Objects.requireNonNull((Activity)getContext()), Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED ||  ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)
                         {
@@ -152,6 +160,8 @@ String append = "https://elite-classroom-server.herokuapp.com/api/storage/downlo
             }
         });
 
+
+
         preferences = getActivity().getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE);
 
         Log.d("work_id", work_id+"  is your work id");
@@ -166,7 +176,7 @@ String append = "https://elite-classroom-server.herokuapp.com/api/storage/downlo
 
 
         title_field.setText(title);
-        due_date.setText(due_data);
+        due_date.setText(getDateFormat(due_data));
         description_field.setText(description);
 
 
@@ -296,7 +306,7 @@ String append = "https://elite-classroom-server.herokuapp.com/api/storage/downlo
 
 
         String mineType="";
-        if(!attachment_link.isEmpty())
+        if(!attachment_link.trim().isEmpty())
         {
             file_name.setText(attachment_link.substring(attachment_link.lastIndexOf('/')+1));
             mineType=attachment_link.substring(attachment_link.lastIndexOf('.')) ;
@@ -866,5 +876,87 @@ String append = "https://elite-classroom-server.herokuapp.com/api/storage/downlo
             e.printStackTrace();
         }
     }
+
+
+    String getDateFormat(String date)
+    {
+        String identified_date;
+
+        identified_date="Due  ";
+
+        switch(date.substring(5,7))
+        {
+            case "01":
+            {
+                identified_date=identified_date+"Jan";
+                break;
+            }
+
+            case "02":
+            {
+                identified_date=identified_date+"Feb";
+                break;
+            }
+            case "03":
+            {
+                identified_date=identified_date+"Mar";
+                break;
+            }
+            case "04":
+            {
+                identified_date=identified_date+"Apr";
+                break;
+            }
+            case "05":
+            {
+                identified_date=identified_date+"May";
+                break;
+            }
+            case "06":
+            {
+                identified_date=identified_date+"Jun";
+                break;
+            }
+            case "07":
+            {
+                identified_date=identified_date+"July";
+                break;
+            }
+            case "08":
+            {
+                identified_date=identified_date+"Aug";
+                break;
+            }
+            case "09":
+            {
+                identified_date=identified_date+"Sep";
+                break;
+            }
+            case "10":
+            {
+                identified_date=identified_date+"Oct";
+                break;
+            }
+            case "11":
+            {
+                identified_date=identified_date+"Nov";
+                break;
+            }
+            case "12":
+            {
+                identified_date=identified_date+"Dec";
+                break;
+            }
+
+
+        }
+
+        identified_date=identified_date+" "+date.substring(8,10);
+
+        return identified_date;
+
+
+    }
+
 
 }

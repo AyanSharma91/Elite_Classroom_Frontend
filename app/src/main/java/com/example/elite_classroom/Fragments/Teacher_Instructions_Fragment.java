@@ -29,12 +29,13 @@ import java.util.Objects;
 public class Teacher_Instructions_Fragment extends Fragment {
 
 
-    String title, description, work_id, due_data, attachment_link, class_code,user_status;
+    String title, description, work_id, due_data, attachment_link="", class_code,user_status;
     TextView  due_date, title_field,description_field;
     ImageView file_symbol;
     TextView file_name;
     String append = "https://elite-classroom-server.herokuapp.com/api/storage/download?url=";
     RelativeLayout   attachement_layout;
+    TextView attachments;
 
 
     @Nullable
@@ -58,11 +59,19 @@ public class Teacher_Instructions_Fragment extends Fragment {
         file_name= view.findViewById(R.id.file_name);
 
         attachement_layout = view.findViewById(R.id.attachement_layout);
+        attachments = view.findViewById(R.id.attachments);
+
+        if(!(attachment_link.trim().isEmpty()))
+        {
+            attachement_layout.setVisibility(View.VISIBLE);
+            attachments.setVisibility(View.VISIBLE);
+        }
+
         attachement_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if(!(attachment_link.isEmpty()))
+                if(!(attachment_link.trim().isEmpty()))
                 {
                     if(ContextCompat.checkSelfPermission(Objects.requireNonNull((Activity)getContext()), Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED ||  ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)
                     {
@@ -80,11 +89,11 @@ public class Teacher_Instructions_Fragment extends Fragment {
 
 
         title_field.setText(title);
-        due_date.setText(due_data);
+        due_date.setText(getDateFormat(due_data));
         description_field.setText(description);
 
         String mineType="";
-        if(!attachment_link.isEmpty())
+        if(!attachment_link.trim().isEmpty())
         {
             file_name.setText(attachment_link.substring(attachment_link.lastIndexOf('/')+1));
             mineType=attachment_link.substring(attachment_link.lastIndexOf('.')) ;
@@ -173,5 +182,85 @@ public class Teacher_Instructions_Fragment extends Fragment {
             manager.enqueue(request);
             Toast.makeText(getContext(),"Downloading file.....",Toast.LENGTH_LONG).show();
         }
+    }
+
+    String getDateFormat(String date)
+    {
+        String identified_date;
+
+        identified_date="Due  ";
+
+        switch(date.substring(5,7))
+        {
+            case "01":
+            {
+                identified_date=identified_date+"Jan";
+                break;
+            }
+
+            case "02":
+            {
+                identified_date=identified_date+"Feb";
+                break;
+            }
+            case "03":
+            {
+                identified_date=identified_date+"Mar";
+                break;
+            }
+            case "04":
+            {
+                identified_date=identified_date+"Apr";
+                break;
+            }
+            case "05":
+            {
+                identified_date=identified_date+"May";
+                break;
+            }
+            case "06":
+            {
+                identified_date=identified_date+"Jun";
+                break;
+            }
+            case "07":
+            {
+                identified_date=identified_date+"July";
+                break;
+            }
+            case "08":
+            {
+                identified_date=identified_date+"Aug";
+                break;
+            }
+            case "09":
+            {
+                identified_date=identified_date+"Sep";
+                break;
+            }
+            case "10":
+            {
+                identified_date=identified_date+"Oct";
+                break;
+            }
+            case "11":
+            {
+                identified_date=identified_date+"Nov";
+                break;
+            }
+            case "12":
+            {
+                identified_date=identified_date+"Dec";
+                break;
+            }
+
+
+        }
+
+        identified_date=identified_date+" "+date.substring(8,10);
+
+        return identified_date;
+
+
     }
 }

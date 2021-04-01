@@ -74,7 +74,8 @@ import retrofit2.Callback;
 
 public class NewAssignmentFragment extends Fragment implements PointDialog.PointDialogListener {
 
-    EditText assignment_title,assignment_description,point,due_date;
+    EditText assignment_title,assignment_description,point;
+    TextView due_date;
     Button crete_assignment;
     Calendar myCalendar;
     String attachment_link = "";
@@ -154,13 +155,17 @@ public class NewAssignmentFragment extends Fragment implements PointDialog.Point
         due_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new DatePickerDialog(getActivity(), date, myCalendar
+             DatePickerDialog datePickerDialog =  new  DatePickerDialog(getActivity(), R.style.DialogTheme, date, myCalendar
                         .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                        myCalendar.get(Calendar.DAY_OF_MONTH));
+             datePickerDialog.show();
+                datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getContext(),R.color.dark_blue_colour));
+                datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(getContext(),R.color.dark_blue_colour));
+
             }
         });
         crete_assignment = view.findViewById(R.id.crete_assignment);
-        crete_assignment.setOnClickListener(new View.OnClickListener() {
+        ClassWorkActivity.send_btn_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -168,9 +173,15 @@ public class NewAssignmentFragment extends Fragment implements PointDialog.Point
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
                 {
                     create_Assignment_above_versions(file_uri_second);
+
                 }
                 else
                 {
+
+                    if(file_uri!=null)
+                    {
+
+
                     DestinationService service = ServiceBuilder.INSTANCE.buildService(DestinationService.class);
                     RequestBody requestFile = RequestBody.create(MediaType.parse(getMimeType(file_uri)), file);
                     Log.d("MIME_type",getMimeType(file_uri).toString());
@@ -208,6 +219,23 @@ public class NewAssignmentFragment extends Fragment implements PointDialog.Point
                             Log.d("Access_Error", t.toString());
                         }
                     });
+                    }
+                    else
+                    {
+                        title = assignment_title.getText().toString();
+                        description = assignment_description.getText().toString();
+                        points = point.getText().toString();
+                        due = due_date.getText().toString();
+                        if(title.isEmpty()){
+                            assignment_title.setError("Please enter Title");
+                            assignment_title.requestFocus();
+                        }
+                        else{
+
+
+                            createAssignment(title,description,points,due," ");
+                        }
+                    }
                 }
 
             }
@@ -218,9 +246,13 @@ public class NewAssignmentFragment extends Fragment implements PointDialog.Point
     private void create_Assignment_above_versions(Uri file_uri_second) {
 
 
-        InputStream inputStream = new FileInputStream(parcelFileDesciptor.getFileDescriptor());
-        file_second = new File(getContext().getCacheDir(), new Upload_Request().getFileName(getContext().getContentResolver(),file_uri_second));
-        copyInputStreamToFile(inputStream,file_second);
+            if(parcelFileDesciptor!=null)
+            {
+                InputStream inputStream = new FileInputStream(parcelFileDesciptor.getFileDescriptor());
+                file_second = new File(getContext().getCacheDir(), new Upload_Request().getFileName(getContext().getContentResolver(),file_uri_second));
+                copyInputStreamToFile(inputStream,file_second);
+
+
 
 
         DestinationService service = ServiceBuilder.INSTANCE.buildService(DestinationService.class);
@@ -257,9 +289,26 @@ public class NewAssignmentFragment extends Fragment implements PointDialog.Point
 
             @Override
             public void onFailure(Call<Upload_Response> call, Throwable t) {
-                Log.d("Access_Error", t.toString());
-            }
+                Toast.makeText(getContext()," Access Error "+t.toString(),Toast.LENGTH_SHORT).show();            }
         });
+            }
+            else
+            {
+                title = assignment_title.getText().toString();
+                description = assignment_description.getText().toString();
+                points = point.getText().toString();
+                due = due_date.getText().toString();
+                if(title.isEmpty()){
+                    assignment_title.setError("Please enter Title");
+                    assignment_title.requestFocus();
+                }
+                else{
+
+
+                    createAssignment(title,description,points,due," ");
+                }
+
+            }
 
 
     }
@@ -348,7 +397,6 @@ public class NewAssignmentFragment extends Fragment implements PointDialog.Point
         startActivityForResult(intent, 111);
 
 
-
     }
 
 
@@ -417,6 +465,8 @@ public class NewAssignmentFragment extends Fragment implements PointDialog.Point
                      else
                      {
                          file_uri_second = data.getData();
+
+
 
                          if(file_uri_second!=null)
                          {
@@ -592,19 +642,24 @@ public class NewAssignmentFragment extends Fragment implements PointDialog.Point
             public void onResponse(JSONObject response) {
 
 
-                Intent i = new Intent(getActivity(),ClassActivity.class);
-                i.putExtra("class_code",class_code);
-                i.putExtra("owner_id",owner_code);
-                i.putExtra("class_name",class_name);
-                i.putExtra("owner_name",owner_name);
-                i.putExtra("from_Classwork",true);
-                startActivity(i);
+                ClassWorkActivity.cross.performClick();
+                ClassActivity.top_menu_second.performClick();
+//                Intent i = new Intent(getActivity(),ClassActivity.class);
+//                i.putExtra("class_code",class_code);
+//                i.putExtra("owner_id",owner_code);
+//                i.putExtra("class_name",class_name);
+//                i.putExtra("owner_name",owner_name);
+//                i.putExtra("from_Classwork",true);
+//                startActivity(i);
+
+
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
 
+                Toast.makeText(getContext(),error.toString(),Toast.LENGTH_SHORT).show();
             }
         });
         requestQueue.add(request);

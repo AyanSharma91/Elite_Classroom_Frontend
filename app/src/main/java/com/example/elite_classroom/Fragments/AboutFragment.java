@@ -25,6 +25,9 @@ public class AboutFragment extends Fragment {
 
         MainActivity.textView.setText("About");
 
+        MainActivity.line_divider_main.setVisibility(View.VISIBLE);
+
+
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_about, container, false);

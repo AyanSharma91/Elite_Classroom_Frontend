@@ -9,6 +9,7 @@
 
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
+        android:backgroundTint="#33A4FD"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/white">
         <RelativeLayout
@@ -18,16 +19,27 @@
                 android:id="@+id/cross"
                 android:layout_width="30sp"
                 android:layout_height="30sp"
-                android:src="@drawable/ic_cross"
+                android:src="@drawable/white_cross"
                 android:layout_centerVertical="true"/>
             <ImageView
                 android:id="@+id/attachment"
                 android:layout_width="30sp"
                 android:layout_height="30sp"
-                android:src="@drawable/ic_attachment"
+                android:src="@drawable/white_attachment"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="70dp"
+                android:layout_marginEnd="100dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"/>
+
+            <ImageView
+                android:id="@+id/send_btn_image"
+                android:layout_width="30sp"
+                android:layout_height="30sp"
+                android:src="@drawable/white_send"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="30dp"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="20dp"/>
 <!--            <TextView-->
@@ -42,10 +54,7 @@
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="#959494"/>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -107,7 +107,7 @@ public class NewAnnouncementFragment extends Fragment {
         announcement_description = view.findViewById(R.id.announcement_description);
         create_announcement = view.findViewById(R.id.create_announcement);
 
-        create_announcement.setOnClickListener(new View.OnClickListener() {
+        ClassWorkActivity.send_btn_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -309,13 +309,16 @@ public class NewAnnouncementFragment extends Fragment {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, o, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Intent i = new Intent(getActivity(),ClassActivity.class);
-                i.putExtra("class_code",class_code);
-                i.putExtra("owner_id",owner_code);
-                i.putExtra("class_name",class_name);
-                i.putExtra("owner_name",owner_name);
-                i.putExtra("from_Classwork",true);
-                startActivity(i);
+
+                ClassWorkActivity.cross.performClick();
+
+//                Intent i = new Intent(getActivity(),ClassActivity.class);
+//                i.putExtra("class_code",class_code);
+//                i.putExtra("owner_id",owner_code);
+//                i.putExtra("class_name",class_name);
+//                i.putExtra("owner_name",owner_name);
+//                i.putExtra("from_Classwork",true);
+//                startActivity(i);
             }
             }, new Response.ErrorListener() {
                 @Override

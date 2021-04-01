@@ -38,7 +38,7 @@
 
 
                     android:textSize="25sp"
-                    android:textColor="@color/black"
+                    android:textColor="@color/blue_colour"
                     android:layout_marginRight="50dp" />
 
 <!--                android:fontFamily="@font/rubic_light"-->
@@ -51,7 +51,7 @@
                 <TextView
                     android:id="@+id/settings"
                     android:layout_width="25dp"
-
+                    android:visibility="gone"
                     android:layout_height="25dp"
                     android:background="@drawable/settings"
                     android:layout_alignParentEnd="true"
@@ -67,8 +67,21 @@
 
 
                 <TextView
+                    android:id="@+id/top_menu"
                     android:layout_width="25dp"
-                    android:background="@drawable/indicator"
+                    android:background="@drawable/menu_placeholder"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="20dp"
+                    android:layout_height="25dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp">
+
+                </TextView>
+                <TextView
+                    android:id="@+id/top_menu_second"
+                    android:layout_width="25dp"
+                    android:background="@drawable/menu_placeholder"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="20dp"
@@ -100,6 +113,8 @@
                     android:id="@+id/bottom_navigation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:itemIconTint="@color/drawable_item"
+                    app:itemTextColor="@color/drawable_item"
                     android:layout_alignParentBottom="true"
                     android:background="?android:attr/windowBackground"
                     app:menu="@menu/bottom_navigation"/>

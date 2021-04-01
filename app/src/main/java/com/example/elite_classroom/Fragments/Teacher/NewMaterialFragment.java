@@ -13,12 +13,14 @@ import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +41,7 @@ import com.example.elite_classroom.Activities.ClassActivity;
 import com.example.elite_classroom.Activities.ClassWorkActivity;
 import com.example.elite_classroom.FeedExtraUtilsKotlin;
 import com.example.elite_classroom.FileUtils;
+import com.example.elite_classroom.Fragments.StreamFragment;
 import com.example.elite_classroom.Models.Retrofit_Models.Upload_Response;
 import com.example.elite_classroom.R;
 import com.example.elite_classroom.Retrofit.DestinationService;
@@ -54,6 +57,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.StringReader;
 import java.util.Objects;
 
 import okhttp3.MediaType;
@@ -112,7 +116,7 @@ public class NewMaterialFragment extends Fragment {
         material_title = view.findViewById(R.id.material_title);
         material_description = view.findViewById(R.id.material_description);
         create_material = view.findViewById(R.id.create_material);
-        create_material.setOnClickListener(new View.OnClickListener() {
+        ClassWorkActivity.send_btn_image.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
 
@@ -122,33 +126,50 @@ public class NewMaterialFragment extends Fragment {
                         }
                         else
                         {
-                            DestinationService service = ServiceBuilder.INSTANCE.buildService(DestinationService.class);
-                            RequestBody requestFile = RequestBody.create(MediaType.parse(getMimeType(file_uri)), file);
-                            Log.d("MIME_type",getMimeType(file_uri).toString());
+                            if(file_uri!=null) {
 
-                            MultipartBody.Part multipartBody =MultipartBody.Part.createFormData("file",file.getName(),requestFile);
-                            Call<Upload_Response> responseBodyCall = service.uploadFile( multipartBody);
 
-                            responseBodyCall.enqueue(new Callback<Upload_Response>() {
-                                @Override
-                                public void onResponse(Call<Upload_Response> call, retrofit2.Response<Upload_Response> response) {
+                                DestinationService service = ServiceBuilder.INSTANCE.buildService(DestinationService.class);
+                                RequestBody requestFile = RequestBody.create(MediaType.parse(getMimeType(file_uri)), file);
+                                Log.d("MIME_type", getMimeType(file_uri).toString());
 
-                                    attachment_link = response.body().getLocation();
-                                    title = material_title.getText().toString();
-                                    description = material_description.getText().toString();
-                                    if(title.isEmpty()){
-                                        material_title.setError("Please enter Title");
-                                        material_title.requestFocus();
-                                    }else{
-                                        createMaterial(title,description,attachment_link);
+                                MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+                                Call<Upload_Response> responseBodyCall = service.uploadFile(multipartBody);
+
+                                responseBodyCall.enqueue(new Callback<Upload_Response>() {
+                                    @Override
+                                    public void onResponse(Call<Upload_Response> call, retrofit2.Response<Upload_Response> response) {
+
+                                        attachment_link = response.body().getLocation();
+                                        title = material_title.getText().toString();
+                                        description = material_description.getText().toString();
+                                        if (title.isEmpty()) {
+                                            material_title.setError("Please enter Title");
+                                            material_title.requestFocus();
+                                        } else {
+                                            createMaterial(title, description, attachment_link);
+                                        }
                                     }
+
+                                    @Override
+                                    public void onFailure(Call<Upload_Response> call, Throwable t) {
+
+                                    }
+                                });
+
+                            }
+                            else {
+
+                                title = material_title.getText().toString();
+                                description = material_description.getText().toString();
+                                if (title.isEmpty()) {
+                                    material_title.setError("Please enter Title");
+                                    material_title.requestFocus();
+                                } else {
+                                    createMaterial(title, description, " ");
                                 }
 
-                                @Override
-                                public void onFailure(Call<Upload_Response> call, Throwable t) {
-
-                                }
-                            });
+                            }
 
                         }
 
@@ -173,14 +194,14 @@ public class NewMaterialFragment extends Fragment {
             @Override
             public void onResponse(JSONObject response) {
 
-                Toast.makeText(getContext(),"Material_Created_Successfully",Toast.LENGTH_LONG).show();
-                Intent i = new Intent(getActivity(),ClassActivity.class);
-                i.putExtra("class_code",class_code);
-                i.putExtra("owner_id",owner_code);
-                i.putExtra("class_name",class_name);
-                i.putExtra("owner_name",owner_name);
-                i.putExtra("from_Classwork",true);
-                startActivity(i);
+                ClassWorkActivity.cross.performClick();
+//                Intent i = new Intent(getActivity(),ClassActivity.class);
+//                i.putExtra("class_code",class_code);
+//                i.putExtra("owner_id",owner_code);
+//                i.putExtra("class_name",class_name);
+//                i.putExtra("owner_name",owner_name);
+//                i.putExtra("from_Classwork",true);
+//                startActivity(i);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -501,48 +522,63 @@ public class NewMaterialFragment extends Fragment {
     private void create_Assignment_above_versions(Uri file_uri_second) {
 
 
-        InputStream inputStream = new FileInputStream(parcelFileDesciptor.getFileDescriptor());
-        file_second = new File(getContext().getCacheDir(), new Upload_Request().getFileName(getContext().getContentResolver(),file_uri_second));
-        copyInputStreamToFile(inputStream,file_second);
+
+        if(parcelFileDesciptor!=null) {
 
 
-
-        DestinationService service = ServiceBuilder.INSTANCE.buildService(DestinationService.class);
-        RequestBody requestFile = RequestBody.create(MediaType.parse(getMimeType(file_uri_second)), file_second);
-        Log.d("MIME_type",getMimeType(file_uri_second).toString());
-
-        MultipartBody.Part multipartBody =MultipartBody.Part.createFormData("file",new Upload_Request().getFileName(getContext().getContentResolver(),file_uri_second),requestFile);
-        Call<Upload_Response> responseBodyCall = service.uploadFile( multipartBody);
-
-        responseBodyCall.enqueue(new Callback<Upload_Response>() {
-            @Override
-            public void onResponse(Call<Upload_Response> call, retrofit2.Response<Upload_Response> response) {
-
-                attachment_link = response.body().getLocation();
+            InputStream inputStream = new FileInputStream(parcelFileDesciptor.getFileDescriptor());
+            file_second = new File(getContext().getCacheDir(), new Upload_Request().getFileName(getContext().getContentResolver(), file_uri_second));
+            copyInputStreamToFile(inputStream, file_second);
 
 
+            DestinationService service = ServiceBuilder.INSTANCE.buildService(DestinationService.class);
+            RequestBody requestFile = RequestBody.create(MediaType.parse(getMimeType(file_uri_second)), file_second);
+            Log.d("MIME_type", getMimeType(file_uri_second).toString());
 
-                attachment_link = response.body().getLocation();
-                title = material_title.getText().toString();
-                description = material_description.getText().toString();
-                if(title.isEmpty()){
-                    material_title.setError("Please enter Title");
-                    material_title.requestFocus();
+            MultipartBody.Part multipartBody = MultipartBody.Part.createFormData("file", new Upload_Request().getFileName(getContext().getContentResolver(), file_uri_second), requestFile);
+            Call<Upload_Response> responseBodyCall = service.uploadFile(multipartBody);
+
+            responseBodyCall.enqueue(new Callback<Upload_Response>() {
+                @Override
+                public void onResponse(Call<Upload_Response> call, retrofit2.Response<Upload_Response> response) {
+
+                    attachment_link = response.body().getLocation();
+
+
+                    attachment_link = response.body().getLocation();
+                    title = material_title.getText().toString();
+                    description = material_description.getText().toString();
+                    if (title.isEmpty()) {
+                        material_title.setError("Please enter Title");
+                        material_title.requestFocus();
+                    } else {
+
+
+                        createMaterial(title, description, attachment_link);
+                    }
+
+                    Log.d("File_Upload", response.body().getLocation());
                 }
-                else{
 
-
-                    createMaterial(title,description,attachment_link);
+                @Override
+                public void onFailure(Call<Upload_Response> call, Throwable t) {
+                    Log.d("Access_Error", t.toString());
                 }
+            });
 
-                Log.d("File_Upload",response.body().getLocation());
-            }
+        }
+        else
+        {
+            title = material_title.getText().toString();
+            description = material_description.getText().toString();
+            if (title.isEmpty()) {
+                material_title.setError("Please enter Title");
+                material_title.requestFocus();
+            } else {
 
-            @Override
-            public void onFailure(Call<Upload_Response> call, Throwable t) {
-                Log.d("Access_Error", t.toString());
+                createMaterial(title, description, " ");
             }
-        });
+        }
 
 
     }

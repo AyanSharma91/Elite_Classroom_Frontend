@@ -1,5 +1,7 @@
 package com.example.elite_classroom.Fragments.ToDo;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -33,40 +35,42 @@ import java.util.Objects;
 public class SubmittedFragment extends Fragment {
 
     View view;
+    String sharedPrefFile = "Login_Credentials";
+    SharedPreferences preferences;
     RecyclerView rvSubmitted;
     ProgressBar progressBar;
     TextView tvLoading;
 
     private String URL = "https://elite-classroom-server.herokuapp.com/api/todos/turnedIn/";
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_submitted, container, false);
-        return view;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
 
         progressBar = view.findViewById(R.id.progressBar);
         tvLoading = view.findViewById(R.id.tvLoading);
         progressBar.setVisibility(View.VISIBLE);
         tvLoading.setVisibility(View.VISIBLE);
         rvSubmitted = view.findViewById(R.id.rv_submitted);
-        rvSubmitted.setHasFixedSize(true);
         rvSubmitted.setLayoutManager(new LinearLayoutManager(this.getActivity()));
 
-        RequestQueue requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getActivity()));
+        preferences = getContext().getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE);
 
-        URL = URL + "token1";   // later to be replaced by current user token
+
+        getSubmittedAssignment();
+
+        return view;
+    }
+
+
+    private void getSubmittedAssignment() {
+
+        RequestQueue requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getActivity()));
+        URL = URL + preferences.getString("google_token",null);
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
             @Override

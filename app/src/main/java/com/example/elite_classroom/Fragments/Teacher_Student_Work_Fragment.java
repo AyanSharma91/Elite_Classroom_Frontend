@@ -65,7 +65,7 @@ public class Teacher_Student_Work_Fragment extends Fragment {
         DestinationService service = ServiceBuilder.INSTANCE.buildService(DestinationService.class);
 //        Call<ArrayList<Student_Submissions_Record>> request = service.get_student_submissions(Integer.parseInt(work_id));
 
-        Call<ArrayList<Student_Submissions_Record>> request = service.get_student_submissions(1);
+        Call<ArrayList<Student_Submissions_Record>> request = service.get_student_submissions(Integer.parseInt(work_id));
 
 
         request.enqueue(new Callback<ArrayList<Student_Submissions_Record>>() {

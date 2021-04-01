@@ -55,6 +55,8 @@ public class ClassFragment extends Fragment {
 
 
         MainActivity.textView.setText("Elite Classroom");
+        MainActivity.line_divider_main.setVisibility(View.VISIBLE);
+
 
         buttonAddNote.setOnClickListener(new View.OnClickListener() {
             @Override

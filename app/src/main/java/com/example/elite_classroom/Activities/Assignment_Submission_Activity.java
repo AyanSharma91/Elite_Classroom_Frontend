@@ -1,11 +1,16 @@
 package com.example.elite_classroom.Activities;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.elite_classroom.Fragments.Announcement_Fragment;
+import com.example.elite_classroom.Fragments.Calender_Fragment;
+import com.example.elite_classroom.Fragments.Owner_Create_Class;
+import com.example.elite_classroom.Fragments.Schedule_Class_Fragment;
 import com.example.elite_classroom.Fragments.Stream_Details_Fragment;
 import com.example.elite_classroom.Fragments.Student_Assignment_Fragment;
 import com.example.elite_classroom.Fragments.Teacher_Assignment_Fragment;
@@ -18,6 +23,8 @@ public class Assignment_Submission_Activity extends AppCompatActivity {
     String title, description, work_id, due_data, attachment_link, class_code,user_status;
 
     String  notes_id,attachment_id,posted_on,owner_token;
+   public  static  TextView  back_button;
+
 
 
     @Override
@@ -26,6 +33,15 @@ public class Assignment_Submission_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_assignment__submission_);
 
         frame_layout= findViewById(R.id.frame_container_3);
+        back_button= findViewById(R.id.back_button);
+
+
+        back_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Assignment_Submission_Activity.super.onBackPressed();
+            }
+        });
 
 
         if( getIntent().getStringExtra("user_status")!=null)
@@ -48,7 +64,6 @@ public class Assignment_Submission_Activity extends AppCompatActivity {
       b.putString("due_data" , due_data);
       b.putString("attachment_link" , attachment_link);
       b.putString("class_code" , class_code);
-
 
 
 
@@ -109,13 +124,10 @@ public class Assignment_Submission_Activity extends AppCompatActivity {
                     stream_details_fragment,"Stream_Details_Fragment").commit();
         }
 
-
-
-
-
-
-
-
-
     }
+
+
+
+
+
 }

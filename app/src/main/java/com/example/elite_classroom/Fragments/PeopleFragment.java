@@ -2,8 +2,10 @@ package com.example.elite_classroom.Fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -12,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -19,6 +22,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.elite_classroom.Activities.ClassActivity;
 import com.example.elite_classroom.Adapter.ParticipantsAdapter;
 import com.example.elite_classroom.R;
 
@@ -34,6 +38,8 @@ public class PeopleFragment extends Fragment {
     ProgressBar progressBar;
     String class_code="", owner_code,class_name,owner_name;
 
+
+
     TextView tvLoading, tvClassName, tvOwnerName;
     private String URL = "https://elite-classroom-server.herokuapp.com/api/classrooms/";
 
@@ -42,15 +48,6 @@ public class PeopleFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_people, container, false);
-
-
-        return view;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
 
         class_code= getArguments().getString("class_code");
         owner_code= getArguments().getString("owner_id");
@@ -67,13 +64,30 @@ public class PeopleFragment extends Fragment {
         rvParticipants.setHasFixedSize(true);
         rvParticipants.setLayoutManager(new LinearLayoutManager(this.getActivity()));
 
+
+
+                 ClassActivity.top_menu.setVisibility(View.GONE);
+                 ClassActivity.top_menu_second.setVisibility(View.GONE);
+
+
+
+
+        get_Students();
+
+
+        return view;
+    }
+
+
+
+    private void get_Students() {
+
+
+
         RequestQueue requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getActivity()));
 
 
         URL += class_code;       // class_code
-
-
-//        URL += "OUUAj5_thAZIFVO_6LHe";       // class_code
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
             @Override
@@ -97,6 +111,8 @@ public class PeopleFragment extends Fragment {
 
                     progressBar.setVisibility(View.GONE);
                     tvLoading.setVisibility(View.GONE);
+
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
