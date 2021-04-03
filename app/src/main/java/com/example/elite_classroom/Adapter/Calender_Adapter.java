@@ -191,7 +191,7 @@ public class Calender_Adapter extends RecyclerView.Adapter<Calender_Adapter.View
                     viewHolder.week_day.setText("SUN");
                     viewHolder.class_time.setText(list1.get(i).getSun().substring(0,8));
                     b.putString("old_time",list1.get(i).getSun().substring(0,7));
-                    viewHolder.date.setText(getDate(7).toString());
+                    viewHolder.date.setText(getDate(0).toString());
                 }
                 else
                 {
@@ -328,7 +328,7 @@ public class Calender_Adapter extends RecyclerView.Adapter<Calender_Adapter.View
                     viewHolder.week_day.setText("SUN");
                     viewHolder.class_time.setText(list1.get(i).getSun().substring(0,8));
                     b.putString("old_time",list1.get(i).getSun().substring(0,7));
-                    viewHolder.date.setText(getDate_next_week(7).toString());
+                    viewHolder.date.setText(getDate_next_week(0).toString());
                 }
                 else
                 {
@@ -404,7 +404,7 @@ public class Calender_Adapter extends RecyclerView.Adapter<Calender_Adapter.View
         String formattedDate = df.format(c);
         Integer current_date = Integer.parseInt(formattedDate.substring(0,2));
         Integer current_month = Integer.parseInt(formattedDate.substring(3,5));
-        Integer  current_day = Calendar.DAY_OF_MONTH+2;
+        Integer  current_day = Calendar.DAY_OF_MONTH;
 
 
         Integer current_year = Integer.parseInt(formattedDate.substring(6));
@@ -420,6 +420,19 @@ public class Calender_Adapter extends RecyclerView.Adapter<Calender_Adapter.View
                    current_date = current_date-31;
                    return current_date;
                }
+               if(current_date<1)
+               {
+                   if(current_month==8)
+                   {
+                       current_date=current_date+31;
+                   }
+                   else
+                   {
+                       current_date = current_date+30;
+                   }
+
+                   return current_date;
+               }
             }
            else if(current_month==4 ||current_month==6 ||current_month==9 ||current_month==11 )
             {
@@ -428,6 +441,12 @@ public class Calender_Adapter extends RecyclerView.Adapter<Calender_Adapter.View
                      current_date =current_date-30;
                      return current_date;
                  }
+                if(current_date<1)
+                {
+                    current_date = current_date+31;
+                    return current_date;
+                }
+
             }
             else if(current_month==2)
                 {
@@ -470,19 +489,31 @@ public class Calender_Adapter extends RecyclerView.Adapter<Calender_Adapter.View
             current_date += (day-current_day);
             if(current_month==1 || current_month==3 || current_month==5 || current_month==7 || current_month==8 || current_month==10 || current_month==12)
             {
-                if(current_date>31)
-                {
-                    current_date = current_date-31;
-                    return current_date;
+                if(current_date>31) {
+                    current_date = current_date - 31;
                 }
+                    if(current_date<1)
+                    {
+                        if(current_month==8)
+                        {
+                            current_date=current_date+31;
+                        }
+                        else
+                        {
+                            current_date = current_date+30;
+                        }
+
+                }
+                return current_date;
             }
             else if(current_month==4 ||current_month==6 ||current_month==9 ||current_month==11 )
             {
                 if(current_date>30)
                 {
                     current_date =current_date-30;
-                    return current_date;
+
                 }
+                return current_date;
             }
             else
             if(current_month==2)
@@ -533,7 +564,7 @@ public class Calender_Adapter extends RecyclerView.Adapter<Calender_Adapter.View
         String formattedDate = df.format(c);
         Integer current_date = Integer.parseInt(formattedDate.substring(0,2))+7;
         Integer current_month = Integer.parseInt(formattedDate.substring(3,5));
-        Integer  current_day = Calendar.DAY_OF_MONTH+2;
+        Integer  current_day = Calendar.DAY_OF_MONTH;
 
 
         Integer current_year = Integer.parseInt(formattedDate.substring(6));
@@ -544,17 +575,33 @@ public class Calender_Adapter extends RecyclerView.Adapter<Calender_Adapter.View
             current_date -= (current_day-day);
             if(current_month==1 || current_month==3 || current_month==5 || current_month==7 || current_month==8 || current_month==10 || current_month==12)
             {
-                if(current_date>31)
-                {
-                    current_date = current_date-31;
-                    return current_date;
+                if(current_date>31) {
+                    current_date = current_date - 31;
                 }
+                if(current_date<1)
+                {
+                    if(current_month==8)
+                    {
+                        current_date=current_date+31;
+                    }
+                    else
+                    {
+                        current_date = current_date+30;
+                    }
+
+                }
+                return current_date;
             }
             else if(current_month==4 ||current_month==6 ||current_month==9 ||current_month==11 )
             {
                 if(current_date>30)
                 {
                     current_date =current_date-30;
+                    return current_date;
+                }
+                if(current_date<1)
+                {
+                    current_date = current_date+31;
                     return current_date;
                 }
             }
@@ -610,6 +657,11 @@ public class Calender_Adapter extends RecyclerView.Adapter<Calender_Adapter.View
                 if(current_date>30)
                 {
                     current_date =current_date-30;
+                    return current_date;
+                }
+                if(current_date<1)
+                {
+                    current_date = current_date+31;
                     return current_date;
                 }
             }

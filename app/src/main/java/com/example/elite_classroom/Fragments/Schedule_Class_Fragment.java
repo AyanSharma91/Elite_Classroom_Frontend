@@ -2,20 +2,28 @@ package com.example.elite_classroom.Fragments;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.elite_classroom.Activities.ClassWorkActivity;
 import com.example.elite_classroom.Models.Retrofit_Models.Auth_Responses;
 import com.example.elite_classroom.Models.Retrofit_Models.Google_Logins;
 import com.example.elite_classroom.Models.Retrofit_Models.Schedule_Class_Request;
@@ -33,6 +41,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS;
+
 public class Schedule_Class_Fragment extends Fragment {
 
 
@@ -41,15 +51,40 @@ public class Schedule_Class_Fragment extends Fragment {
     TextView select_date;
     Calendar myCalendar;
     TextView select_time;
-    Button schedule_button,reschedule_button;
+    ImageView schedule_button,reschedule_button;
     String classcode="";
+    Window window;
+    ImageView cross;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_schedule__class_, container, false);
+        cross = view.findViewById(R.id.cross);
 
+        cross.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
+                        new Owner_Create_Class(),"Owner_FRAGMENT").commit();
+            }
+        });
+
+
+        window= getActivity().getWindow();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.getDecorView().getWindowInsetsController().setSystemBarsAppearance(APPEARANCE_LIGHT_STATUS_BARS, APPEARANCE_LIGHT_STATUS_BARS);
+        }
+        // clear FLAG_TRANSLUCENT_STATUS flag:
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+        // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
+        // finally change the color
+        window.setStatusBarColor(ContextCompat.getColor(getActivity(),R.color.dark_blue_colour));
 
 
 
@@ -110,8 +145,12 @@ public class Schedule_Class_Fragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                new DatePickerDialog(getActivity(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
-                        myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            DatePickerDialog datePickerDialog =    new DatePickerDialog(getActivity(), R.style.DialogTheme, date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+                        myCalendar.get(Calendar.DAY_OF_MONTH));
+            datePickerDialog.show();
+
+                datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getContext(),R.color.dark_blue_colour));
+                datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(getContext(),R.color.dark_blue_colour));
 
             }
         });
@@ -124,13 +163,12 @@ public class Schedule_Class_Fragment extends Fragment {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int i, int i1) {
 
-                        myCalendar.set(Calendar.HOUR_OF_DAY,i);
+                        myCalendar.set(Calendar.HOUR_OF_DAY, i);
                         myCalendar.set(Calendar.MINUTE, i1);
 
                         String status = "AM";
 
-                        if(i > 11)
-                        {
+                        if (i > 11) {
 
                             status = "PM";
                         }
@@ -138,23 +176,27 @@ public class Schedule_Class_Fragment extends Fragment {
 
                         int hour_of_12_hour_format;
 
-                        if(i > 11){
+                        if (i > 11) {
 
 
                             hour_of_12_hour_format = i - 12;
-                        }
-                        else {
+                        } else {
                             hour_of_12_hour_format = i;
                         }
                         select_time.setText(hour_of_12_hour_format + ":" + i1 + " " + status);
                     }
                 };
-                 new TimePickerDialog(getActivity(),time_listener, myCalendar.HOUR_OF_DAY, myCalendar.MINUTE,false).show();
+                TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), R.style.DialogTheme, time_listener, myCalendar.HOUR_OF_DAY, myCalendar.MINUTE, false);
+                timePickerDialog.show();
+                timePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE).setTextColor(ContextCompat.getColor(getContext(), R.color.dark_blue_colour));
+                timePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(getContext(), R.color.dark_blue_colour));
+
             }
         });
 
 
         return view;
+
     }
 
 

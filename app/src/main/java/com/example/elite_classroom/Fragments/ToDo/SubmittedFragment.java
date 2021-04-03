@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URL;
 import java.util.Objects;
 
 
@@ -70,9 +72,9 @@ public class SubmittedFragment extends Fragment {
     private void getSubmittedAssignment() {
 
         RequestQueue requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getActivity()));
-        URL = URL + preferences.getString("google_token",null);
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL + preferences.getString("google_token",null), null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response)
             {
@@ -81,8 +83,9 @@ public class SubmittedFragment extends Fragment {
                     rvSubmitted.setAdapter(new SubmittedAdapter(getContext(), submittedAssignments));
                     progressBar.setVisibility(View.GONE);
                     tvLoading.setVisibility(View.GONE);
+
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
@@ -90,7 +93,8 @@ public class SubmittedFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 progressBar.setVisibility(View.GONE);
                 tvLoading.setVisibility(View.GONE);
-                Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show(); }
+                Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+            }
         });
 
         requestQueue.add(jsonObjectRequest);

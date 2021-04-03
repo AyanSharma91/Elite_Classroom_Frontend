@@ -195,6 +195,8 @@ public class NewMaterialFragment extends Fragment {
             public void onResponse(JSONObject response) {
 
                 ClassWorkActivity.cross.performClick();
+                ClassActivity.is_start=true;
+
 //                Intent i = new Intent(getActivity(),ClassActivity.class);
 //                i.putExtra("class_code",class_code);
 //                i.putExtra("owner_id",owner_code);

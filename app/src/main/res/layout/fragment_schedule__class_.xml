@@ -3,13 +3,69 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
     tools:context=".Fragments.Schedule_Class_Fragment">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:id="@+id/schedule_toolbar"
+        android:backgroundTint="#33A4FD"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/cross"
+                android:layout_width="30sp"
+                android:layout_height="30sp"
+                android:src="@drawable/white_cross"
+                android:layout_centerVertical="true"/>
+            <ImageView
+                android:id="@+id/attachment"
+                android:layout_width="30sp"
+                android:visibility="gone"
+                android:layout_height="30sp"
+                android:src="@drawable/white_attachment"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="100dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"/>
+
+            <ImageView
+                android:id="@+id/schedule_button"
+                android:layout_width="30sp"
+                android:layout_height="30sp"
+                android:src="@drawable/white_send"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"/>
+            <!--            <TextView-->
+            <!--                android:layout_width="30sp"-->
+            <!--                android:background="@drawable/indicator"-->
+            <!--                android:layout_alignParentEnd="true"-->
+            <!--                android:layout_centerVertical="true"-->
+            <!--                android:layout_marginEnd="20dp"-->
+            <!--                android:layout_height="30sp"-->
+            <!--                android:layout_alignParentRight="true"-->
+            <!--                android:layout_marginRight="20dp"/>-->
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+
 
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
+        android:layout_below="@+id/schedule_toolbar"
         android:id="@+id/class_link_layout"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:paddingTop="10dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         tools:ignore="MissingClass">
@@ -28,6 +84,8 @@
         android:layout_width="match_parent"
         android:layout_below="@+id/class_link_layout"
         android:id="@+id/lecture_desciption_layout"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         tools:ignore="MissingClass">
@@ -41,55 +99,82 @@
             android:textColorHint="#7A8089" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <RelativeLayout
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_marginTop="50dp"
-        android:id="@+id/select_time_date"
+        android:layout_height="wrap_content"
+        android:paddingStart="10dp"
+        android:id="@+id/select_date_layout"
         android:layout_below="@+id/lecture_desciption_layout"
-        android:layout_height="50dp">
-
-
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        android:paddingLeft="10dp">
+        <TextView
+            android:id="@+id/due_date_text"
+            android:layout_width="90dp"
+            android:layout_height="45dp"
+            android:gravity="center_vertical"
+            android:text="Date"
+            android:textColor="#7C7A7A"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/select_date"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="50dp"
-            android:text="Select Date"
-            android:textColor="@color/black"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:background="#EFEDED"
-            android:gravity="center"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_marginLeft="50dp">
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            app:layout_constraintStart_toEndOf="@id/due_date_text"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="Select Class Date"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </TextView>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/select_date_layout"
+        android:id="@+id/select_time_layout"
+        android:paddingStart="10dp"
 
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        android:paddingLeft="10dp">
+        <TextView
+            android:id="@+id/due"
+            android:layout_width="90dp"
+            android:layout_height="45dp"
+            android:gravity="center_vertical"
+            android:text="Time"
+            android:textColor="#7C7A7A"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/select_time"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="50dp"
-            android:text="Select Time"
-            android:textColor="@color/black"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:background="#EFEDED"
-            android:gravity="center"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="50dp">
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            app:layout_constraintStart_toEndOf="@id/due"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="Select Class Time"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </TextView>
 
-    </RelativeLayout>
+
+
+
 
 
     <Button
-        android:id="@+id/schedule_button"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_below="@+id/select_time_date"
         android:layout_centerHorizontal="true"

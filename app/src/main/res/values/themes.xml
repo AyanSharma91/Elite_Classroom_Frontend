@@ -7,6 +7,7 @@
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorPrimary">@color/blue_colour</item>
 
+
 <!--        <item name="colorPrimaryVariant">@color/dark_blue_colour</item>-->
 <!--        <item name="colorOnPrimary">@color/dark_blue_colour</item>-->
         <!-- Secondary brand color. -->

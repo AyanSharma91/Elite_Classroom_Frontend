@@ -73,9 +73,9 @@ public class MissedFragment extends Fragment {
         preferences = getContext().getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE);
 
 
-        URL = URL + preferences.getString("google_token",null);   // later to be replaced by current user token
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, URL, null, new Response.Listener<JSONObject>() {
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,URL + preferences.getString("google_token",null), null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {

@@ -85,6 +85,8 @@
             newAssignmentFragment.setArguments(b);
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_container2,
                     newAssignmentFragment).commit();
+
+
         }
         else if(u==1){
             NewMaterialFragment newMaterialFragment = new NewMaterialFragment();

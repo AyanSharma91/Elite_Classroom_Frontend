@@ -1,10 +1,14 @@
 package com.example.elite_classroom.Fragments;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -23,6 +27,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.elite_classroom.Activities.ClassActivity;
+import com.example.elite_classroom.Activities.LoginActivity;
 import com.example.elite_classroom.Adapter.ParticipantsAdapter;
 import com.example.elite_classroom.R;
 
@@ -30,6 +35,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Collections;
 import java.util.Objects;
 
 public class PeopleFragment extends Fragment {
@@ -37,6 +43,9 @@ public class PeopleFragment extends Fragment {
     RecyclerView rvParticipants;
     ProgressBar progressBar;
     String class_code="", owner_code,class_name,owner_name;
+    ImageView add_participants;
+    String sharedPrefFile = "Login_Credentials";
+    public static SharedPreferences preferences;
 
 
 
@@ -54,6 +63,32 @@ public class PeopleFragment extends Fragment {
         class_name = getArguments().getString("class_name");
         owner_name = getArguments().getString("owner_name");
 
+        add_participants = view.findViewById(R.id.add_participants);
+
+
+        preferences = getContext().getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE);
+
+
+        if(owner_code.equals(preferences.getString("google_token", null)))
+        {
+            add_participants.setVisibility(View.VISIBLE);
+        }
+        add_participants.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent whatsappIntent = new Intent(Intent.ACTION_SEND);
+                whatsappIntent.setType("text/plain");
+                whatsappIntent.setPackage("com.whatsapp");
+                whatsappIntent.putExtra(Intent.EXTRA_TEXT, "You are Invited by "+owner_name+" To Join his/her class on Elite Classroom    \nThe class code for joining is : "+ class_code);
+                try {
+                    getContext().startActivity(whatsappIntent);
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(getContext(),"Feature Unsupported",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
         progressBar = view.findViewById(R.id.progressBar);
         tvLoading = view.findViewById(R.id.tvLoading);
         progressBar.setVisibility(View.VISIBLE);
@@ -62,6 +97,8 @@ public class PeopleFragment extends Fragment {
         tvOwnerName = view.findViewById(R.id.tvOwnerName);
         rvParticipants = view.findViewById(R.id.rvParticipants);
         rvParticipants.setHasFixedSize(true);
+
+
         rvParticipants.setLayoutManager(new LinearLayoutManager(this.getActivity()));
 
 
@@ -106,6 +143,8 @@ public class PeopleFragment extends Fragment {
                         JSONObject object1 = (JSONObject) participants.get(i);
                         if(!(object1.optString("user_id").equals(owner_id)))
                             participants_except_owner.put(object1);
+
+
                     }
                     rvParticipants.setAdapter(new ParticipantsAdapter(getContext(), participants_except_owner));
 

@@ -38,15 +38,16 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 
-public class ClassActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    DrawerLayout drawer;
+public class ClassActivity extends AppCompatActivity {
+//    DrawerLayout drawer;
     TextView name_second;
     GoogleSignInClient mGoogleSignInClient;
     String sharedPrefFile = "Login_Credentials";
     public static SharedPreferences preferences;
     TextView settings;
-    NavigationView navigationView;
+//    NavigationView navigationView;
     Bundle bundle;
+    TextView cross_btn;
     public static String classCode, owner_id, class_name, owner_name;
     public static TextView name,top_menu,top_menu_second;
 
@@ -55,7 +56,7 @@ public class ClassActivity extends AppCompatActivity implements NavigationView.O
     ClassWorkFragment classWorkFragment;
     PeopleFragment peopleFragment;
 
-
+   public   static  Boolean is_start=false;
 
 
     @Override
@@ -67,6 +68,15 @@ public class ClassActivity extends AppCompatActivity implements NavigationView.O
         settings = findViewById(R.id.settings);
         top_menu= findViewById(R.id.top_menu);
         top_menu_second= findViewById(R.id.top_menu_second);
+
+        cross_btn = findViewById(R.id.cross_btn);
+
+        cross_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ClassActivity.super.onBackPressed();
+            }
+        });
 
 
 
@@ -159,6 +169,8 @@ public class ClassActivity extends AppCompatActivity implements NavigationView.O
                             case R.id.nav_stream:
                                 name_second.setText("");
 
+                                ClassActivity.top_menu.setVisibility(View.VISIBLE);
+                                ClassActivity.top_menu_second.setVisibility(View.GONE);
 
                                  show_Stream_Fragment();
 
@@ -170,7 +182,8 @@ public class ClassActivity extends AppCompatActivity implements NavigationView.O
                                 } else {
                                     name_second.setText(class_name);
                                 }
-
+                                ClassActivity.top_menu.setVisibility(View.GONE);
+                                ClassActivity.top_menu_second.setVisibility(View.VISIBLE);
                                    show_ClassWork_Fragment();
                                 break;
                             case R.id.nav_people:
@@ -221,84 +234,85 @@ public class ClassActivity extends AppCompatActivity implements NavigationView.O
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(false);
 
-         navigationView = findViewById(R.id.nav_view);
-        navigationView.setCheckedItem(R.id.nav_class);
-        navigationView.setNavigationItemSelectedListener((NavigationView.OnNavigationItemSelectedListener) this);
-        drawer = findViewById(R.id.drawer_layout);
+//         navigationView = findViewById(R.id.nav_view);
+//        navigationView.setCheckedItem(R.id.nav_class);
+//        navigationView.setNavigationItemSelectedListener((NavigationView.OnNavigationItemSelectedListener) this);
+//        drawer = findViewById(R.id.drawer_layout);
 
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
-                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+//                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+//
+//        drawer.addDrawerListener(toggle);
+//        toggle.syncState();
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.nav_class:
-
-                navigationView.setCheckedItem(R.id.nav_class);
-
-                Intent i = new Intent(ClassActivity.this, MainActivity.class);
-                startActivity(i);
-                finish();
-                break;
-            case R.id.nav_calender:
-                startActivity(new Intent(ClassActivity.this,CalenderActivity.class));
-                navigationView.setCheckedItem(R.id.nav_calender);
-
-                break;
-            case R.id.nav_todo:
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container1,
-                        new ToDoFragment(),"TODO_FRAGMENT").commit();
-                navigationView.setCheckedItem(R.id.nav_todo);
-
-                break;
-            case R.id.nav_about:
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container1,
-                    new AboutFragment(),"ABOUT_FRAGMENT").commit();
-                navigationView.setCheckedItem(R.id.nav_about);
-
-                break;
-            case R.id.nav_feedback:
-                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container1,
-                        new FeedbackFragment(),"FEEDBACK_FRAGMENT").commit();
-                navigationView.setCheckedItem(R.id.nav_feedback);
-
-                break;
-            case R.id.nav_signout:
-                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build();
-                mGoogleSignInClient = GoogleSignIn.getClient(ClassActivity.this, gso);
-                mGoogleSignInClient.signOut();
-
-                SharedPreferences.Editor editor =  preferences.edit();
-                editor.putString("name", null);
-                editor.putString("email",null);
-                editor.putString("jwt_token", null);
-                editor.putString("google_token", null);
-                editor.apply();
-                editor.commit();
-                Intent intent = new Intent(ClassActivity.this, LoginActivity.class);
-                Toast.makeText(ClassActivity.this,"Signed_Out",Toast.LENGTH_LONG).show();
-                startActivity(intent);
-                break;
-        }
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
+//    @Override
+//    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.nav_class:
+//
+//                navigationView.setCheckedItem(R.id.nav_class);
+//
+//                Intent i = new Intent(ClassActivity.this, MainActivity.class);
+//                startActivity(i);
+//                finish();
+//                break;
+//            case R.id.nav_calender:
+//                startActivity(new Intent(ClassActivity.this,CalenderActivity.class));
+//                navigationView.setCheckedItem(R.id.nav_calender);
+//
+//                break;
+//            case R.id.nav_todo:
+//                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container1,
+//                        new ToDoFragment(),"TODO_FRAGMENT").commit();
+//                navigationView.setCheckedItem(R.id.nav_todo);
+//
+//                break;
+//            case R.id.nav_about:
+//                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container1,
+//                    new AboutFragment(),"ABOUT_FRAGMENT").commit();
+//                navigationView.setCheckedItem(R.id.nav_about);
+//
+//                break;
+//            case R.id.nav_feedback:
+//                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container1,
+//                        new FeedbackFragment(),"FEEDBACK_FRAGMENT").commit();
+//                navigationView.setCheckedItem(R.id.nav_feedback);
+//
+//                break;
+//            case R.id.nav_signout:
+//                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build();
+//                mGoogleSignInClient = GoogleSignIn.getClient(ClassActivity.this, gso);
+//                mGoogleSignInClient.signOut();
+//
+//                SharedPreferences.Editor editor =  preferences.edit();
+//                editor.putString("name", null);
+//                editor.putString("email",null);
+//                editor.putString("jwt_token", null);
+//                editor.putString("google_token", null);
+//                editor.apply();
+//                editor.commit();
+//                Intent intent = new Intent(ClassActivity.this, LoginActivity.class);
+//                Toast.makeText(ClassActivity.this,"Signed_Out",Toast.LENGTH_LONG).show();
+//                startActivity(intent);
+//                break;
+//        }
+//        drawer.closeDrawer(GravityCompat.START);
+//        return true;
+//    }
 
     @Override
     public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-//            Intent a = new Intent(Intent.ACTION_MAIN);
-//            a.addCategory(Intent.CATEGORY_HOME);
-//            a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            startActivity(a);
-        }
+//        if (drawer.isDrawerOpen(GravityCompat.START)) {
+//            drawer.closeDrawer(GravityCompat.START);
+//        } else {
+//
+////            Intent a = new Intent(Intent.ACTION_MAIN);
+////            a.addCategory(Intent.CATEGORY_HOME);
+////            a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+////            startActivity(a);
+//        }
+        super.onBackPressed();
 
     }
 
@@ -308,6 +322,7 @@ public class ClassActivity extends AppCompatActivity implements NavigationView.O
         if(streamFragment.isAdded())
         {
             fragmentTransaction.show(streamFragment);
+
         }
         else
         {
@@ -322,14 +337,19 @@ public class ClassActivity extends AppCompatActivity implements NavigationView.O
 
     public void show_ClassWork_Fragment()
     {
+
+
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         if(classWorkFragment.isAdded())
         {
             fragmentTransaction.show(classWorkFragment);
+
         }
         else
         {
+           
             fragmentTransaction.add(R.id.frame_container1,classWorkFragment,"CLASSWORK_FRAGMENT");
+            is_start=false;
         }
 
         if(streamFragment.isAdded()) fragmentTransaction.hide(streamFragment);
@@ -343,7 +363,9 @@ public class ClassActivity extends AppCompatActivity implements NavigationView.O
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         if(peopleFragment.isAdded())
         {
+
             fragmentTransaction.show(peopleFragment);
+            is_start=false;
         }
         else
         {
@@ -354,12 +376,22 @@ public class ClassActivity extends AppCompatActivity implements NavigationView.O
         if(classWorkFragment.isAdded())  fragmentTransaction.hide(classWorkFragment);
 
         fragmentTransaction.commit();
+
     }
+
+
 
 
     @Override
     protected void onResume() {
-        navigationView.setCheckedItem(R.id.nav_class);
+//        navigationView.setCheckedItem(R.id.nav_class);
+
+        if(is_start)
+        {
+            classWorkFragment.getClassWork();
+            streamFragment.getStreams();
+        }
+
 
         super.onResume();
     }

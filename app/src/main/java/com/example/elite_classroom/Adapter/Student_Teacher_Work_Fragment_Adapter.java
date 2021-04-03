@@ -85,7 +85,7 @@ public class Student_Teacher_Work_Fragment_Adapter extends RecyclerView.Adapter<
 
         if(uri==null)
         {
-            Log.d("download_url", url.toString());
+            Log.d("download_url", append+url);
             DownloadManager.Request request = new DownloadManager.Request(Uri.parse(append+url));
             request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
 

@@ -154,7 +154,6 @@ public class StreamFragment extends Fragment {
     public  void getStreams() {
 
 
-
         RequestQueue requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getActivity()));
 
         String url = "https://elite-classroom-server.herokuapp.com/api/notes/getNotesCode/"+ classCode;
@@ -162,6 +161,7 @@ public class StreamFragment extends Fragment {
         if(!(list.isEmpty()))
         {
             list.clear();
+            adapter.notifyDataSetChanged();
         }
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>() {
 

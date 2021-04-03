@@ -84,7 +84,6 @@ public class Teacher_Student_Work_Fragment extends Fragment {
                     }
 
 
-                    Log.d("Submissions", submissions_records.toString());
                     adapter = new Student_Teacher_Work_Fragment_Adapter(getContext(),submissions_records);
                     LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
                     student_work_recycler_view.setAdapter(adapter);

@@ -2,9 +2,12 @@ package com.example.elite_classroom.Fragments;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.text.Html;
@@ -13,6 +16,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
@@ -38,6 +43,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS;
+
 
 public class ReSchedule_Fragment extends Fragment {
 
@@ -45,22 +52,53 @@ public class ReSchedule_Fragment extends Fragment {
    String class_links="",class_descriptions="",type="",old_time="",class_code="";
 
    TextView select_date , select_time;
-   Button schedule_button,reschedule_button;
+   ImageView schedule_button,reschedule_button;
     Calendar myCalendar;
-    ImageView  delete_class;
+    ImageView  delete_class,cross;
    AppCompatEditText class_link,class_description;
+   Window window;
+   TextView due_date_text;
+   TextView due;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
        View view =  inflater.inflate(R.layout.fragment_re_schedule_, container, false);
 
-       delete_class = view.findViewById(R.id.delete_class);
+
+
+        window= getActivity().getWindow();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.getDecorView().getWindowInsetsController().setSystemBarsAppearance(APPEARANCE_LIGHT_STATUS_BARS, APPEARANCE_LIGHT_STATUS_BARS);
+        }
+        // clear FLAG_TRANSLUCENT_STATUS flag:
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+        // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
+        // finally change the color
+        window.setStatusBarColor(ContextCompat.getColor(getActivity(),R.color.dark_blue_colour));
+
+
+        due_date_text = view.findViewById(R.id.due_date_text);
+        due = view.findViewById(R.id.due);
+        cross = view.findViewById(R.id.cross);
+      cross.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View view) {
+
+              getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,
+                      new Calender_Fragment(),"Calender_FRAGMENT").commit();
+
+          }
+      });
+
        select_date= view.findViewById(R.id.select_date);
-       schedule_button = view.findViewById(R.id.schedule_button);
-        reschedule_button = view.findViewById(R.id.reschedule_button);
+       reschedule_button = view.findViewById(R.id.reschedule_button);
        select_time = view.findViewById(R.id.select_time);
         class_link = view.findViewById(R.id.class_link);
         class_description = view.findViewById(R.id.class_description);
@@ -85,14 +123,7 @@ public class ReSchedule_Fragment extends Fragment {
             }
         };
 
-        delete_class.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-
-
-            }
-        });
 
         select_time.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,12 +177,14 @@ public class ReSchedule_Fragment extends Fragment {
 
            select_date.setVisibility(View.GONE);
            select_time.setVisibility(View.GONE);
-           schedule_button.setVisibility(View.GONE);
+           reschedule_button.setVisibility(View.GONE);
+           due_date_text.setVisibility(View.GONE);
+           due.setVisibility(View.GONE);
+
 
        }
        else
        {
-           schedule_button.setVisibility(View.GONE);
            reschedule_button.setVisibility(View.VISIBLE);
 
 

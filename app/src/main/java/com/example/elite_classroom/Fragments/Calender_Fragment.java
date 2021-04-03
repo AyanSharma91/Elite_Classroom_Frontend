@@ -2,13 +2,18 @@ package com.example.elite_classroom.Fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +31,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.view.WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS;
+
 public class Calender_Fragment extends Fragment {
 
 
@@ -33,17 +40,51 @@ public class Calender_Fragment extends Fragment {
    RecyclerView current_next_week,current_next_week_second;
     SharedPreferences preferences;
     String sharedPrefFile = "Login_Credentials";
+    TextView fixtures_this_week;
+    TextView fixtures_next_week;
+    TextView greeting_message;
+    View line_divider_main;
+    View line_divider_second;
 
     FloatingActionButton add_class_fixture_btn;
     TextView name;
+    Window window;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calender_, container, false);
 
 
+
+        window= getActivity().getWindow();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.getDecorView().getWindowInsetsController().setSystemBarsAppearance(APPEARANCE_LIGHT_STATUS_BARS, APPEARANCE_LIGHT_STATUS_BARS);
+        }
+        // clear FLAG_TRANSLUCENT_STATUS flag:
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+        // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
+        // finally change the color
+        window.setStatusBarColor(ContextCompat.getColor(getActivity(),R.color.white));
+
+
+
+
+
+        fixtures_next_week = view.findViewById(R.id.fixtures_next_week);
+        fixtures_this_week = view.findViewById(R.id.fixtures_this_week);
+        greeting_message = view.findViewById(R.id.greeting_message);
+        line_divider_main = view.findViewById(R.id.line_divider_main);
+        line_divider_second = view.findViewById(R.id.line_divider_second);
+
+
         preferences = getActivity().getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE);
+
+        greeting_message.setText("Hey "+preferences.getString("name",null).substring(0,preferences.getString("name",null).indexOf(' '))+" , You got");
 
         current_next_week = view.findViewById(R.id.current_next_week);
         current_next_week_second = view.findViewById(R.id.current_next_week_second);
@@ -86,6 +127,29 @@ public class Calender_Fragment extends Fragment {
                 ArrayList<Class_Fixtures> fixtures = response.body();
                 ArrayList<Class_Fixtures> arranged_fixtures = new ArrayList<>();
 
+
+                boolean is_First_sun=true;
+                for(Class_Fixtures arrange : fixtures)
+                {
+
+                    if(!(arrange.getSun().isEmpty()))
+                    {
+                        if(is_First_sun)
+                        {
+                            is_First_sun=false;
+                            arrange.setSun(arrange.getSun()+"  /first");
+                            arranged_fixtures.add(arrange);
+
+                        }
+                        else
+                        {
+                            arranged_fixtures.add(arrange);
+                        }
+
+                    }
+
+                }
+
                 boolean is_First_Mon=true;
                 for(Class_Fixtures arrange : fixtures)
                 {
@@ -214,27 +278,7 @@ public class Calender_Fragment extends Fragment {
                     }
                 }
 
-                boolean is_First_sun=true;
-                for(Class_Fixtures arrange : fixtures)
-                {
 
-                    if(!(arrange.getSun().isEmpty()))
-                    {
-                        if(is_First_sun)
-                        {
-                            is_First_sun=false;
-                            arrange.setSun(arrange.getSun()+"  /first");
-                            arranged_fixtures.add(arrange);
-
-                        }
-                        else
-                        {
-                            arranged_fixtures.add(arrange);
-                        }
-
-                    }
-
-                }
 
 
 
@@ -243,6 +287,9 @@ public class Calender_Fragment extends Fragment {
                 current_next_week_second.setAdapter(adapter);
                 current_next_week_second.setLayoutManager(layoutManager);
 
+                 fixtures_next_week.setText(adapter.getItemCount()+" "+"Lectures Next week");
+                 line_divider_main.setVisibility(View.VISIBLE);
+                 line_divider_second.setVisibility(View.VISIBLE);
 
 
             }
@@ -267,6 +314,29 @@ public class Calender_Fragment extends Fragment {
                 ArrayList<Class_Fixtures> fixtures = response.body();
                 ArrayList<Class_Fixtures> arranged_fixtures = new ArrayList<>();
 
+
+                boolean is_First_sun=true;
+                for(Class_Fixtures arrange : fixtures)
+                {
+
+                    if(!(arrange.getSun().isEmpty()))
+                    {
+                        if(is_First_sun)
+                        {
+                            is_First_sun=false;
+                            arrange.setSun(arrange.getSun()+"  /first");
+                            arranged_fixtures.add(arrange);
+
+                        }
+                        else
+                        {
+                            arranged_fixtures.add(arrange);
+                        }
+
+                    }
+
+                }
+
                 boolean is_First_Mon=true;
                 for(Class_Fixtures arrange : fixtures)
                 {
@@ -395,27 +465,7 @@ public class Calender_Fragment extends Fragment {
                     }
                 }
 
-                boolean is_First_sun=true;
-                for(Class_Fixtures arrange : fixtures)
-                {
 
-                    if(!(arrange.getSun().isEmpty()))
-                    {
-                        if(is_First_sun)
-                        {
-                            is_First_sun=false;
-                            arrange.setSun(arrange.getSun()+"  /first");
-                            arranged_fixtures.add(arrange);
-
-                        }
-                        else
-                        {
-                            arranged_fixtures.add(arrange);
-                        }
-
-                    }
-
-                }
 
 
 
@@ -423,6 +473,9 @@ public class Calender_Fragment extends Fragment {
                 LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
                 current_next_week.setAdapter(adapter);
                 current_next_week.setLayoutManager(layoutManager);
+
+                fixtures_this_week.setText(adapter.getItemCount()+" "+"Lectures This week");
+
 
 //                DestinationService service = ServiceBuilder.INSTANCE.buildService(DestinationService.class);
 //                Call<ArrayList<Class_Fixtures>> request = service.next_calender(preferences.getString("google_token",null));

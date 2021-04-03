@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         app:tabGravity="fill"
         app:tabMode="fixed"
+
         android:id="@+id/tablayout_id"
         app:tabIndicatorHeight="2dp"
         app:tabIndicatorFullWidth="false"

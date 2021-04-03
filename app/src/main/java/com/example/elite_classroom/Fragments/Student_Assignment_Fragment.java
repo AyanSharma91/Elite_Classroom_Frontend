@@ -116,6 +116,7 @@ String append = "https://elite-classroom-server.herokuapp.com/api/storage/downlo
         }
 
         attachement_layout.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View view) {
 
@@ -143,6 +144,7 @@ String append = "https://elite-classroom-server.herokuapp.com/api/storage/downlo
             }
         });
         attachement_layout_second.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View view) {
 
@@ -359,9 +361,6 @@ String append = "https://elite-classroom-server.herokuapp.com/api/storage/downlo
 
         }
 
-
-
-
         return view;
     }
 
@@ -475,6 +474,7 @@ String append = "https://elite-classroom-server.herokuapp.com/api/storage/downlo
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
@@ -492,8 +492,9 @@ String append = "https://elite-classroom-server.herokuapp.com/api/storage/downlo
                 Toast.makeText(getContext(),"Access Denied",Toast.LENGTH_LONG).show();
             }
         }
-        else if(requestCode==114)
+        else if(requestCode==114 && grantResults[0]==PackageManager.PERMISSION_GRANTED)
         {
+
             startDownloading(attachment_link,null);
         }
     }
@@ -747,10 +748,10 @@ String append = "https://elite-classroom-server.herokuapp.com/api/storage/downlo
         return mimeType;
     }
 
-    private void startDownloading(String url,Uri uri) {
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void startDownloading(String url, Uri uri) {
 
-        if(uri==null)
-        {
+
             Log.d("download_url", url.toString());
             DownloadManager.Request request = new DownloadManager.Request(Uri.parse(append+url));
             request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
@@ -758,12 +759,13 @@ String append = "https://elite-classroom-server.herokuapp.com/api/storage/downlo
             request.setTitle("Download");
             request.setDescription("Downloading file.....");
             request.allowScanningByMediaScanner();
-            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,""+System.currentTimeMillis());
+//            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,""+System.currentTimeMillis());
+            request.setDestinationInExternalPublicDir(String.valueOf(Environment.getExternalStorageDirectory()),""+System.currentTimeMillis());
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
             DownloadManager manager  = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
             manager.enqueue(request);
             Toast.makeText(getContext(),"Downloading file.....",Toast.LENGTH_LONG).show();
-        }
+
     }
 
 

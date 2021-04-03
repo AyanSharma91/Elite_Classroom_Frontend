@@ -32,14 +32,16 @@ public class ToDoFragment extends Fragment {
 
 
         tabLayout = (TabLayout) view.findViewById(R.id.tablayout_id);
+
         tabLayout.addTab(tabLayout.newTab().setText("Submitted"));
         tabLayout.addTab(tabLayout.newTab().setText("Pending"));
         tabLayout.addTab(tabLayout.newTab().setText("Missed"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
          viewpager =(ViewPager)view.findViewById(R.id.viewpager_id);
-        ViewPagerAdapter tabsAdapter = new ViewPagerAdapter(getFragmentManager(),tabLayout.getTabCount());
+        ViewPagerAdapter tabsAdapter = new ViewPagerAdapter(getChildFragmentManager(),tabLayout.getTabCount());
         viewpager.setAdapter(tabsAdapter);
         viewpager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        viewpager.setOffscreenPageLimit(2);
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {

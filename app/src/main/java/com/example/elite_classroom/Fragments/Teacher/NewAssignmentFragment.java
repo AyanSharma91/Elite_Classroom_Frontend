@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
@@ -22,6 +23,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +45,7 @@ import com.example.elite_classroom.Activities.ClassWorkActivity;
 import com.example.elite_classroom.Dialogs.PointDialog;
 import com.example.elite_classroom.FeedExtraUtilsKotlin;
 import com.example.elite_classroom.FileUtils;
+import com.example.elite_classroom.Fragments.ClassWorkFragment;
 import com.example.elite_classroom.Models.Retrofit_Models.Upload_Response;
 import com.example.elite_classroom.R;
 import com.example.elite_classroom.Retrofit.DestinationService;
@@ -643,7 +646,7 @@ public class NewAssignmentFragment extends Fragment implements PointDialog.Point
 
 
                 ClassWorkActivity.cross.performClick();
-                ClassActivity.top_menu_second.performClick();
+             ClassActivity.is_start=true;
 //                Intent i = new Intent(getActivity(),ClassActivity.class);
 //                i.putExtra("class_code",class_code);
 //                i.putExtra("owner_id",owner_code);

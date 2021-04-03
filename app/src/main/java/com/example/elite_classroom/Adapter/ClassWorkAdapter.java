@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
@@ -24,6 +25,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.elite_classroom.Activities.Assignment_Submission_Activity;
 import com.example.elite_classroom.Models.Recycler_Models.ClassWork;
 import com.example.elite_classroom.R;
+import com.google.gson.internal.$Gson$Preconditions;
 
 import org.json.JSONObject;
 
@@ -66,37 +68,48 @@ public class ClassWorkAdapter extends RecyclerView.Adapter<ClassWorkAdapter.View
             @Override
             public void onClick(View view) {
                 PopupMenu popupMenu = new PopupMenu(ctx, view);
+                popupMenu.inflate(R.menu.pop_menu);
+                popupMenu.show();
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         // TODO Auto-generated method stub
-                        switch (item.getItemId()) {
-                            case R.id.pop_edit:
-                                
-                                return true;
-                            case R.id.pop_delete:
+
+                            if(item.getItemId()==R.id.pop_edit)
+                            {
+
+                            }
+                            else
+                            {
+
+                                Toast.makeText(ctx,"Item Removed_Called",Toast.LENGTH_SHORT).show();
+
                                 String url = "https://elite-classroom-server.herokuapp.com/api/classworks/deleteClasswork/"+ c.getWork_id();
                                 RequestQueue requestQueue = Volley.newRequestQueue(ctx);
                                 JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, url, null, new Response.Listener<JSONObject>() {
                                     @Override
                                     public void onResponse(JSONObject response) {
+                                        Toast.makeText(ctx,"Item Removed",Toast.LENGTH_SHORT).show();
                                         list.remove(position);
                                         notifyItemRemoved(position);
                                     }
                                 }, new Response.ErrorListener() {
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
-
+                                        Toast.makeText(ctx,error.toString(),Toast.LENGTH_SHORT).show();
                                     }
                                 });
                                 requestQueue.add(request);
+                            }
+                                
+
+
                                 return true;
-                        }
-                        return false;
+
+
                     }
                 });
-                popupMenu.inflate(R.menu.pop_menu);
-                popupMenu.show();
+
             }
         });}else{
             holder.b.setAlpha(0);

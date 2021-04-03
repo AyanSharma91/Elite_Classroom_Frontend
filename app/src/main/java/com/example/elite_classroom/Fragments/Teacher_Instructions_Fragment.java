@@ -6,6 +6,7 @@ import android.app.DownloadManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -19,9 +20,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.example.elite_classroom.New_Download_Manager;
 import com.example.elite_classroom.R;
 
 import java.util.Objects;
@@ -67,24 +70,39 @@ public class Teacher_Instructions_Fragment extends Fragment {
             attachments.setVisibility(View.VISIBLE);
         }
 
+
         attachement_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+
+
                 if(!(attachment_link.trim().isEmpty()))
                 {
-                    if(ContextCompat.checkSelfPermission(Objects.requireNonNull((Activity)getContext()), Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED ||  ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)
+
+                    if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q)
                     {
-                        // Log.e(TAG, "setxml: peremission prob");
-                        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE},114);
+                        New_Download_Manager.Companion.downloadFile(append+attachment_link,"Testing download",getContext(),getActivity());
 
-
-
-                    } else {
-                        startDownloading(attachment_link,null);
                     }
+                   else
+                    {
+                        if((ContextCompat.checkSelfPermission(getContext(),Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED))
+                        {
+                            // Log.e(TAG, "setxml: peremission prob");
+
+                            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE},114);
+
+
+
+                        } else {
+                            startDownloading(attachment_link.trim(),null);
+                        }
+                    }
+
                 }
             }
+
         });
 
 
@@ -154,8 +172,10 @@ public class Teacher_Instructions_Fragment extends Fragment {
 
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if(requestCode==114 &&  grantResults[0] == PackageManager.PERMISSION_GRANTED)
+        if( grantResults[0] == PackageManager.PERMISSION_GRANTED)
         {
+            Toast.makeText(getContext(),"Access Permitted!",Toast.LENGTH_LONG).show();
+
             startDownloading(attachment_link,null);
         }
         else
@@ -168,6 +188,7 @@ public class Teacher_Instructions_Fragment extends Fragment {
 
         if(uri==null)
         {
+
             Log.d("download_url", url.toString());
             DownloadManager.Request request = new DownloadManager.Request(Uri.parse(append+url));
             request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);

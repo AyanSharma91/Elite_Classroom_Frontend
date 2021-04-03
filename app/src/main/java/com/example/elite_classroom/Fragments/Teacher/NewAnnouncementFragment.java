@@ -96,12 +96,7 @@ public class NewAnnouncementFragment extends Fragment {
 
         ClassWorkActivity.attachment.setClickable(false);
         ClassWorkActivity.attachment.setVisibility(View.GONE);
-//        ClassWorkActivity.attachment.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                show_img_dialog(0 );
-//            }
-//        });
+
 
         announcement_title = view.findViewById(R.id.announcement_title);
         announcement_description = view.findViewById(R.id.announcement_description);

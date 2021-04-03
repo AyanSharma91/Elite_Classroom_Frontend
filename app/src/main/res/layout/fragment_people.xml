@@ -82,6 +82,22 @@
         android:layout_marginTop="25dp"
         android:layout_marginLeft="5dp"/>
 
+    <ImageView
+        android:id="@+id/add_participants"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/add_symbol"
+        android:layout_gravity="end"
+        android:layout_marginEnd="20dp"
+
+        android:textColor="@color/blue_colour"
+        android:layout_marginTop="-25dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="20dp" />
+
+
+
 
     <View
         android:layout_width="match_parent"

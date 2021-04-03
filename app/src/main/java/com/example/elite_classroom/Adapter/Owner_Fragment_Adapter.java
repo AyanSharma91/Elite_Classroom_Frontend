@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.elite_classroom.Fragments.Schedule_Class_Fragment;
@@ -34,7 +36,7 @@ public class Owner_Fragment_Adapter extends RecyclerView.Adapter<Owner_Fragment_
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-        View view = inflater.inflate(R.layout.get_class_recycler_view_single_row, viewGroup, false);
+        View view = inflater.inflate(R.layout.single_row_owner_fragment, viewGroup, false);
         return new Owner_Fragment_Adapter.ViewHolder(view);
     }
 
@@ -73,7 +75,7 @@ public class Owner_Fragment_Adapter extends RecyclerView.Adapter<Owner_Fragment_
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        CardView parent_layout ;
+        ConstraintLayout parent_layout ;
         TextView  class_name;
         TextView  owner_name;
         TextView students_no;

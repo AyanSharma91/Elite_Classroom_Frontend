@@ -41,6 +41,7 @@ public class ClassWorkFragment extends Fragment {
     List<ClassWork> list;
     ClassWorkAdapter adapter;
     RecyclerView recyclerView;
+   public static PopupMenu popupMenu;
     Context ctx;
     public  static  SwipeRefreshLayout classwork_refresh;
     String class_code="", owner_code,class_name,owner_name;
@@ -111,7 +112,7 @@ public class ClassWorkFragment extends Fragment {
             public void onClick(View view) {
 
 
-                PopupMenu popupMenu = new PopupMenu(getContext(),view);
+                 popupMenu = new PopupMenu(getContext(),view);
                 popupMenu.getMenuInflater().inflate(R.menu.refresh_menu, popupMenu.getMenu());
 
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -140,13 +141,13 @@ public class ClassWorkFragment extends Fragment {
         return view;
     }
 
-    private void getClassWork() {
-
+    public void getClassWork() {
 
 
         if(!(list.isEmpty()))
         {
             list.clear();
+            adapter.notifyDataSetChanged();
         }
         RequestQueue requestQueue = Volley.newRequestQueue(Objects.requireNonNull(getActivity()));
         String url = "https://elite-classroom-server.herokuapp.com/api/classworks/getClasswork/"+ class_code;
@@ -195,4 +196,6 @@ public class ClassWorkFragment extends Fragment {
         });
         requestQueue.add(request);
     }
+
+   
 }
